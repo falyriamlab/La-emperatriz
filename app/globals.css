@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  /* Puente brand palette */
+  --color-morado-oscuro: #6b398c;
+  --color-lila: #8f69a1;
+  --color-crema: #f3eadc;
+  --color-amarillo: #ecbf04;
+  --color-coral: #e22e49;
+  --color-negro: #1a1a1a;
+}
+
+@theme inline {
+  --color-morado-oscuro: var(--color-morado-oscuro);
+  --color-lila: var(--color-lila);
+  --color-crema: var(--color-crema);
+  --color-amarillo: var(--color-amarillo);
+  --color-coral: var(--color-coral);
+  --color-negro: var(--color-negro);
+
+  --font-sans: var(--font-aileron);
+  --font-display: var(--font-newsreader);
+}
+
+body {
+  background: var(--color-crema);
+  color: var(--color-negro);
+}

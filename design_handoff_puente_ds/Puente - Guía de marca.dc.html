@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/600.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/700.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #F3E7D8; }
+    ::selection { background: #EFB72F; color: #3B1E45; }
+    .grain { position: absolute; inset: 0; opacity: 0.05; pointer-events: none; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    a { color: #64327E; }
+    a:hover { color: #EC2B43; }
+  </style>
+</helmet>
+
+<div style="font-family:'Aileron',sans-serif;color:#3B1E45;max-width:1240px;margin:0 auto;background:#F3E7D8;position:relative;">
+
+  <!-- HERO -->
+  <section style="position:relative;background:#64327E;padding:96px 64px 88px;overflow:hidden;">
+    <div class="grain"></div>
+    <div style="position:absolute;top:-60px;right:-40px;width:340px;height:340px;opacity:0.14;">
+      <svg viewBox="0 0 200 200"><path d="M100 0 L118 62 L182 40 L138 92 L200 100 L138 108 L182 160 L118 138 L100 200 L82 138 L18 160 L62 108 L0 100 L62 92 L18 40 L82 62 Z" fill="#EC2B43"></path></svg>
+    </div>
+    <img src="assets/logo-horizontal.svg" alt="Puente" style="height:64px;position:relative;z-index:1;" />
+    <h1 style="font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:56px;line-height:1.15;color:#F3E7D8;max-width:820px;margin:40px 0 12px;position:relative;z-index:1;">Sistema de diseño de Puente</h1>
+    <p style="font-size:20px;line-height:1.5;color:#F3E7D8;opacity:0.85;max-width:640px;margin:0;position:relative;z-index:1;">Consultora cultural que reivindica la sensibilidad a través de la diversidad y la soberanía cultural. Guía de marca — color, tipografía, gráfica y voz.</p>
+  </section>
+
+  <!-- SOBRE LA MARCA -->
+  <section style="padding:72px 64px 56px;">
+    <div style="display:flex;gap:64px;flex-wrap:wrap;">
+      <div style="flex:1 1 320px;">
+        <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:14px;">Quiénes somos</div>
+        <p style="font-family:'Newsreader',serif;font-style:italic;font-size:28px;line-height:1.4;color:#64327E;margin:0;">"Reivindicamos la sensibilidad, a través de la diversidad y la soberanía cultural."</p>
+      </div>
+      <div style="flex:1 1 380px;font-size:17px;line-height:1.7;color:#3B1E45;">
+        <p style="margin:0 0 16px;">Puente acompaña, estudia y cogestiona proyectos culturales y artísticos liderados por creadoras latinoamericanas, mediante mentorías, talleres y consultoría cultural. Su metodología es horizontal y participativa: caminar mano a mano, propiciando espacios de coaprendizaje.</p>
+        <p style="margin:0;">Esta guía traduce esa voz cálida y comprometida en un sistema visual consistente para redes, documentos y comunicaciones.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PALETA -->
+  <section style="padding:56px 64px;">
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin:0 0 28px;">Paleta de color</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+      <sc-for list="{{ colors }}" as="c" hint-placeholder-count="5">
+        <div style="border-radius:4px;overflow:hidden;border:1px solid rgba(59,30,69,0.1);">
+          <div style="height:120px;background:{{ c.hex }};"></div>
+          <div style="padding:16px;background:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+              <span style="font-weight:600;font-size:16px;">{{ c.name }}</span>
+              <span style="font-size:13px;color:#885E94;font-variant-numeric:tabular-nums;">{{ c.hex }}</span>
+            </div>
+            <p style="font-size:13px;line-height:1.5;color:#3B1E45;opacity:0.75;margin:0;">{{ c.usage }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="font-size:14px;color:#885E94;margin:20px 0 0;">Combinaciones habituales: texto Arena sobre Rojo/Morado; texto Tinta sobre Arena/Amarillo. El Amarillo se reserva para acentos — resaltados tipo marcador, iconografía, nunca como fondo de texto extenso.</p>
+  </section>
+
+  <!-- TIPOGRAFÍA -->
+  <section style="padding:56px 64px;background:#fff;">
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin:0 0 28px;">Tipografía</h2>
+    <div style="display:flex;gap:56px;flex-wrap:wrap;">
+      <div style="flex:1 1 380px;">
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:52px;color:#64327E;line-height:1;margin-bottom:10px;">Newsreader</div>
+        <p style="font-size:14px;color:#885E94;margin:0 0 20px;">Serif editorial en cursiva — para frases con carga emocional, citas, nombres de programas ("La emperatriz") y fechas destacadas. Úsese con moderación, en tamaños grandes.</p>
+        <div style="font-family:'Newsreader',serif;font-style:italic;font-size:22px;color:#3B1E45;line-height:1.4;">"Tejamos juntas la comunidad viva con la que soñamos."</div>
+      </div>
+      <div style="flex:1 1 380px;">
+        <div style="font-family:'Aileron',sans-serif;font-weight:700;font-size:52px;color:#64327E;line-height:1;margin-bottom:10px;">Aileron</div>
+        <p style="font-size:14px;color:#885E94;margin:0 0 20px;">Sans serif de trabajo — titulares informativos, cuerpo de texto, datos (fechas, precios, ubicación). Pesos: regular para párrafos, semibold/bold para énfasis y datos clave.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <sc-for list="{{ weights }}" as="w" hint-placeholder-count="3">
+            <div style="font-family:'Aileron',sans-serif;font-weight:{{ w.weight }};font-size:20px;color:#3B1E45;">Aa Encaminar tus ideas — {{ w.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO -->
+  <section style="padding:56px 64px;">
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin:0 0 28px;">Logotipo</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+      <div style="background:#64327E;border-radius:4px;padding:48px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/logo-horizontal.svg" alt="Puente horizontal" style="height:56px;" />
+      </div>
+      <div style="background:#EC2B43;border-radius:4px;padding:48px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/logo-stacked.svg" alt="Puente apilado" style="height:100px;" />
+      </div>
+      <div style="background:#F3E7D8;border:1px solid rgba(59,30,69,0.12);border-radius:4px;padding:48px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/logo-stacked-purple.svg" alt="Puente sobre arena" style="height:100px;" />
+      </div>
+    </div>
+    <p style="font-size:14px;color:#885E94;margin:20px 0 0;">Símbolo: la "u" forma un puente (⌣) y la "n" un arco (⌢) — la letra dibuja literalmente el vínculo. Úsese siempre en un solo color (blanco o arena) sobre fondos saturados; nunca a color sobre fondos claros sin suficiente contraste.</p>
+  </section>
+
+  <!-- ELEMENTOS GRÁFICOS -->
+  <section style="padding:56px 64px;background:#fff;">
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin:0 0 28px;">Elementos gráficos</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+      <div style="background:#EC2B43;border-radius:4px;padding:32px;height:180px;position:relative;overflow:hidden;">
+        <div class="grain"></div>
+        <svg viewBox="0 0 200 200" style="position:absolute;width:160px;height:160px;top:10px;right:10px;opacity:0.9;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+        <span style="color:#F3E7D8;font-size:13px;position:relative;z-index:1;">Estrella rasgada — motivo decorativo, esquinas de post</span>
+      </div>
+      <div style="background:#F3E7D8;border-radius:4px;padding:32px;height:180px;position:relative;display:flex;align-items:center;">
+        <div style="position:absolute;left:24px;right:24px;height:34px;background:#EFB72F;transform:rotate(-1deg);clip-path:polygon(0% 15%,3% 5%,20% 0%,50% 8%,80% 2%,97% 10%,100% 30%,98% 70%,100% 90%,80% 100%,50% 92%,20% 98%,2% 92%,0% 78%);"></div>
+        <span style="position:relative;z-index:1;font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:22px;color:#64327E;padding:0 24px;">proyecto cultural</span>
+      </div>
+      <div style="background:#64327E;border-radius:4px;padding:32px;height:180px;">
+        <div class="grain"></div>
+        <span style="color:#F3E7D8;font-size:13px;">Papel texturizado — grano sutil sobre todos los fondos de color, nunca sobre blanco puro</span>
+      </div>
+    </div>
+    <p style="font-size:14px;color:#885E94;margin:20px 0 0;">Recursos de apoyo: estrellas de bordes irregulares (como recortadas a mano), trazos de marcador tipo brochazo para resaltar 2–4 palabras clave, y grano de papel sutil sobre fondos saturados. Ilustración lineal ocasional (ver mentorías) para iconografía conceptual.</p>
+  </section>
+
+  <!-- FOTOGRAFÍA -->
+  <section style="padding:56px 64px;">
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin:0 0 28px;">Fotografía</h2>
+    <p style="font-size:15px;line-height:1.7;color:#3B1E45;max-width:680px;margin:0 0 24px;">Retratos reales de creadoras culturales, luz natural, expresión cálida y cercana. Vestuario colorido y textil (kimonos, estampados) que contrasta con los fondos planos saturados. Las fotos se recortan y sangran sobre el color de fondo — sin marcos ni bordes.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+      <img src="assets/ref-quote-red.jpg" style="width:100%;border-radius:4px;display:block;" />
+      <img src="assets/ref-event-red.jpg" style="width:100%;border-radius:4px;display:block;" />
+      <img src="assets/ref-mentoria-purple.jpg" style="width:100%;border-radius:4px;display:block;" />
+      <img src="assets/ref-gracias-purple.jpg" style="width:100%;border-radius:4px;display:block;" />
+    </div>
+  </section>
+
+  <!-- VOZ Y TONO -->
+  <section style="padding:56px 64px;background:#64327E;position:relative;overflow:hidden;">
+    <div class="grain"></div>
+    <h2 style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:#EFB72F;font-weight:600;margin:0 0 28px;position:relative;">Voz y tono</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;position:relative;">
+      <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="6">
+        <div>
+          <div style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:22px;color:#EFB72F;margin-bottom:8px;">{{ p.name }}</div>
+          <p style="font-size:14px;line-height:1.6;color:#F3E7D8;opacity:0.9;margin:0;">{{ p.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid rgba(243,231,216,0.2);position:relative;">
+      <p style="font-size:14px;line-height:1.7;color:#F3E7D8;opacity:0.85;max-width:680px;margin:0;">Habla en primera persona del plural ("acompañamos", "soñamos", "tejamos") y trata a la audiencia como comunidad, no como cliente. Preferir "creadoras" y lenguaje inclusivo. Cierre habitual con una invitación a comentar una palabra clave para recibir información — no un botón de venta directo.</p>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      colors: [
+        { name: 'Rojo', hex: '#EC2B43', usage: 'Color de impacto — fondos de post, energía, urgencia (últimas plazas)' },
+        { name: 'Morado', hex: '#64327E', usage: 'Contraste principal — mentorías, cierres, texto sobre fondos claros' },
+        { name: 'Morado claro', hex: '#885E94', usage: 'Sombras, ilustración lineal, fondos secundarios' },
+        { name: 'Amarillo', hex: '#EFB72F', usage: 'Acento — resaltado tipo marcador, iconografía, nunca fondo de texto extenso' },
+        { name: 'Arena', hex: '#F3E7D8', usage: 'Papel base — texto sobre color saturado, fondo neutro' }
+      ],
+      weights: [
+        { weight: 400, label: 'regular' },
+        { weight: 600, label: 'semibold' },
+        { weight: 700, label: 'bold' }
+      ],
+      pillars: [
+        { name: 'Autenticidad', desc: 'Ser nuestra versión más libre y coherente con lo que somos y creamos.' },
+        { name: 'Comunidad viva', desc: 'Cocrear y coaprender juntas, sosteniéndonos con liviandad y gozo.' },
+        { name: 'Sensibilidad', desc: 'Sentir lo que somos y conectar desde ahí, con empatía y sin juicios.' },
+        { name: 'Interculturalidad', desc: 'Compartir desde la diversidad y la soberanía cultural, sin imposiciones.' },
+        { name: 'Participación cultural', desc: 'Sentirse parte de la comunidad y decidir sobre el quehacer cultural en colectivo.' },
+        { name: 'Interdisciplinareidad', desc: 'El encuentro entre culturas y prácticas enriquece y expande los procesos.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

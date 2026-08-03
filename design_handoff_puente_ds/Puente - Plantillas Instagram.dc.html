@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/600.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/700.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: #E9DECF; }
+    .grain { position: absolute; inset: 0; opacity: 0.06; pointer-events: none; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    a { color: #64327E; }
+    a:hover { color: #EC2B43; }
+  </style>
+</helmet>
+
+<div style="font-family:'Aileron',sans-serif;padding:56px 48px;max-width:1400px;margin:0 auto;">
+
+  <div style="margin-bottom:8px;">
+    <img src="assets/logo-horizontal-purple.svg" alt="Puente" style="height:28px;" />
+  </div>
+  <h1 style="font-family:'Newsreader',serif;font-style:italic;font-size:32px;color:#64327E;margin:16px 0 4px;">Plantillas de Instagram — feed</h1>
+  <p style="font-size:14px;color:#885E94;margin:0 0 40px;max-width:560px;">Tres formatos base (1080×1350). Arrastra tus propias fotos sobre los recuadros marcados y edita el texto directamente.</p>
+
+  <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;">
+
+    <!-- TEMPLATE 1: CITA -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">1 · Cita / inspiración</div>
+      <div style="width:1080px;height:1350px;background:#EC2B43;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <svg viewBox="0 0 200 200" style="position:absolute;width:420px;height:420px;top:-40px;right:-60px;opacity:0.95;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+        <svg viewBox="0 0 200 200" style="position:absolute;width:280px;height:280px;bottom:60px;left:-60px;opacity:0.95;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+        <img src="assets/logo-stacked.svg" alt="Puente" style="position:absolute;top:64px;left:64px;height:80px;z-index:2;" />
+        <div style="position:absolute;left:64px;right:340px;top:420px;z-index:2;">
+          <p style="font-size:38px;line-height:1.35;color:#F3E7D8;margin:0;">Tejamos juntas la comunidad viva con la que soñamos</p>
+          <p style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.3;color:#F3E7D8;margin:16px 0 0;">y expandamos nuestros proyectos culturales.</p>
+        </div>
+        <div style="position:absolute;right:0;bottom:0;width:520px;height:900px;">
+          <image-slot id="ig-quote-photo" shape="rect" placeholder="Foto de la creadora"></image-slot>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPLATE 2: EVENTO -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">2 · Anuncio de taller</div>
+      <div style="width:1080px;height:1350px;background:#EC2B43;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <img src="assets/logo-stacked.svg" alt="Puente" style="position:absolute;top:56px;right:64px;height:76px;z-index:2;" />
+        <div style="position:absolute;left:0;bottom:0;width:520px;height:820px;">
+          <image-slot id="ig-event-photo" shape="rect" placeholder="Foto de la creadora"></image-slot>
+        </div>
+        <div style="position:absolute;left:64px;top:280px;right:64px;z-index:2;">
+          <div style="font-size:34px;color:#F3E7D8;margin:0 0 6px;">Encuerpando tu</div>
+          <div style="position:relative;display:inline-block;margin-bottom:20px;">
+            <div style="position:absolute;left:-14px;right:-14px;top:8%;bottom:8%;background:#EFB72F;transform:rotate(-1deg);clip-path:polygon(0% 15%,3% 5%,20% 0%,50% 8%,80% 2%,97% 10%,100% 30%,98% 70%,100% 90%,80% 100%,50% 92%,20% 98%,2% 92%,0% 78%);"></div>
+            <span style="position:relative;font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:44px;color:#64327E;">proyecto cultural</span>
+          </div>
+        </div>
+        <div style="position:absolute;right:64px;top:470px;width:400px;text-align:left;z-index:2;">
+          <p style="font-size:22px;line-height:1.4;color:#F3E7D8;margin:0 0 24px;">Taller práctico para encaminar tus ideas y convertirlas en proyecto</p>
+          <div style="font-family:'Newsreader',serif;font-weight:600;font-size:38px;color:#F3E7D8;margin-bottom:16px;">9 de Mayo</div>
+          <div style="font-size:18px;line-height:1.6;color:#F3E7D8;opacity:0.9;">
+            16h30 ES – 18h30 ES<br/>9:30 COL – 11:30 COL
+          </div>
+          <div style="font-size:18px;font-style:italic;color:#F3E7D8;margin-top:14px;">Virtual · Plazas limitadas</div>
+          <div style="margin-top:32px;">
+            <span style="font-size:22px;color:#F3E7D8;opacity:0.6;text-decoration:line-through;margin-right:12px;">33€</span>
+            <span style="font-family:'Newsreader',serif;font-weight:600;font-size:52px;color:#F3E7D8;">11€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPLATE 3: MENTORÍA -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">3 · Mentoría / programa</div>
+      <div style="width:1080px;height:1350px;background:#64327E;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <img src="assets/logo-stacked.svg" alt="Puente" style="position:absolute;top:64px;left:64px;height:80px;z-index:2;" />
+        <div style="position:absolute;left:0;right:0;top:220px;text-align:center;z-index:2;">
+          <div style="position:relative;display:inline-block;">
+            <div style="position:absolute;left:-20px;right:-20px;top:6%;bottom:6%;background:#EFB72F;transform:rotate(-1deg);clip-path:polygon(0% 15%,3% 5%,20% 0%,50% 8%,80% 2%,97% 10%,100% 30%,98% 70%,100% 90%,80% 100%,50% 92%,20% 98%,2% 92%,0% 78%);"></div>
+            <span style="position:relative;font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:64px;color:#64327E;padding:0 12px;">La emperatriz</span>
+          </div>
+        </div>
+        <div style="position:absolute;left:80px;right:80px;top:400px;text-align:center;z-index:2;">
+          <p style="font-size:36px;line-height:1.35;color:#F3E7D8;margin:0;">Mentoría para proyectos culturales (y creativos)</p>
+        </div>
+        <svg viewBox="0 0 100 100" style="position:absolute;width:340px;height:340px;left:60px;bottom:80px;opacity:0.9;">
+          <circle cx="42" cy="40" r="22" fill="none" stroke="#EFB72F" stroke-width="6"></circle>
+          <line x1="58" y1="56" x2="80" y2="80" stroke="#EFB72F" stroke-width="9" stroke-linecap="round"></line>
+          <path d="M60 78 L90 92 L82 98 L58 92 Z" fill="#EC2B43"></path>
+        </svg>
+        <div style="position:absolute;right:64px;bottom:170px;width:380px;text-align:right;z-index:2;">
+          <p style="font-size:24px;line-height:1.5;color:#F3E7D8;margin:0 0 20px;">Un proceso vivo para cogestar y encaminar juntas tus proyectos culturales.</p>
+          <p style="font-family:'Newsreader',serif;font-style:italic;font-size:26px;line-height:1.4;color:#F3E7D8;margin:0;">Mindset, comunidad y estrategia desde un lugar sensible.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

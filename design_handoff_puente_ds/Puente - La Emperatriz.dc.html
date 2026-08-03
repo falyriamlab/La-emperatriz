@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/600.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/700.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: #F3E7D8; }
+    ::selection { background: #EFB72F; color: #3B1E45; }
+    .grain { position: absolute; inset: 0; opacity: 0.06; pointer-events: none; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    a { color: #EFB72F; }
+    a:hover { color: #EC2B43; }
+    .reveal-p { transition: opacity .6s ease, filter .6s ease; opacity: 0.28; filter: blur(0.2px); }
+    .reveal-p.visible { opacity: 1; filter: none; }
+    .hcards { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none; padding-bottom: 4px; }
+    .hcards::-webkit-scrollbar { display: none; }
+    .hcard { scroll-snap-align: start; flex: 0 0 340px; }
+    .faq-q:hover { opacity: 0.75; }
+  </style>
+</helmet>
+
+<div style="font-family:'Aileron',sans-serif;color:#3B1E45;background:#F3E7D8;">
+
+  <!-- STICKY NAV -->
+  <div style="position:sticky;top:20px;z-index:50;display:flex;justify-content:center;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:36px;background:#F3E7D8;border:1px solid rgba(59,30,69,0.12);box-shadow:0 8px 24px rgba(59,30,69,0.08);border-radius:100px;padding:12px 14px 12px 22px;">
+      <img src="assets/logo-horizontal-purple.svg" alt="Puente" style="height:20px;" />
+      <div style="display:flex;gap:26px;">
+        <a href="#como-trabajamos" style="font-size:14px;font-weight:600;text-decoration:none;color:#3B1E45;">Cómo trabajamos</a>
+        <a href="#para-quien" style="font-size:14px;font-weight:600;text-decoration:none;color:#3B1E45;">Para quién</a>
+        <a href="#preguntas" style="font-size:14px;font-weight:600;text-decoration:none;color:#3B1E45;">Preguntas</a>
+      </div>
+      <a href="#inscribirme" style="font-size:14px;font-weight:700;text-decoration:none;background:#EC2B43;color:#F3E7D8;padding:10px 22px;border-radius:100px;">Comenta "hecho está"</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section style="position:relative;background:#64327E;padding:80px 64px 0;overflow:hidden;margin-top:-64px;">
+    <div class="grain"></div>
+    <svg viewBox="0 0 200 200" style="position:absolute;width:360px;height:360px;top:-80px;right:-80px;opacity:0.9;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+    <div style="max-width:1200px;margin:0 auto;padding-top:96px;position:relative;z-index:1;">
+      <div style="font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#EFB72F;font-weight:700;margin-bottom:22px;">Mentoría</div>
+      <h1 style="font-family:'Aileron',sans-serif;font-weight:700;font-size:96px;line-height:0.98;letter-spacing:-0.02em;color:#F3E7D8;margin:0 0 28px;max-width:900px;">
+        Encamina tu<br/>
+        <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;color:#EFB72F;">{{ typedWord }}<span style="opacity:0.6;">|</span></span> cultural.
+      </h1>
+      <p style="font-size:22px;line-height:1.5;color:#F3E7D8;opacity:0.85;max-width:560px;margin:0 0 44px;">La emperatriz — un proceso vivo para cogestar y encaminar juntas tus proyectos culturales. Mindset, comunidad y estrategia desde un lugar sensible.</p>
+      <a href="#inscribirme" style="display:inline-block;font-size:17px;font-weight:700;text-decoration:none;background:#EC2B43;color:#F3E7D8;padding:18px 38px;border-radius:100px;margin-bottom:64px;">Comenta "hecho está" y te escribimos</a>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;position:relative;z-index:1;">
+      <image-slot id="hero-photo" shape="rect" placeholder="Foto de la mentora / creadora" style="width:100%;height:560px;display:block;border-radius:4px 4px 0 0;"></image-slot>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN (scroll reveal) -->
+  <section id="para-quien" style="padding:140px 64px;max-width:900px;margin:0 auto;">
+    <p ref="{{ setRef(0) }}" class="reveal-p {{ visible[0] ? 'visible' : '' }}" style="font-family:'Newsreader',serif;font-style:italic;font-size:40px;line-height:1.45;color:#64327E;margin:0 0 32px;">¿Estás intentando desarrollar un proyecto cultural o creativo por tu cuenta, pero no logras definir el camino para sostenerlo y expandirlo?</p>
+    <p ref="{{ setRef(1) }}" class="reveal-p {{ visible[1] ? 'visible' : '' }}" style="font-size:22px;line-height:1.6;margin:0 0 24px;"><strong>¡Te acompañamos!</strong> Crear de la mano de alguien es mucho más liviano, gozoso y menos costoso que hacerlo por tu cuenta.</p>
+    <p ref="{{ setRef(2) }}" class="reveal-p {{ visible[2] ? 'visible' : '' }}" style="font-size:22px;line-height:1.6;margin:0;">Nuestras mentorías son un proceso de acompañamiento para creadoras que aman lo que hacen y buscan expandir sus proyectos desde un lugar auténtico, en coherencia consigo mismas.</p>
+  </section>
+
+  <!-- CÓMO TRABAJAMOS — horizontal cards -->
+  <section id="como-trabajamos" style="padding:80px 0 100px;background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 64px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:40px;">
+        <h2 style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:700;margin:0;">Cómo trabajamos</h2>
+        <div style="display:flex;gap:8px;">
+          <sc-for list="{{ approach }}" as="a" hint-placeholder-count="3">
+            <span style="width:{{ $index }};display:none;"></span>
+          </sc-for>
+          <span style="width:22px;height:6px;border-radius:3px;background:{{ cardIndex === 0 ? '#64327E' : '#e5d9c8' }};"></span>
+          <span style="width:22px;height:6px;border-radius:3px;background:{{ cardIndex === 1 ? '#64327E' : '#e5d9c8' }};"></span>
+          <span style="width:22px;height:6px;border-radius:3px;background:{{ cardIndex === 2 ? '#64327E' : '#e5d9c8' }};"></span>
+        </div>
+      </div>
+    </div>
+    <div class="hcards" onScroll="{{ onCardsScroll }}" ref="{{ cardsRef }}" style="padding:0 64px;">
+      <sc-for list="{{ approach }}" as="a" hint-placeholder-count="3">
+        <div class="hcard" style="background:#F3E7D8;border-radius:4px;padding:44px 36px;min-height:320px;display:flex;flex-direction:column;">
+          <div style="font-family:'Newsreader',serif;font-style:italic;font-size:52px;color:#885E94;margin-bottom:24px;">0{{ a.n }}</div>
+          <h3 style="font-family:'Aileron',sans-serif;font-weight:700;font-size:24px;color:#64327E;margin:0 0 14px;">{{ a.title }}</h3>
+          <p style="font-size:16px;line-height:1.6;color:#3B1E45;opacity:0.85;margin:0;">{{ a.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CITA -->
+  <section style="position:relative;background:#EC2B43;padding:120px 64px;overflow:hidden;">
+    <div class="grain"></div>
+    <div style="max-width:820px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+      <p style="font-family:'Newsreader',serif;font-style:italic;font-weight:500;font-size:42px;line-height:1.4;color:#F3E7D8;margin:0;">Tus ideas merecen ser escuchadas y tus proyectos merecen ver la luz. Y tú mereces vivir dignamente de lo que haces.</p>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN ES -->
+  <section style="padding:100px 64px;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;gap:56px;flex-wrap:wrap;align-items:center;">
+      <div style="flex:1 1 340px;">
+        <image-slot id="community-photo" shape="rect" placeholder="Foto de comunidad / espacio de mentoría" style="width:100%;height:420px;display:block;border-radius:4px;"></image-slot>
+      </div>
+      <div style="flex:1 1 380px;">
+        <h2 style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#EC2B43;font-weight:700;margin:0 0 20px;">Para quién es</h2>
+        <p style="font-family:'Newsreader',serif;font-style:italic;font-size:32px;line-height:1.35;color:#64327E;margin:0 0 22px;">Para creadoras culturales que aman lo que hacen.</p>
+        <p style="font-size:18px;line-height:1.7;margin:0 0 28px;">Espacios de coaprendizaje individuales y grupales, para caminar acompañadas — lo que hace que el camino sea más fácil y liviano. Nos libera cargas y nos ayuda a confiar.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4">
+            <span style="font-size:13px;font-weight:600;background:#fff;color:#64327E;padding:8px 16px;border-radius:100px;">{{ t }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (dark) -->
+  <section id="preguntas" style="background:#3B1E45;padding:100px 64px;">
+    <div style="max-width:820px;margin:0 auto;">
+      <h2 style="font-family:'Aileron',sans-serif;font-weight:700;font-size:42px;color:#F3E7D8;margin:0 0 12px;">Preguntas frecuentes</h2>
+      <p style="font-size:16px;color:#F3E7D8;opacity:0.6;margin:0 0 48px;">Todo lo que necesitas saber antes de empezar.</p>
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+        <div style="border-top:1px solid rgba(243,231,216,0.15);">
+          <div class="faq-q" onClick="{{ () => toggleFaq($index) }}" style="display:flex;align-items:center;gap:16px;padding:24px 0;cursor:pointer;">
+            <span style="font-size:22px;color:#EFB72F;width:20px;">{{ openFaq === $index ? '−' : '+' }}</span>
+            <span style="font-size:18px;font-weight:600;color:{{ openFaq === $index ? '#EFB72F' : '#F3E7D8' }};">{{ f.q }}</span>
+          </div>
+          <sc-if value="{{ openFaq === $index }}">
+            <p style="font-size:16px;line-height:1.6;color:#F3E7D8;opacity:0.75;margin:0 0 28px;padding-left:36px;">{{ f.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section id="inscribirme" style="position:relative;background:#64327E;padding:120px 64px;overflow:hidden;">
+    <div class="grain"></div>
+    <svg viewBox="0 0 200 200" style="position:absolute;width:300px;height:300px;bottom:-60px;left:-60px;opacity:0.85;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+    <div style="max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+      <h2 style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.3;color:#F3E7D8;margin:0 0 20px;">Comenta "hecho está" y te enviamos todos los detalles</h2>
+      <p style="font-size:17px;line-height:1.6;color:#F3E7D8;opacity:0.85;margin:0 0 36px;">Para que tus procesos creativos se expandan.</p>
+      <a href="#" style="display:inline-block;font-size:17px;font-weight:700;text-decoration:none;background:#EFB72F;color:#3B1E45;padding:18px 40px;border-radius:100px;">Comenta "hecho está"</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="padding:56px 64px 40px;text-align:center;overflow:hidden;">
+    <img src="assets/logo-horizontal-purple.svg" alt="Puente" style="height:20px;opacity:0.5;margin-bottom:24px;" />
+    <div style="font-family:'Aileron',sans-serif;font-weight:700;font-size:96px;line-height:1;color:#3B1E45;opacity:0.06;white-space:nowrap;">hola@puentecultural.com</div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { rotIdx: 0, typedWord: '', visible: {}, openFaq: 0, cardIndex: 0 };
+  words = ['proyecto', 'propósito', 'camino'];
+  refs = [];
+
+  runTypewriter = () => {
+    const word = this.words[this.state.rotIdx];
+    let i = 0;
+    clearInterval(this._typeTimer);
+    this._typeTimer = setInterval(() => {
+      i++;
+      this.setState({ typedWord: word.slice(0, i) });
+      if (i >= word.length) {
+        clearInterval(this._typeTimer);
+        this._holdTimer = setTimeout(() => {
+          let j = word.length;
+          this._typeTimer = setInterval(() => {
+            j--;
+            this.setState({ typedWord: word.slice(0, j) });
+            if (j <= 0) {
+              clearInterval(this._typeTimer);
+              this.state.rotIdx = (this.state.rotIdx + 1) % this.words.length;
+              this.runTypewriter();
+            }
+          }, 45);
+        }, 1400);
+      }
+    }, 90);
+  };
+
+  componentDidMount() {
+    this.runTypewriter();
+    this._observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const idx = this.refs.indexOf(e.target);
+          if (idx !== -1) this.setState(s => ({ visible: { ...s.visible, [idx]: true } }));
+        }
+      });
+    }, { threshold: 0.5 });
+    this.refs.forEach(r => r && this._observer.observe(r));
+  }
+  componentWillUnmount() {
+    clearInterval(this._typeTimer);
+    clearTimeout(this._holdTimer);
+    if (this._observer) this._observer.disconnect();
+  }
+
+  setRef = (i) => (el) => {
+    this.refs[i] = el;
+    if (el && this._observer) this._observer.observe(el);
+  };
+
+  toggleFaq = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }));
+
+  onCardsScroll = (e) => {
+    const el = e.target;
+    const idx = Math.round(el.scrollLeft / 364);
+    if (idx !== this.state.cardIndex) this.setState({ cardIndex: idx });
+  };
+
+  renderVals() {
+    return {
+      typedWord: this.state.typedWord,
+      visible: this.state.visible,
+      setRef: this.setRef,
+      cardIndex: this.state.cardIndex,
+      cardsRef: () => {},
+      onCardsScroll: this.onCardsScroll,
+      openFaq: this.state.openFaq,
+      toggleFaq: this.toggleFaq,
+      approach: [
+        { n: 1, title: 'Un proceso vivo', desc: 'Cogestamos y encaminamos juntas tus proyectos culturales, adaptándonos a lo que tu proceso necesita.' },
+        { n: 2, title: 'Mindset y sensibilidad', desc: 'Combinamos herramientas prácticas de la gestión cultural con la sensibilidad para darle vida a tus proyectos.' },
+        { n: 3, title: 'Camino sostenible', desc: 'Tejemos un camino que sea sostenible para ti y también para lo que haces, desde la coherencia contigo misma.' }
+      ],
+      tags: ['Mentoría individual', 'Espacios grupales', 'Gestión cultural', 'Acompañamiento sensible'],
+      faqs: [
+        { q: '¿Cómo empiezo?', a: 'Comenta "hecho está" en cualquier publicación o escríbenos por privado y te enviamos todos los detalles del proceso.' },
+        { q: '¿Es individual o grupal?', a: 'Ofrecemos espacios de coaprendizaje tanto individuales como grupales, según lo que tu proyecto necesite.' },
+        { q: '¿Para qué tipo de proyectos es?', a: 'Para proyectos culturales y creativos en cualquier etapa: desde una idea inicial hasta procesos que buscan expandirse.' },
+        { q: '¿Qué hace diferente a Puente?', a: 'Combinamos gestión cultural con sensibilidad — caminamos acompañadas, no desde la exigencia, sino desde la confianza y la coherencia.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

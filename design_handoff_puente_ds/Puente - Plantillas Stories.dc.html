@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/600.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/aileron@5.0.3/700.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: #E9DECF; }
+    .grain { position: absolute; inset: 0; opacity: 0.06; pointer-events: none; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    a { color: #64327E; }
+    a:hover { color: #EC2B43; }
+  </style>
+</helmet>
+
+<div style="font-family:'Aileron',sans-serif;padding:56px 48px;max-width:1400px;margin:0 auto;">
+
+  <div style="margin-bottom:8px;">
+    <img src="assets/logo-horizontal-purple.svg" alt="Puente" style="height:28px;" />
+  </div>
+  <h1 style="font-family:'Newsreader',serif;font-style:italic;font-size:32px;color:#64327E;margin:16px 0 4px;">Plantillas de Instagram — Stories</h1>
+  <p style="font-size:14px;color:#885E94;margin:0 0 40px;max-width:560px;">Tres formatos base (1080×1920). Arrastra tus propias fotos sobre los recuadros marcados y edita el texto directamente.</p>
+
+  <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;">
+
+    <!-- STORY 1: ANUNCIO -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">1 · Anuncio de taller</div>
+      <div style="width:1080px;height:1920px;background:#EC2B43;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <svg viewBox="0 0 200 200" style="position:absolute;width:320px;height:320px;top:-50px;left:-60px;opacity:0.9;"><path d="M100 4 L112 66 L178 44 L132 94 L196 104 L132 110 L178 162 L112 140 L100 198 L88 140 L22 162 L68 110 L4 104 L68 94 L22 44 L88 66 Z" fill="#EFB72F"></path></svg>
+        <img src="assets/logo-stacked.svg" alt="Puente" style="position:absolute;top:100px;left:64px;height:88px;z-index:2;" />
+        <div style="position:absolute;left:64px;right:64px;top:340px;z-index:2;">
+          <div style="font-size:44px;color:#F3E7D8;margin:0 0 10px;">Encuerpando tu</div>
+          <div style="position:relative;display:inline-block;">
+            <div style="position:absolute;left:-16px;right:-16px;top:8%;bottom:8%;background:#EFB72F;transform:rotate(-1deg);clip-path:polygon(0% 15%,3% 5%,20% 0%,50% 8%,80% 2%,97% 10%,100% 30%,98% 70%,100% 90%,80% 100%,50% 92%,20% 98%,2% 92%,0% 78%);"></div>
+            <span style="position:relative;font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:56px;color:#64327E;">proyecto cultural</span>
+          </div>
+        </div>
+        <div style="position:absolute;left:64px;right:64px;top:700px;z-index:2;">
+          <div style="font-family:'Newsreader',serif;font-weight:600;font-size:46px;color:#F3E7D8;margin-bottom:14px;">9 de Mayo</div>
+          <div style="font-size:22px;line-height:1.6;color:#F3E7D8;opacity:0.9;">16h30 ES – 18h30 ES · 9:30 COL – 11:30 COL</div>
+          <div style="font-size:22px;font-style:italic;color:#F3E7D8;margin-top:10px;">Virtual · Plazas limitadas</div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:900px;">
+          <image-slot id="story1-photo" shape="rect" placeholder="Foto de la creadora"></image-slot>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center;z-index:3;">
+          <span style="display:inline-block;background:#F3E7D8;color:#64327E;font-weight:600;font-size:26px;padding:16px 40px;border-radius:100px;">Desliza hacia arriba →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY 2: CITA -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">2 · Cita / inspiración</div>
+      <div style="width:1080px;height:1920px;background:#64327E;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <img src="assets/logo-horizontal.svg" alt="Puente" style="position:absolute;top:100px;left:64px;height:44px;z-index:2;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;height:1100px;">
+          <image-slot id="story2-photo" shape="rect" placeholder="Foto de la creadora"></image-slot>
+        </div>
+        <div style="position:absolute;left:64px;right:64px;top:280px;z-index:2;">
+          <p style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:52px;line-height:1.35;color:#F3E7D8;margin:0;">Tejamos juntas la comunidad viva con la que soñamos y expandamos nuestros proyectos culturales.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY 3: TESTIMONIO / GRACIAS -->
+    <div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#EC2B43;font-weight:600;margin-bottom:10px;">3 · Agradecimiento</div>
+      <div style="width:1080px;height:1920px;background:#64327E;position:relative;overflow:hidden;font-family:'Aileron',sans-serif;">
+        <div class="grain"></div>
+        <img src="assets/logo-stacked.svg" alt="Puente" style="position:absolute;top:100px;left:64px;height:80px;z-index:2;" />
+        <div style="position:absolute;left:64px;right:64px;top:280px;z-index:2;">
+          <div style="font-family:'Newsreader',serif;font-style:italic;font-weight:600;font-size:64px;line-height:1.15;color:#F3E7D8;">¡Gracias!<br/>¡Gracias!<br/>¡Gracias!</div>
+          <p style="font-size:24px;color:#F3E7D8;opacity:0.85;margin:20px 0 0;">Así vivimos esta experiencia colectiva</p>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:980px;background:#F3E7D8;clip-path:polygon(0 60px, 100% 0, 100% 100%, 0 100%);">
+          <image-slot id="story3-photo" shape="rect" placeholder="Foto de la creadora"></image-slot>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
