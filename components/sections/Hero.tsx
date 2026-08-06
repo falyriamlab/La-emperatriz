@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { CTAButton } from "@/components/CTAButton";
+import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 
 export function Hero() {
   return (
@@ -14,13 +16,22 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute -bottom-40 -left-40 h-[26rem] w-[26rem] rounded-full bg-morado-oscuro/10 blur-3xl"
       />
+      <DecorativeSvg
+        src="/elements/stamp-morado.svg"
+        className="absolute top-10 right-10 z-10 hidden h-28 w-28 opacity-90 sm:block sm:h-32 sm:w-32"
+      />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
-        <span className="text-sm font-bold tracking-[0.2em] text-coral">
-          MENTORÍA CULTURAL · PUENTE
-        </span>
+        <Image
+          src="/logo/logo-horizontal-morado.svg"
+          alt="Puente — Consultora cultural"
+          width={666}
+          height={102}
+          className="mb-6 h-7 w-auto sm:h-8"
+          priority
+        />
 
-        <h1 className="font-display mt-6 text-5xl leading-[1.05] font-semibold italic text-morado-oscuro sm:text-6xl lg:text-7xl">
+        <h1 className="font-display text-5xl leading-[1.05] font-semibold italic text-morado-oscuro sm:text-6xl lg:text-7xl">
           La Emperatriz es la mentoría que necesitamos todas.
         </h1>
 
@@ -36,7 +47,7 @@ export function Hero() {
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-4">
-          <CTAButton variant="primary" href="#inversion">
+          <CTAButton surface="light" href="#inversion">
             Comenzar mi proceso
           </CTAButton>
           <a

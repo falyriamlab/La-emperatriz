@@ -1,16 +1,32 @@
+import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
+import { Reveal } from "@/components/Reveal";
+
 export function Mentor() {
   return (
-    <section id="mentora" className="bg-lila/10 px-6 py-20 sm:py-28">
+    <section
+      id="mentora"
+      className="overflow-hidden bg-lila/10 px-6 py-20 sm:py-28"
+    >
       <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
-          Tu guía en este proceso
-        </h2>
+        <Reveal>
+          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+            Tu guía en este proceso
+          </h2>
+        </Reveal>
 
-        <div className="mt-16 grid items-center gap-12 md:grid-cols-2 md:gap-16">
-          <div className="mx-auto flex aspect-[4/5] w-full max-w-sm items-center justify-center rounded-2xl bg-lila">
-            <span className="text-sm font-bold tracking-[0.2em] text-crema">
-              FOTO DANIELA
-            </span>
+        <Reveal className="mt-16 grid items-center gap-12 md:grid-cols-2 md:gap-16">
+          <div className="relative mx-auto w-full max-w-sm">
+            <DecorativeSvg
+              src="/elements/hand-star.svg"
+              className="absolute -top-10 -right-10 z-0 hidden h-40 w-40 opacity-40 sm:block sm:h-48 sm:w-48"
+            />
+            <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl">
+              <div className="flex h-full w-full items-center justify-center bg-lila motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]">
+                <span className="text-sm font-bold tracking-[0.2em] text-crema">
+                  FOTO DANIELA
+                </span>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -38,7 +54,7 @@ export function Mentor() {
               sostenidas. Justo por eso creé Puente.&rdquo;
             </blockquote>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -26,3 +26,24 @@ body {
   background: var(--color-crema);
   color: var(--color-negro);
 }
+
+/* Belt-and-suspenders for scroll-reveal (see components/Reveal.tsx): guarantees
+   content is visible under reduced motion even before React hydrates, instead
+   of relying solely on the JS check inside useInView. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* components/RotatingWords.tsx: fade-in for each word as it swaps in. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

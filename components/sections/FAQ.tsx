@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
+import { Reveal } from "@/components/Reveal";
 
 const faqs = [
   {
@@ -29,13 +31,22 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="preguntas" className="bg-crema px-6 py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
-          Preguntas frecuentes
-        </h2>
+    <section
+      id="preguntas"
+      className="relative overflow-hidden bg-crema px-6 py-20 sm:py-28"
+    >
+      <DecorativeSvg
+        src="/elements/star-ellipse-morado.svg"
+        className="absolute top-6 left-1/2 h-24 w-24 -translate-x-1/2 opacity-[0.12]"
+      />
+      <div className="relative mx-auto max-w-3xl">
+        <Reveal>
+          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+            Preguntas frecuentes
+          </h2>
+        </Reveal>
 
-        <div className="mt-14">
+        <Reveal className="mt-14">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
@@ -51,7 +62,7 @@ export function FAQ() {
                   </span>
                   <span
                     aria-hidden
-                    className={`flex h-7 w-7 flex-none items-center justify-center text-2xl font-bold text-coral transition-transform duration-300 ${
+                    className={`flex h-7 w-7 flex-none items-center justify-center text-2xl font-bold text-coral motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out ${
                       isOpen ? "rotate-45" : "rotate-0"
                     }`}
                   >
@@ -59,13 +70,13 @@ export function FAQ() {
                   </span>
                 </button>
                 <div
-                  className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                  className={`grid motion-safe:transition-[grid-template-rows] motion-safe:duration-300 motion-safe:ease-in-out ${
                     isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                   }`}
                 >
                   <div className="overflow-hidden">
                     <p
-                      className={`pb-6 text-base leading-relaxed text-negro/70 transition-opacity duration-300 ${
+                      className={`pb-6 text-base leading-relaxed text-negro/70 motion-safe:transition-opacity motion-safe:duration-300 ${
                         isOpen ? "opacity-100" : "opacity-0"
                       }`}
                     >
@@ -76,7 +87,7 @@ export function FAQ() {
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,3 +1,6 @@
+import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
+import { Reveal } from "@/components/Reveal";
+
 const points = [
   {
     text: "Tienes un proyecto cultural que amas, pero no sabes cómo darle una estructura que lo sostenga en el tiempo.",
@@ -36,29 +39,39 @@ export function Pain() {
       className="border-t border-morado-oscuro/10 bg-lila/10 px-6 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
-          ¿Te suena familiar?
-        </h2>
+        <Reveal>
+          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+            ¿Te suena familiar?
+          </h2>
+        </Reveal>
 
-        <div className="mt-14 grid gap-12 sm:grid-cols-3 sm:gap-8">
-          {points.map((point) => (
-            <div
-              key={point.text}
-              className="flex flex-col items-center gap-5 text-center"
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/60">
-                {point.icon}
+        <Reveal>
+          <div className="mt-14 grid gap-12 sm:grid-cols-3 sm:gap-8">
+            {points.map((point) => (
+              <div
+                key={point.text}
+                className="flex flex-col items-center gap-5 text-center"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/60">
+                  {point.icon}
+                </div>
+                <p className="text-base leading-relaxed text-negro/75">
+                  {point.text}
+                </p>
               </div>
-              <p className="text-base leading-relaxed text-negro/75">
-                {point.text}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <p className="mt-16 text-center text-2xl font-bold text-coral italic sm:text-3xl">
-          Para eso existe La Emperatriz.
-        </p>
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-3">
+            <DecorativeSvg
+              src="/elements/espiral-star.svg"
+              className="relative h-9 w-9 shrink-0 opacity-70 sm:h-11 sm:w-11"
+            />
+            <p className="text-center text-2xl font-bold text-coral italic sm:text-3xl">
+              Para eso existe La Emperatriz.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
