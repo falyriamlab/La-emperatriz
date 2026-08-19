@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage, type Language } from "@/lib/i18n/LanguageContext";
 
 // Fixed per-button labels: each one names the action in the language it
@@ -17,7 +18,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-morado-oscuro/10 bg-crema/85 px-6 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between py-2">
         <Image
-          src="/logo/logo-horizontal-morado.svg"
+          src={`${BASE_PATH}/logo/logo-horizontal-morado.svg`}
           alt={t.header.logoAlt}
           width={666}
           height={102}

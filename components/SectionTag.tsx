@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { BASE_PATH } from "@/lib/basePath";
 
 type SectionTagProps = {
   children: ReactNode;
@@ -18,7 +19,7 @@ export function SectionTag({ children }: SectionTagProps) {
   return (
     <span className="relative inline-flex items-center justify-center overflow-hidden rounded-full bg-morado-oscuro px-7 py-3">
       <Image
-        src="/elements/star-1.svg"
+        src={`${BASE_PATH}/elements/star-1.svg`}
         alt=""
         fill
         aria-hidden="true"

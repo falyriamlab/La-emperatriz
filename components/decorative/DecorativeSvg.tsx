@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/basePath";
 
 type DecorativeSvgProps = {
   /** Path under /public, e.g. "/elements/stamp.svg" */
@@ -31,7 +32,7 @@ export function DecorativeSvg({
 }: DecorativeSvgProps) {
   return (
     <div aria-hidden="true" className={`pointer-events-none select-none ${className}`}>
-      <Image src={src} alt="" width={width} height={height} className={imgClassName} />
+      <Image src={`${BASE_PATH}${src}`} alt="" width={width} height={height} className={imgClassName} />
     </div>
   );
 }

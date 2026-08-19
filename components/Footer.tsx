@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Footer() {
@@ -9,7 +10,7 @@ export function Footer() {
   return (
     <footer className="bg-crema px-6 py-10 text-center">
       <Image
-        src="/logo/logo-horizontal-morado.svg"
+        src={`${BASE_PATH}/logo/logo-horizontal-morado.svg`}
         alt=""
         aria-hidden="true"
         width={666}

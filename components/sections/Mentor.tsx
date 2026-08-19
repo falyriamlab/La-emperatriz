@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
+import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Mentor() {
@@ -31,7 +32,7 @@ export function Mentor() {
             />
             <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl">
               <Image
-                src="/elements/daniela.png"
+                src={`${BASE_PATH}/elements/daniela.png`}
                 alt={t.mentor.name}
                 fill
                 sizes="(min-width: 768px) 24rem, 100vw"
