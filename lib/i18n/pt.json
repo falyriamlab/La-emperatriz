@@ -1,0 +1,109 @@
+{
+  "header": { "logoAlt": "Puente — Consultoria cultural" },
+  "hero": {
+    "title": "A Imperatriz é a mentoria que todas nós precisamos.",
+    "subtitle": "Um processo de acompanhamento para que seu projeto cultural se encaminhe, germine e se expanda — a partir da sensibilidade, do prazer e da estrutura.",
+    "urgencyBadge": "Vagas de lançamento limitadas",
+    "ctaPrimary": "Começar meu processo",
+    "ctaSecondary": "Veja como funciona ↓"
+  },
+  "pain": {
+    "title": "Isso soa familiar?",
+    "items": [
+      "Você tem um projeto cultural que ama, mas não sabe como dar a ele uma estrutura que o sustente ao longo do tempo.",
+      "Sente que avança sozinha, sem um olhar externo que ajude a enxergar com clareza o próximo passo.",
+      "Você tem dificuldade em encontrar o equilíbrio entre a sensibilidade artística do seu projeto e a disciplina que ele precisa para crescer."
+    ],
+    "closing": "É para isso que existe A Imperatriz."
+  },
+  "whatIs": {
+    "title": "O que é A Imperatriz?",
+    "paragraph1": "É um processo vivo de acompanhamento estratégico para contribuir com o desenvolvimento orgânico do seu projeto cultural, a partir da sensibilidade, do prazer e da estrutura.",
+    "paragraph2": "Quando criamos a partir de um lugar coerente e alinhado com nosso propósito, de mãos dadas com uma guia e com uma comunidade que nos sustenta, o processo criativo se torna mais leve e se alinha com o norte do seu projeto.",
+    "pillars": [
+      { "title": "Sensibilidade", "desc": "Honramos a alma do seu projeto." },
+      { "title": "Prazer", "desc": "Criamos a partir da leveza, não da pressão." },
+      { "title": "Estrutura", "desc": "Damos forma estratégica à sua visão." }
+    ]
+  },
+  "whoFor": {
+    "title": "Para quem é esta mentoria?",
+    "yesTitle": "É para você se...",
+    "yesItems": [
+      "Você é uma criadora cultural ibero-americana que ama o que faz.",
+      "Tem um projeto cultural ou criativo em andamento, ou prestes a começar.",
+      "Busca um olhar estratégico que ajude a encaminhar e expandir o que está criando.",
+      "Quer avançar acompanhada, não sozinha."
+    ],
+    "noTitle": "Não é para você se...",
+    "noItems": [
+      "Busca uma fórmula genérica, sem personalização.",
+      "Não está disposta a se comprometer com um processo de 4 meses.",
+      "Espera resultados sem colocar seu próprio trabalho e reflexão no caminho."
+    ]
+  },
+  "howItWorks": {
+    "title": "Como funciona o processo?",
+    "subtitle": "Um acompanhamento simples, constante e focado no seu projeto.",
+    "steps": [
+      { "number": "01", "title": "Duração", "desc": "4 meses de acompanhamento contínuo, tempo suficiente para encaminhar seu projeto sem pressa." },
+      { "number": "02", "title": "Encontros", "desc": "2 sessões de trabalho por mês, focadas no seu processo e nos próximos passos." },
+      { "number": "03", "title": "Modalidade", "desc": "Acompanhamento 100% individual, personalizado ao seu projeto e ao seu ritmo." }
+    ],
+    "extras": "Cada sessão inclui resumo, gravação e material complementar (guias e modelos)."
+  },
+  "mentor": {
+    "title": "Sua guia neste processo",
+    "name": "Daniela Betancourt",
+    "role": "Fundadora da Puente · Gestora Cultural",
+    "bio": "Formada em Literatura Hispano-americana, com dois mestrados — em Gestão Cultural e em Cooperação Internacional e Políticas Públicas — e uma pós-graduação em Políticas Culturais Comunitárias. Tem 8 anos de experiência no setor cultural: no setor público de seu país, em organismos multilaterais, e acompanhando criadoras e criadores culturais no desenvolvimento de seus projetos.",
+    "mission": "Meu norte de vida é reivindicar a sensibilidade através da diversidade e da soberania cultural. Sonho com uma comunidade viva que nos ajude a nos sentir acompanhadas e sustentadas. Foi exatamente por isso que criei a Puente!"
+  },
+  "trust": {
+    "title": "Um caminho já percorrido",
+    "intro": "A Puente já acompanhou projetos culturais ibero-americanos em diferentes áreas e países. Este processo nasce dessa experiência real.",
+    "stats": [
+      { "value": "6", "label": "países acompanhados: Colômbia, Espanha, Brasil, França, Portugal e Chile." },
+      { "value": "Dança, teatro, música, artes visuais", "label": "disciplinas culturais acompanhadas." },
+      { "value": "8", "suffix": " anos", "label": "de experiência em gestão cultural." }
+    ],
+    "recognition": "Parte da Rede de Empreendedores e Empreendedoras da Comunidade de Madrid \"Madrid Emprende\" e do tecido de empreendimentos reconhecidos pelo \"Colombia nos une\"."
+  },
+  "pricing": {
+    "title": "Invista no seu processo",
+    "subtitle": "Vagas de lançamento limitadas.",
+    "monthlyLabel": "Pagamento mensal",
+    "monthlyDesc": "Pague mês a mês durante os 4 meses do processo.",
+    "uniqueLabel": "Pagamento único",
+    "uniqueBadge": "Economize",
+    "uniqueDesc": "Pague os 4 meses de uma só vez e economize em relação ao pagamento mensal.",
+    "includes": "4 meses de acompanhamento · 2 sessões por mês · Resumo e gravação de cada sessão · Material complementar (guias e modelos)",
+    "launchBadge": "Preço de lançamento válido até domingo, 10 de setembro — a partir de 11 de setembro o preço sobe.",
+    "cuposBadge": "Restam {disponibles} de {total} vagas",
+    "diasBadge": "Restam {dias} dias",
+    "ctaMonthly": "Começar com pagamento mensal",
+    "ctaUnique": "Começar com pagamento único",
+    "regularPriceAriaLabel": "Preço regular: {precio}"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": [
+      { "q": "O que acontece se eu não puder comparecer a uma sessão?", "a": "Escreva para nós e buscamos juntas a melhor forma de reagendar dentro do mês, para que você não perca seu espaço de acompanhamento." },
+      { "q": "Preciso já ter o projeto definido para começar?", "a": "Não. A Imperatriz também acompanha projetos em estágio inicial — o importante é que você tenha a intenção de encaminhá-lo com estrutura e sensibilidade." },
+      { "q": "Em que idioma são as sessões?", "a": "As sessões se adaptam ao seu idioma: espanhol ou português, de acordo com a sua preferência." }
+    ]
+  },
+  "finalCta": {
+    "eyebrow": "AINDA TEM DÚVIDAS?",
+    "title": "Vamos conversar antes de você decidir.",
+    "paragraph": "Às vezes o passo mais importante é o primeiro. Agende uma sessão semente gratuita e vamos conversar sobre o seu projeto — sem compromisso, só para vermos juntas se este é o momento e o processo certo para você.",
+    "cta": "Agendar sessão semente gratuita",
+    "note": "30 minutos · Sem custo · Com Daniela, fundadora da Puente.",
+    "brand": "Um processo da Puente · Consultoria Cultural"
+  },
+  "footer": {
+    "email": "somosesepuente@gmail.com",
+    "instagram": "@somosesepuente"
+  },
+  "languageToggle": { "es": "ES", "pt": "PT" }
+}

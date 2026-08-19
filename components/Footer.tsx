@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-crema px-6 py-10 text-center">
       <Image
@@ -12,8 +17,8 @@ export function Footer() {
         className="mx-auto h-6 w-auto"
       />
       <p className="mt-4 text-sm font-bold text-morado-oscuro">Puente</p>
-      <p className="mt-2 text-sm text-negro/60">somosesepuente@gmail.com</p>
-      <p className="mt-1 text-sm text-negro/60">@somosesepuente</p>
+      <p className="mt-2 text-sm text-negro/60">{t.footer.email}</p>
+      <p className="mt-1 text-sm text-negro/60">{t.footer.instagram}</p>
     </footer>
   );
 }

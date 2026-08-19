@@ -47,3 +47,18 @@ body {
     opacity: 1;
   }
 }
+
+/* components/sections/Hero.tsx: staggered load-in for the hero content.
+   Only ever applied via `motion-safe:`, so prefers-reduced-motion users
+   get the elements in their final state from first paint — no JS toggle
+   needed, same belt-and-suspenders philosophy as .reveal-init above. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

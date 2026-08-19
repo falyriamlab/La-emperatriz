@@ -1,33 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { MdAdd } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
-
-const faqs = [
-  {
-    q: "¿Cómo elijo entre individual o grupo?",
-    a: "El acompañamiento individual es 100% personalizado a tu proyecto y tu ritmo. El grupo personalizado (2 a 4 participantes) mantiene el enfoque en tu proyecto, pero suma la energía y el aprendizaje de acompañarte con otras creadoras culturales.",
-  },
-  {
-    q: "¿Cómo es el pago?",
-    a: "La inversión es mensual, durante los 4 meses del proceso.",
-  },
-  {
-    q: "¿Qué pasa si no puedo asistir a una sesión?",
-    a: "Escríbenos y buscamos juntas la mejor forma de reagendar dentro del mes, para que no pierdas tu espacio de acompañamiento.",
-  },
-  {
-    q: "¿Necesito tener el proyecto ya definido para empezar?",
-    a: "No. La Emperatriz también acompaña proyectos en etapa temprana — lo importante es que tengas la intención de encaminarlo con estructura y sensibilidad.",
-  },
-  {
-    q: "¿En qué idioma son las sesiones?",
-    a: "En español.",
-  },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function FAQ() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -37,17 +17,20 @@ export function FAQ() {
     >
       <DecorativeSvg
         src="/elements/star-ellipse-morado.svg"
-        className="absolute top-6 left-1/2 h-24 w-24 -translate-x-1/2 opacity-[0.12]"
+        width={500}
+        height={587}
+        className="absolute top-6 left-1/2 -translate-x-1/2 opacity-[0.12]"
+        imgClassName="h-24 w-auto"
       />
       <div className="relative mx-auto max-w-3xl">
         <Reveal>
           <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
-            Preguntas frecuentes
+            {t.faq.title}
           </h2>
         </Reveal>
 
         <Reveal className="mt-14">
-          {faqs.map((faq, index) => {
+          {t.faq.items.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div key={faq.q} className="border-b border-morado-oscuro/10">
@@ -62,11 +45,11 @@ export function FAQ() {
                   </span>
                   <span
                     aria-hidden
-                    className={`flex h-7 w-7 flex-none items-center justify-center text-2xl font-bold text-coral motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out ${
+                    className={`flex h-7 w-7 flex-none items-center justify-center text-coral motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out ${
                       isOpen ? "rotate-45" : "rotate-0"
                     }`}
                   >
-                    +
+                    <MdAdd className="h-5 w-5" />
                   </span>
                 </button>
                 <div

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Newsreader } from "next/font/google";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
 
 const aileron = localFont({
@@ -41,7 +42,7 @@ export default function RootLayout({
       className={`${aileron.variable} ${newsreader.variable} scroll-smooth antialiased`}
     >
       <body className="min-h-screen bg-crema text-negro font-sans">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

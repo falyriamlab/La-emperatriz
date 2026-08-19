@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { MdArrowForward } from "react-icons/md";
 
 type CTAButtonProps = {
   href: string;
@@ -10,37 +11,40 @@ type CTAButtonProps = {
   rel?: string;
 };
 
-// higherlifefoundation.org-style "icon square → pill" pattern, in Puente's
-// colors. Structure:
-//   1. an absolutely-positioned pill (accent bg) that grows from the square
-//      via scale-x (transform, not width/padding — GPU-accelerated), and
-//   2. a persistent accent-colored square with the arrow, always visible,
-//      so the button reads correctly even with no hover/JS/motion.
-// The whole hover behavior (pill growth, arrow shift, label recolor) is
-// motion-safe-only: under prefers-reduced-motion the button stays in its
-// resting state, where label-vs-page-background contrast is a comfortable
-// 6.8:1 on both surfaces. (The hover state's label-on-accent contrast is
-// coral/crema = 3.73:1 — fails AA for normal text, passes for large
-// text/UI components. That's the same coral+crema pairing already used
-// for every primary button on the site; not a new regression, but worth
-// flagging. amarillo/morado-oscuro on the dark surface passes at 4.64:1.)
-const SQUARE = "h-14 w-14";
-
+// Wipe-on-hover pattern: a solid resting background on the button itself,
+// covered on hover by an absolutely-positioned layer that scales in from
+// the left edge (transform-only, GPU-accelerated — never width/left).
+// Two arrows cross-fade via opacity + transform (never layout) instead of
+// one arrow sliding across the button.
+//
+// Reduced motion: the *state* classes (group-hover:scale-x-100,
+// group-hover:opacity-*, group-hover:text-*) are never gated behind
+// motion-safe:, so hover still does its job — only the `transition-*`
+// utilities are motion-safe-only. Under prefers-reduced-motion the browser
+// has no transition to animate, so hover snaps straight to its end state.
+//
+// Contrast: light-surface rest and dark-surface hover both land on the
+// same coral+crema pairing — 3.73:1. That fails AA for normal text (4.5:1)
+// but clears the "large text / UI component" threshold (3:1). Both other
+// pairings (light-hover: crema/morado-oscuro 6.81:1, dark-rest:
+// morado-oscuro/amarillo 4.65:1) pass AA normal-text. Pre-existing
+// trade-off carried over from the previous button design, not new here.
 const surfaceStyles: Record<
   NonNullable<CTAButtonProps["surface"]>,
-  { square: string; arrow: string; textDefault: string; textHover: string }
+  { restBg: string; wipeBg: string; text: string; textHover: string }
 > = {
   light: {
-    square: "bg-coral",
-    arrow: "text-crema",
-    textDefault: "text-morado-oscuro",
-    textHover: "motion-safe:group-hover:text-crema",
+    restBg: "bg-coral",
+    wipeBg: "bg-morado-oscuro",
+    text: "text-crema",
+    // Already crema on both rest and hover — no recolor needed.
+    textHover: "",
   },
   dark: {
-    square: "bg-amarillo",
-    arrow: "text-morado-oscuro",
-    textDefault: "text-crema",
-    textHover: "motion-safe:group-hover:text-morado-oscuro",
+    restBg: "bg-amarillo",
+    wipeBg: "bg-coral",
+    text: "text-morado-oscuro",
+    textHover: "group-hover:text-crema",
   },
 };
 
@@ -59,33 +63,35 @@ export function CTAButton({
       href={href}
       target={target}
       rel={rel}
-      className={`group relative inline-flex items-center gap-3 rounded-xl ${className}`}
+      className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`}
     >
-      {/* Growing pill: 0-width at rest, scales from the square to cover the
-          label on hover. transform-only so it's GPU-accelerated. */}
+      {/* Wipe layer: hidden at rest, covers the button on hover. */}
       <span
         aria-hidden="true"
-        className={`absolute inset-0 origin-left scale-x-0 rounded-xl motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-x-100 ${s.square}`}
+        className={`absolute inset-0 origin-left scale-x-0 rounded-[inherit] group-hover:scale-x-100 motion-safe:transition-transform motion-safe:duration-[350ms] motion-safe:ease-out ${s.wipeBg}`}
       />
 
-      {/* Persistent square + arrow — always visible, independent of hover. */}
+      {/* Arrow "reposo" — before the label, fades/slides out on hover. */}
       <span
-        className={`relative z-10 flex ${SQUARE} flex-none items-center justify-center rounded-xl ${s.square}`}
+        aria-hidden="true"
+        className={`relative z-10 flex items-center group-hover:-translate-x-1 group-hover:opacity-0 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text}`}
       >
-        <span
-          aria-hidden="true"
-          className={`motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:translate-x-1 ${s.arrow}`}
-        >
-          →
-        </span>
+        <MdArrowForward className="h-4 w-4" />
       </span>
 
-      {/* Label — no background of its own; sits on the page at rest, on the
-          expanded pill on hover, recoloring in sync to keep contrast. */}
+      {/* Label */}
       <span
-        className={`relative z-10 pr-5 text-base font-bold motion-safe:transition-colors motion-safe:duration-300 motion-safe:ease-out ${s.textDefault} ${s.textHover}`}
+        className={`relative z-10 text-base font-bold motion-safe:transition-colors motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
       >
         {children}
+      </span>
+
+      {/* Arrow "hover" — after the label, arrives sliding in from the left. */}
+      <span
+        aria-hidden="true"
+        className={`relative z-10 flex -translate-x-1 items-center opacity-0 group-hover:translate-x-0 group-hover:opacity-100 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text}`}
+      >
+        <MdArrowForward className="h-4 w-4" />
       </span>
     </a>
   );

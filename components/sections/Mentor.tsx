@@ -1,7 +1,13 @@
+"use client";
+
+import Image from "next/image";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Mentor() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="mentora"
@@ -10,7 +16,7 @@ export function Mentor() {
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
-            Tu guía en este proceso
+            {t.mentor.title}
           </h2>
         </Reveal>
 
@@ -18,40 +24,36 @@ export function Mentor() {
           <div className="relative mx-auto w-full max-w-sm">
             <DecorativeSvg
               src="/elements/hand-star.svg"
-              className="absolute -top-10 -right-10 z-0 hidden h-40 w-40 opacity-40 sm:block sm:h-48 sm:w-48"
+              width={500}
+              height={654}
+              className="absolute -top-10 -right-10 z-0 hidden opacity-40 sm:block"
+              imgClassName="h-40 w-auto sm:h-48"
             />
             <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl">
-              <div className="flex h-full w-full items-center justify-center bg-lila motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]">
-                <span className="text-sm font-bold tracking-[0.2em] text-crema">
-                  FOTO DANIELA
-                </span>
-              </div>
+              <Image
+                src="/elements/daniela.png"
+                alt={t.mentor.name}
+                fill
+                sizes="(min-width: 768px) 24rem, 100vw"
+                className="object-contain object-bottom motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]"
+              />
             </div>
           </div>
 
           <div>
             <h3 className="text-2xl font-extrabold text-morado-oscuro">
-              Daniela Betancourt
+              {t.mentor.name}
             </h3>
             <p className="mt-1 text-sm font-semibold tracking-wide text-coral uppercase">
-              Fundadora de Puente · Gestora Cultural
+              {t.mentor.role}
             </p>
 
             <p className="mt-6 text-base leading-relaxed text-negro/75">
-              Profesional en Literatura hispanoamericana, con dos másters
-              —en Gestión Cultural y en Cooperación Internacional y
-              Políticas Públicas— y un posgrado en Políticas Culturales
-              Comunitarias. Cuenta con 8 años de experiencia en el sector
-              cultural: en el sector público de su país, en organismos
-              multilaterales, y acompañando a creadoras y creadores
-              culturales a desarrollar sus proyectos.
+              {t.mentor.bio}
             </p>
 
             <blockquote className="mt-8 border-l-4 border-coral pl-6 text-xl leading-relaxed font-semibold text-morado-oscuro italic">
-              &ldquo;Mi norte de vida es reivindicar la sensibilidad a
-              través de la diversidad y la soberanía cultural. Sueño con
-              una comunidad viva que nos ayude a sentirnos acompañadas y
-              sostenidas. Justo por eso creé Puente.&rdquo;
+              &ldquo;{t.mentor.mission}&rdquo;
             </blockquote>
           </div>
         </Reveal>

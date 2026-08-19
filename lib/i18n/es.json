@@ -1,0 +1,109 @@
+{
+  "header": { "logoAlt": "Puente — Consultora cultural" },
+  "hero": {
+    "title": "La Emperatriz es la mentoría que necesitamos todas.",
+    "subtitle": "Un proceso de acompañamiento para que tu proyecto cultural se encamine, germine y se expanda — desde la sensibilidad, el gozo y la estructura.",
+    "urgencyBadge": "Cupos de lanzamiento limitados",
+    "ctaPrimary": "Comenzar mi proceso",
+    "ctaSecondary": "Conoce cómo funciona ↓"
+  },
+  "pain": {
+    "title": "¿Te suena familiar?",
+    "items": [
+      "Tienes un proyecto cultural que amas, pero no sabes cómo darle una estructura que lo sostenga en el tiempo.",
+      "Sientes que avanzas sola, sin una mirada externa que te ayude a ver con claridad el siguiente paso.",
+      "Te cuesta encontrar el balance entre la sensibilidad artística de tu proyecto y la disciplina que necesita para crecer."
+    ],
+    "closing": "Para eso existe La Emperatriz."
+  },
+  "whatIs": {
+    "title": "¿Qué es La Emperatriz?",
+    "paragraph1": "Es un proceso vivo de acompañamiento estratégico para contribuir al desarrollo orgánico de tu proyecto cultural, desde la sensibilidad, el gozo y la estructura.",
+    "paragraph2": "Cuando creamos desde un lugar coherente y alineado con nuestro propósito, de la mano de una guía y con una comunidad que nos sostiene, el proceso creativo se aliviana y se alinea con el norte de tu proyecto.",
+    "pillars": [
+      { "title": "Sensibilidad", "desc": "Honramos el alma de tu proyecto." },
+      { "title": "Gozo", "desc": "Creamos desde la liviandad, no desde la presión." },
+      { "title": "Estructura", "desc": "Le damos forma estratégica a tu visión." }
+    ]
+  },
+  "whoFor": {
+    "title": "¿Para quién es esta mentoría?",
+    "yesTitle": "Es para ti si...",
+    "yesItems": [
+      "Eres una creadora cultural iberoamericana que ama lo que hace.",
+      "Tienes un proyecto cultural o creativo en marcha, o a punto de arrancar.",
+      "Buscas una mirada estratégica que te ayude a encaminar y expandir lo que estás creando.",
+      "Quieres avanzar acompañada, no sola."
+    ],
+    "noTitle": "No es para ti si...",
+    "noItems": [
+      "Buscas una fórmula genérica sin personalización.",
+      "No estás dispuesta a comprometerte con un proceso de 4 meses.",
+      "Esperas resultados sin poner tu propio trabajo y reflexión en el camino."
+    ]
+  },
+  "howItWorks": {
+    "title": "¿Cómo funciona el proceso?",
+    "subtitle": "Un acompañamiento simple, constante y enfocado en tu proyecto.",
+    "steps": [
+      { "number": "01", "title": "Duración", "desc": "4 meses de acompañamiento continuo, tiempo suficiente para encaminar tu proyecto sin prisa." },
+      { "number": "02", "title": "Encuentros", "desc": "2 sesiones de trabajo al mes, enfocadas en tu proceso y tus próximos pasos." },
+      { "number": "03", "title": "Modalidad", "desc": "Acompañamiento 100% individual, personalizado a tu proyecto y tu ritmo." }
+    ],
+    "extras": "Cada sesión incluye resumen, grabación y material complementario (guías y plantillas)."
+  },
+  "mentor": {
+    "title": "Tu guía en este proceso",
+    "name": "Daniela Betancourt",
+    "role": "Fundadora de Puente · Gestora Cultural",
+    "bio": "Profesional en Literatura hispanoamericana, con dos másters —en Gestión Cultural y en Cooperación Internacional y Políticas Públicas— y un posgrado en Políticas Culturales Comunitarias. Cuenta con 8 años de experiencia en el sector cultural: en el sector público de su país, en organismos multilaterales, y acompañando a creadoras y creadores culturales a desarrollar sus proyectos.",
+    "mission": "Mi norte de vida es reivindicar la sensibilidad a través de la diversidad y la soberanía cultural. Sueño con una comunidad viva que nos ayude a sentirnos acompañadas y sostenidas. ¡Justo por eso creé Puente!"
+  },
+  "trust": {
+    "title": "Un camino ya recorrido",
+    "intro": "Puente ha acompañado proyectos culturales iberoamericanos en distintos ámbitos y países. Este proceso nace de esa experiencia real.",
+    "stats": [
+      { "value": "6", "label": "países acompañados: Colombia, España, Brasil, Francia, Portugal y Chile." },
+      { "value": "Danza, teatro, música, artes visuales", "label": "disciplinas culturales acompañadas." },
+      { "value": "8", "suffix": " años", "label": "de experiencia en gestión cultural." }
+    ],
+    "recognition": "Parte de la Red de Emprendedores y Emprendedoras de la Comunidad de Madrid \"Madrid Emprende\" y del tejido de emprendimientos reconocidos por \"Colombia nos une\"."
+  },
+  "pricing": {
+    "title": "Invierte en tu proceso",
+    "subtitle": "Cupos de lanzamiento limitados.",
+    "monthlyLabel": "Pago mensual",
+    "monthlyDesc": "Paga mes a mes durante los 4 meses del proceso.",
+    "uniqueLabel": "Pago único",
+    "uniqueBadge": "Ahorra",
+    "uniqueDesc": "Paga los 4 meses de una sola vez y ahorra frente al pago mensual.",
+    "includes": "4 meses de acompañamiento · 2 sesiones al mes · Resumen y grabación de cada sesión · Material complementario (guías y plantillas)",
+    "launchBadge": "Precio de lanzamiento válido hasta el domingo 10 de septiembre — desde el 11 de septiembre el precio sube.",
+    "cuposBadge": "Quedan {disponibles} de {total} cupos",
+    "diasBadge": "Quedan {dias} días",
+    "ctaMonthly": "Comenzar con pago mensual",
+    "ctaUnique": "Comenzar con pago único",
+    "regularPriceAriaLabel": "Precio regular: {precio}"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "items": [
+      { "q": "¿Qué pasa si no puedo asistir a una sesión?", "a": "Escríbenos y buscamos juntas la mejor forma de reagendar dentro del mes, para que no pierdas tu espacio de acompañamiento." },
+      { "q": "¿Necesito tener el proyecto ya definido para empezar?", "a": "No. La Emperatriz también acompaña proyectos en etapa temprana — lo importante es que tengas la intención de encaminarlo con estructura y sensibilidad." },
+      { "q": "¿En qué idioma son las sesiones?", "a": "Las sesiones se adaptan a tu idioma: español o portugués, según tu preferencia." }
+    ]
+  },
+  "finalCta": {
+    "eyebrow": "¿AÚN TIENES DUDAS?",
+    "title": "Hablemos antes de que decidas.",
+    "paragraph": "A veces el paso más grande es el primero. Agenda una sesión semilla gratuita y conversemos sobre tu proyecto — sin compromiso, solo para ver juntas si este es el momento y el proceso correcto para ti.",
+    "cta": "Agendar sesión semilla gratis",
+    "note": "30 minutos · Sin costo · Con Daniela, fundadora de Puente.",
+    "brand": "Un proceso de Puente · Consultora Cultural"
+  },
+  "footer": {
+    "email": "somosesepuente@gmail.com",
+    "instagram": "@somosesepuente"
+  },
+  "languageToggle": { "es": "ES", "pt": "PT" }
+}

@@ -1,3 +1,4 @@
+import { Header } from "@/components/Header";
 import { Hero } from "@/components/sections/Hero";
 import { Pain } from "@/components/sections/Pain";
 import { WhatIs } from "@/components/sections/WhatIs";
@@ -13,6 +14,7 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      <Header />
       <Hero />
       <Pain />
       <WhatIs />
