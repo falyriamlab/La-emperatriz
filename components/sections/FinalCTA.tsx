@@ -2,9 +2,8 @@
 
 import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
+import { BOOKING_LINK } from "@/lib/links";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-
-const BOOKING_LINK = "https://calendar.app.google/Ydjzsyy7F68ABgLcA";
 
 export function FinalCTA() {
   const { t } = useLanguage();
@@ -12,7 +11,7 @@ export function FinalCTA() {
   return (
     <section
       id="cta-final"
-      className="relative overflow-hidden bg-morado-oscuro px-6 py-24 sm:py-32"
+      className="relative overflow-hidden rounded-b-[2rem] bg-morado-oscuro px-6 py-24 sm:rounded-b-[3rem] sm:py-32 lg:rounded-b-[4rem]"
     >
       <DecorativeSvg
         src="/elements/galaxy.svg"

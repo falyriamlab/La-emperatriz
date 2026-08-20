@@ -50,13 +50,13 @@
       { "number": "02", "title": "Encuentros", "desc": "2 sesiones de trabajo al mes, enfocadas en tu proceso y tus próximos pasos." },
       { "number": "03", "title": "Modalidad", "desc": "Acompañamiento 100% individual, personalizado a tu proyecto y tu ritmo." }
     ],
-    "extras": "Cada sesión incluye resumen, grabación y material complementario (guías y plantillas)."
+    "extras": "Las sesiones incluyen resumen, grabación y material complementario (guías y plantillas)."
   },
   "mentor": {
     "title": "Tu guía en este proceso",
     "name": "Daniela Betancourt",
     "role": "Fundadora de Puente · Gestora Cultural",
-    "bio": "Profesional en Literatura hispanoamericana, con dos másters —en Gestión Cultural y en Cooperación Internacional y Políticas Públicas— y un posgrado en Políticas Culturales Comunitarias. Cuenta con 8 años de experiencia en el sector cultural: en el sector público de su país, en organismos multilaterales, y acompañando a creadoras y creadores culturales a desarrollar sus proyectos.",
+    "bio": "Especialista en Gestión cultural, Políticas culturales y Cooperación internacional con doble titulación de Máster. Amplia trayectoria en el diseño, la cofacilitación y el análisis de estrategias institucionales de cultura y desarrollo sostenible para organismos internacionales (SEGIB) y Ministerios de Cultura de América Latina. Emprendedora cultural y fundadora de Puente, una consultora cultural que acompaña a creadoras, organizaciones e instituciones culturales iberoamericanas a desarrollar sus proyectos, desde una mirada estratégica y sensible. Soy experta en metodologías participativas, mediación comunitaria y gobernanza cultural en entornos multilingües (español, portugués, francés e inglés).",
     "mission": "Mi norte de vida es reivindicar la sensibilidad a través de la diversidad y la soberanía cultural. Sueño con una comunidad viva que nos ayude a sentirnos acompañadas y sostenidas. ¡Justo por eso creé Puente!"
   },
   "trust": {
@@ -90,7 +90,8 @@
     "items": [
       { "q": "¿Qué pasa si no puedo asistir a una sesión?", "a": "Escríbenos y buscamos juntas la mejor forma de reagendar dentro del mes, para que no pierdas tu espacio de acompañamiento." },
       { "q": "¿Necesito tener el proyecto ya definido para empezar?", "a": "No. La Emperatriz también acompaña proyectos en etapa temprana — lo importante es que tengas la intención de encaminarlo con estructura y sensibilidad." },
-      { "q": "¿En qué idioma son las sesiones?", "a": "Las sesiones se adaptan a tu idioma: español o portugués, según tu preferencia." }
+      { "q": "¿En qué idioma son las sesiones?", "a": "Las sesiones se adaptan a tu idioma: español o portugués, según tu preferencia." },
+      { "q": "¿La Emperatriz es solo para mujeres?", "a": "No, está pensada especialmente para personas que se identifican como mujeres, pero está abierta a todas las personas que quieran desarrollar su proyecto desde un lugar sensible." }
     ]
   },
   "finalCta": {
@@ -102,8 +103,20 @@
     "brand": "Un proceso de Puente · Consultora Cultural"
   },
   "footer": {
-    "email": "somosesepuente@gmail.com",
-    "instagram": "@somosesepuente"
+    "email": "hola@somospuentecultural.com",
+    "website": "www.somospuentecultural.com",
+    "websiteHref": "https://www.somospuentecultural.com",
+    "instagram": "@somosesepuente",
+    "instagramHref": "https://instagram.com/somosesepuente",
+    "copyEmail": "Copiar correo",
+    "emailCopied": "¡Copiado!",
+    "copyEmailAriaLabel": "Copiar dirección de correo hola@somospuentecultural.com",
+    "brand": "Puente · Consultora Cultural",
+    "tagline": ["Consultora cultural,", "para creadoras iberoamericanas."],
+    "contactHeading": "CONTACTO",
+    "followHeading": "SÍGUENOS",
+    "copyright": "© 2026 Puente. Todos los derechos reservados.",
+    "ctaBook": "Agendar sesión gratis"
   },
   "languageToggle": { "es": "ES", "pt": "PT" }
 }

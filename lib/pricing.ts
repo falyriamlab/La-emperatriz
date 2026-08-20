@@ -23,7 +23,7 @@ export const FECHA_CAMBIO_PRECIO = "2026-09-11"; // lunes, hora local España
 const FECHA_CAMBIO_PRECIO_UTC = "2026-09-10T22:00:00Z";
 
 export const PRECIO_LANZAMIENTO = { mensual: 88, unico: 340 };
-export const PRECIO_REGULAR = { mensual: 155, unico: 550 };
+export const PRECIO_REGULAR = { mensual: 150, unico: 555 };
 
 // Each link is tied to a Stripe price that updates on Stripe's side when
 // the launch window ends — same link for lanzamiento/regular within a

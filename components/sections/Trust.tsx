@@ -52,6 +52,7 @@ export function Trust() {
                   ) : (
                     <RotatingWords
                       words={stat.value.split(", ")}
+                      intervalMs={3500}
                       className={VALUE_CLASS}
                     />
                   )}
