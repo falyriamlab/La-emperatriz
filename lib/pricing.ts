@@ -66,3 +66,12 @@ export function getPricingActual(now: Date = new Date()): PricingInfo {
 
   return { ...precios, esLanzamiento, diasRestantes };
 }
+
+/**
+ * % saved by paying "pago único" up front vs. 4 months of "pago mensual",
+ * against whichever pricing (lanzamiento or regular) is currently active —
+ * never hardcoded, so it stays correct if the underlying prices change.
+ */
+export function getSavingsPercent({ mensual, unico }: PricingInfo): number {
+  return Math.round(((mensual * 4 - unico) / (mensual * 4)) * 100);
+}

@@ -25,28 +25,35 @@ export function Header() {
           className="h-5 w-auto sm:h-6"
         />
 
-        <div className="flex items-center">
-          {(["es", "pt"] as const).map((lang, i) => (
-            <span key={lang} className="flex items-center">
-              {i > 0 && (
-                <span aria-hidden className="text-sm text-negro/30">
-                  ·
-                </span>
-              )}
-              <button
-                type="button"
-                onClick={() => setLanguage(lang)}
-                aria-label={ARIA_LABELS[lang]}
-                aria-current={language === lang ? "true" : undefined}
-                className={`flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
-                  language === lang
-                    ? "text-morado-oscuro"
-                    : "text-negro/35 hover:text-negro/60"
-                }`}
-              >
-                {t.languageToggle[lang]}
-              </button>
-            </span>
+        {/* Pill switch: the thumb is a purely decorative absolutely-positioned
+            layer sliding under the buttons — the buttons themselves stay
+            real, independent <button>s (aria-label + aria-current untouched)
+            so screen readers/keyboard nav see the same semantics as before,
+            just a different skin. motion-safe on the thumb's transition
+            only: under prefers-reduced-motion it still jumps straight to
+            the active side, no slide. */}
+        <div className="relative inline-flex items-center rounded-full bg-morado-oscuro/10 p-1">
+          <span
+            aria-hidden="true"
+            className={`absolute inset-y-1 left-1 h-11 w-11 rounded-full bg-morado-oscuro motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out ${
+              language === "pt" ? "translate-x-11" : "translate-x-0"
+            }`}
+          />
+          {(["es", "pt"] as const).map((lang) => (
+            <button
+              key={lang}
+              type="button"
+              onClick={() => setLanguage(lang)}
+              aria-label={ARIA_LABELS[lang]}
+              aria-current={language === lang ? "true" : undefined}
+              className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
+                language === lang
+                  ? "text-crema"
+                  : "text-negro/40 hover:text-negro/60"
+              }`}
+            >
+              {t.languageToggle[lang]}
+            </button>
           ))}
         </div>
       </div>

@@ -17,6 +17,15 @@ type CTAButtonProps = {
 // Two arrows cross-fade via opacity + transform (never layout) instead of
 // one arrow sliding across the button.
 //
+// Both arrows live stacked in a single grid cell (one reserved icon slot,
+// not two flanking the label): reserving a slot on *both* sides of the
+// label — even with the inactive side at opacity-0 — leaves a "dead" gap
+// on whichever side isn't currently visible, since opacity doesn't free
+// the layout space. That dead gap is invisible but still pushes the
+// visible icon+label cluster off-center within the button's symmetric
+// padding. A single slot means the flex content IS the visible content,
+// so centering falls out of the symmetric px-6 padding for free.
+//
 // Reduced motion: the *state* classes (group-hover:scale-x-100,
 // group-hover:opacity-*, group-hover:text-*) are never gated behind
 // motion-safe:, so hover still does its job — only the `transition-*`
@@ -63,7 +72,7 @@ export function CTAButton({
       href={href}
       target={target}
       rel={rel}
-      className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`}
+      className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`}
     >
       {/* Wipe layer: hidden at rest, covers the button on hover. */}
       <span
@@ -71,12 +80,20 @@ export function CTAButton({
         className={`absolute inset-0 origin-left scale-x-0 rounded-[inherit] group-hover:scale-x-100 motion-safe:transition-transform motion-safe:duration-[350ms] motion-safe:ease-out ${s.wipeBg}`}
       />
 
-      {/* Arrow "reposo" — before the label, fades/slides out on hover. */}
-      <span
-        aria-hidden="true"
-        className={`relative z-10 flex items-center group-hover:-translate-x-1 group-hover:opacity-0 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text}`}
-      >
-        <MdArrowForward className="h-4 w-4" />
+      {/* Icon slot: a single h-4 w-4 reserved space, both arrow states
+          stacked in the same grid cell and cross-fading in place — see
+          the centering note above. */}
+      <span className="relative z-10 grid h-4 w-4 place-items-center">
+        {/* Arrow "reposo" — visible at rest, fades/slides out on hover. */}
+        <MdArrowForward
+          aria-hidden="true"
+          className={`col-start-1 row-start-1 h-4 w-4 group-hover:-translate-x-1 group-hover:opacity-0 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
+        />
+        {/* Arrow "hover" — arrives sliding in from the left, replacing it. */}
+        <MdArrowForward
+          aria-hidden="true"
+          className={`col-start-1 row-start-1 h-4 w-4 translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
+        />
       </span>
 
       {/* Label */}
@@ -84,14 +101,6 @@ export function CTAButton({
         className={`relative z-10 text-base font-bold motion-safe:transition-colors motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
       >
         {children}
-      </span>
-
-      {/* Arrow "hover" — after the label, arrives sliding in from the left. */}
-      <span
-        aria-hidden="true"
-        className={`relative z-10 flex -translate-x-1 items-center opacity-0 group-hover:translate-x-0 group-hover:opacity-100 motion-safe:transition-[opacity,transform] motion-safe:duration-[350ms] motion-safe:ease-out ${s.text}`}
-      >
-        <MdArrowForward className="h-4 w-4" />
       </span>
     </a>
   );

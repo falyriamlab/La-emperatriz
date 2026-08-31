@@ -5,7 +5,7 @@
     "subtitle": "Un proceso de acompañamiento para que tu proyecto cultural se encamine, germine y se expanda — desde la sensibilidad, el gozo y la estructura.",
     "urgencyBadge": "Cupos de lanzamiento limitados",
     "ctaPrimary": "Comenzar mi proceso",
-    "ctaSecondary": "Conoce cómo funciona ↓"
+    "ctaSecondary": "Conoce cómo funciona"
   },
   "pain": {
     "title": "¿Te suena familiar?",
@@ -64,7 +64,7 @@
     "intro": "Puente ha acompañado proyectos culturales iberoamericanos en distintos ámbitos y países. Este proceso nace de esa experiencia real.",
     "stats": [
       { "value": "6", "label": "países acompañados: Colombia, España, Brasil, Francia, Portugal y Chile." },
-      { "value": "Danza, teatro, música, artes visuales", "label": "disciplinas culturales acompañadas." },
+      { "value": "Danza, Teatro, Música, Artes visuales", "label": "disciplinas culturales acompañadas." },
       { "value": "8", "suffix": " años", "label": "de experiencia en gestión cultural." }
     ],
     "recognition": "Parte de la Red de Emprendedores y Emprendedoras de la Comunidad de Madrid \"Madrid Emprende\" y del tejido de emprendimientos reconocidos por \"Colombia nos une\"."
@@ -75,7 +75,7 @@
     "monthlyLabel": "Pago mensual",
     "monthlyDesc": "Paga mes a mes durante los 4 meses del proceso.",
     "uniqueLabel": "Pago único",
-    "uniqueBadge": "Ahorra",
+    "savingsBadge": "Ahorra {percent}%",
     "uniqueDesc": "Paga los 4 meses de una sola vez y ahorra frente al pago mensual.",
     "includes": "4 meses de acompañamiento · 2 sesiones al mes · Resumen y grabación de cada sesión · Material complementario (guías y plantillas)",
     "launchBadge": "Precio de lanzamiento válido hasta el domingo 10 de septiembre — desde el 11 de septiembre el precio sube.",

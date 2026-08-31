@@ -2,6 +2,7 @@
 
 import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
+import { ChevronDown } from "@/components/icons/ChevronDown";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Hero() {
@@ -51,9 +52,10 @@ export function Hero() {
           </CTAButton>
           <a
             href="#como-funciona"
-            className="text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline"
           >
             {t.hero.ctaSecondary}
+            <ChevronDown className="h-[1em] w-[1em]" />
           </a>
         </div>
       </div>

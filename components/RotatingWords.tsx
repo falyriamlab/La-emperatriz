@@ -47,7 +47,7 @@ export function RotatingWords({
       <span
         key={index}
         aria-hidden="true"
-        className="inline-block motion-safe:[animation:fade-in_0.4s_ease-out]"
+        className="inline-block whitespace-nowrap motion-safe:[animation:fade-in_0.4s_ease-out]"
       >
         {words[index]}
       </span>

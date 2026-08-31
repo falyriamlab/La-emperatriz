@@ -30,7 +30,7 @@ export function Mentor() {
               className="absolute -top-10 -right-10 z-0 hidden opacity-40 sm:block"
               imgClassName="h-40 w-auto sm:h-48"
             />
-            <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl">
+            <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl mentor-photo-fade">
               <Image
                 src={`${BASE_PATH}/elements/daniela.png`}
                 alt={t.mentor.name}

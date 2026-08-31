@@ -29,7 +29,7 @@ export function FinalCTA() {
       />
 
       <div className="relative mx-auto flex max-w-2xl flex-col items-center text-center">
-        <span className="text-sm font-bold tracking-[0.2em] text-amarillo">
+        <span className="text-base font-extrabold tracking-[0.22em] text-amarillo">
           {t.finalCta.eyebrow}
         </span>
 

@@ -38,6 +38,27 @@ body {
   }
 }
 
+/* components/sections/Mentor.tsx: fades Daniela's photo into the section
+   background instead of a hard rectangular crop. Anchored lower/center
+   (not a symmetric vignette) because the photo itself is object-bottom —
+   the visible content sits toward the bottom of its box, so the fade
+   needs to soften the left/right/bottom edges where her silhouette
+   actually touches the frame, not the empty space above her head. */
+.mentor-photo-fade {
+  mask-image: radial-gradient(
+    ellipse 78% 92% at 50% 68%,
+    black 58%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 92% at 50% 68%,
+    black 58%,
+    transparent 100%
+  );
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
 /* components/RotatingWords.tsx: fade-in for each word as it swaps in. */
 @keyframes fade-in {
   from {

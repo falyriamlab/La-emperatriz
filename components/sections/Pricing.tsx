@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import {
   getPricingActual,
+  getSavingsPercent,
   PRECIO_LANZAMIENTO,
   PRECIO_REGULAR,
   STRIPE_LINKS,
@@ -57,6 +58,7 @@ export function Pricing() {
   const linkUnico = pricing.esLanzamiento
     ? STRIPE_LINKS.lanzamientoUnico
     : STRIPE_LINKS.regularUnico;
+  const savingsPercent = getSavingsPercent(pricing);
 
   return (
     <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
@@ -138,8 +140,8 @@ export function Pricing() {
 
             {/* Pago único */}
             <div className="relative flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm">
-              <span className="absolute -top-3 right-8 rounded-full bg-amarillo px-3 py-1 text-xs font-bold text-morado-oscuro">
-                {t.pricing.uniqueBadge}
+              <span className="absolute -top-4 right-6 rounded-full border-2 border-crema bg-amarillo px-4 py-1.5 text-sm font-extrabold text-morado-oscuro shadow-sm">
+                {interpolate(t.pricing.savingsBadge, { percent: savingsPercent })}
               </span>
               <h3 className="text-xl font-bold text-morado-oscuro">
                 {t.pricing.uniqueLabel}
