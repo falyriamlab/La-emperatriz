@@ -33,8 +33,13 @@ jobs:
       # Custom domain (public/CNAME) serves the site at its own root, not
       # at /La-emperatriz — so NEXT_PUBLIC_BASE_PATH stays unset here now,
       # same as local dev/build.
+      # NEXT_PUBLIC_LEADS_ENDPOINT (contact form destination, see
+      # lib/leads.ts) is inlined at build time — set it as a repository
+      # variable. If unset, the form reports a send error in production.
       - name: Build (static export)
         run: npm run build
+        env:
+          NEXT_PUBLIC_LEADS_ENDPOINT: ${{ vars.NEXT_PUBLIC_LEADS_ENDPOINT }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

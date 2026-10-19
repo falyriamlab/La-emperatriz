@@ -94,6 +94,42 @@
       { "q": "¿La Emperatriz es solo para mujeres?", "a": "No, está pensada especialmente para personas que se identifican como mujeres, pero está abierta a todas las personas que quieran desarrollar su proyecto desde un lugar sensible." }
     ]
   },
+  "contactForm": {
+    "eyebrow": "COMENZAR MI PROCESO",
+    "title": "Cuéntanos sobre tu proyecto",
+    "subtitle": "Déjanos tus datos y te escribiremos para conversar sobre tu proceso. Sin compromiso.",
+    "fields": {
+      "name": { "label": "Nombre", "placeholder": "¿Cómo te llamas?" },
+      "email": { "label": "Correo electrónico", "placeholder": "tucorreo@ejemplo.com" },
+      "phone": { "label": "Teléfono o WhatsApp", "placeholder": "+34 600 000 000", "hint": "Incluye el prefijo de tu país." },
+      "projectType": {
+        "label": "Tipo de proyecto",
+        "options": { "escenicas": "Artes escénicas", "musica": "Música", "visuales": "Artes visuales", "interdisciplinar": "Interdisciplinar", "otro": "Otro" }
+      },
+      "budget": {
+        "label": "Inversión mensual",
+        "hint": "Un rango aproximado nos ayuda a orientar mejor la conversación.",
+        "options": { "lt100": "Menos de 100 €", "r100_150": "100 € – 150 €", "r150_250": "150 € – 250 €", "gt250": "Más de 250 €" }
+      }
+    },
+    "consent": { "text": "Acepto que Puente trate mis datos para contactarme sobre este proceso.", "linkLabel": "Política de privacidad" },
+    "submit": "Enviar mis datos",
+    "sending": "Enviando…",
+    "errors": {
+      "required": "Este campo es obligatorio.",
+      "email": "Ingresa un correo válido.",
+      "phone": "Ingresa un teléfono válido, con prefijo (ej. +34).",
+      "choose": "Elige una opción.",
+      "consent": "Necesitamos tu consentimiento para continuar.",
+      "submit": "No pudimos enviar tus datos. Inténtalo de nuevo o escríbenos a hola@somospuentecultural.com.",
+      "summary": "Revisa los campos marcados para continuar."
+    },
+    "success": {
+      "title": "¡Gracias! Recibimos tus datos.",
+      "body": "Te escribiremos pronto. Si prefieres no esperar, agenda ahora tu sesión semilla gratis.",
+      "cta": "Agendar sesión semilla gratis"
+    }
+  },
   "finalCta": {
     "eyebrow": "¿AÚN TIENES DUDAS?",
     "title": "Hablemos antes de que decidas.",

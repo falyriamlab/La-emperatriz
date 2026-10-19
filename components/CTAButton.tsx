@@ -1,15 +1,34 @@
 import type { ReactNode } from "react";
 import { MdArrowForward } from "react-icons/md";
 
-type CTAButtonProps = {
-  href: string;
+type CTAButtonBaseProps = {
   children: ReactNode;
   /** Which section background this sits on — picks the accent/text pairing. */
   surface?: "light" | "dark";
   className?: string;
+};
+
+// Two render modes sharing one look: a link (every existing use — pass
+// `href`) or a real <button> for forms (omit `href`, pass `type`). The
+// link branch renders exactly the same markup it always has; button-only
+// classes are appended solely in the button branch.
+type CTAButtonLinkProps = CTAButtonBaseProps & {
+  href: string;
   target?: string;
   rel?: string;
+  type?: never;
+  disabled?: never;
 };
+
+type CTAButtonButtonProps = CTAButtonBaseProps & {
+  href?: never;
+  target?: never;
+  rel?: never;
+  type: "submit" | "button";
+  disabled?: boolean;
+};
+
+type CTAButtonProps = CTAButtonLinkProps | CTAButtonButtonProps;
 
 // Wipe-on-hover pattern: a solid resting background on the button itself,
 // covered on hover by an absolutely-positioned layer that scales in from
@@ -57,23 +76,13 @@ const surfaceStyles: Record<
   },
 };
 
-export function CTAButton({
-  href,
-  children,
-  surface = "light",
-  className = "",
-  target,
-  rel,
-}: CTAButtonProps) {
+export function CTAButton(props: CTAButtonProps) {
+  const { children, surface = "light", className = "" } = props;
   const s = surfaceStyles[surface];
+  const rootClassName = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`;
 
-  return (
-    <a
-      href={href}
-      target={target}
-      rel={rel}
-      className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`}
-    >
+  const content = (
+    <>
       {/* Wipe layer: hidden at rest, covers the button on hover. */}
       <span
         aria-hidden="true"
@@ -102,6 +111,31 @@ export function CTAButton({
       >
         {children}
       </span>
+    </>
+  );
+
+  if (props.href === undefined) {
+    // Disabled (e.g. while a form is sending): pointer-events-none freezes
+    // the hover wipe so the button doesn't look clickable mid-request.
+    return (
+      <button
+        type={props.type}
+        disabled={props.disabled}
+        className={`${rootClassName} cursor-pointer disabled:pointer-events-none disabled:opacity-80`}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <a
+      href={props.href}
+      target={props.target}
+      rel={props.rel}
+      className={rootClassName}
+    >
+      {content}
     </a>
   );
 }

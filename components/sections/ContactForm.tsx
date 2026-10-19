@@ -1,0 +1,440 @@
+"use client";
+
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FocusEvent,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import { MdCheck, MdErrorOutline } from "react-icons/md";
+import { CTAButton } from "@/components/CTAButton";
+import { Reveal } from "@/components/Reveal";
+import { SectionTag } from "@/components/SectionTag";
+import { BOOKING_LINK } from "@/lib/links";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { submitLead, type BudgetKey, type ProjectTypeKey } from "@/lib/leads";
+
+// ── Config ────────────────────────────────────────────────────────────────
+const FIELD_REQUIRED = { name: true, email: true, phone: true, projectType: true, budget: true };
+const PRIVACY_POLICY_URL = ""; // TODO: URL de la política de privacidad (pendiente)
+// ──────────────────────────────────────────────────────────────────────────
+
+// Option order on screen. These keys are what gets submitted; labels are
+// looked up in the dictionary (never send the translated label).
+const PROJECT_TYPES: ProjectTypeKey[] = ["escenicas", "musica", "visuales", "interdisciplinar", "otro"];
+const BUDGETS: BudgetKey[] = ["lt100", "r100_150", "r150_250", "gt250"];
+
+type Field = keyof typeof FIELD_REQUIRED;
+type ValidatedField = Field | "consent";
+// Errors are stored as dictionary keys, not strings, so switching ES↔PT
+// re-translates any message already on screen.
+type ErrorKey = "required" | "email" | "phone" | "choose" | "consent";
+type Errors = Partial<Record<ValidatedField, ErrorKey>>;
+type Status = "idle" | "sending" | "success" | "error";
+
+type Values = {
+  name: string;
+  email: string;
+  phone: string;
+  projectType: ProjectTypeKey | "";
+  budget: BudgetKey | "";
+  consent: boolean;
+};
+
+const INITIAL_VALUES: Values = {
+  name: "",
+  email: "",
+  phone: "",
+  projectType: "",
+  budget: "",
+  consent: false,
+};
+
+// DOM order — the first invalid one in this list receives focus on submit.
+const FIELD_ORDER: ValidatedField[] = ["name", "email", "phone", "projectType", "budget", "consent"];
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const PHONE_CHARS_RE = /^[+\d\s\-()]+$/;
+
+function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
+  if (field === "consent") return values.consent ? undefined : "consent";
+
+  if (field === "projectType" || field === "budget") {
+    return FIELD_REQUIRED[field] && !values[field] ? "choose" : undefined;
+  }
+
+  const value = values[field].trim();
+  if (!value) return FIELD_REQUIRED[field] ? "required" : undefined;
+
+  if (field === "email" && !EMAIL_RE.test(value)) return "email";
+  if (field === "phone") {
+    const digits = value.replace(/\D/g, "").length;
+    if (!PHONE_CHARS_RE.test(value) || digits < 7 || digits > 15) return "phone";
+  }
+  return undefined;
+}
+
+function validateAll(values: Values): Errors {
+  const errors: Errors = {};
+  for (const field of FIELD_ORDER) {
+    const error = validate(field, values);
+    if (error) errors[field] = error;
+  }
+  return errors;
+}
+
+/** Ids joined for aria-describedby, skipping the ones not rendered. */
+function describedBy(...ids: (string | false | undefined)[]) {
+  return ids.filter(Boolean).join(" ") || undefined;
+}
+
+const LABEL_CLASS = "block text-sm font-bold text-morado-oscuro";
+const HINT_CLASS = "mt-2 text-sm text-negro/70";
+const FOCUS_RING =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro";
+
+function ErrorMessage({ id, children }: { id: string; children: ReactNode }) {
+  return (
+    <p id={id} className="mt-2 flex items-start gap-1.5 text-sm font-semibold text-error">
+      <MdErrorOutline aria-hidden="true" className="mt-0.5 h-4 w-4 flex-none" />
+      <span>{children}</span>
+    </p>
+  );
+}
+
+export function ContactForm() {
+  const { t, language } = useLanguage();
+  const c = t.contactForm;
+  const uid = useId();
+  const id = (part: string) => `${uid}-${part}`;
+
+  const [values, setValues] = useState<Values>(INITIAL_VALUES);
+  const [consentAt, setConsentAt] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Errors>({});
+  const [showSummary, setShowSummary] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+
+  // Synchronous guard against double submit: the disabled button only takes
+  // effect after React re-renders, a ref blocks a second click immediately.
+  const submittingRef = useRef(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const successTitleRef = useRef<HTMLHeadingElement>(null);
+  const fieldRefs = useRef<Partial<Record<ValidatedField, HTMLElement | null>>>({});
+
+  useEffect(() => {
+    if (!PRIVACY_POLICY_URL && process.env.NODE_ENV === "development") {
+      console.warn("[ContactForm] PRIVACY_POLICY_URL is empty — consent text renders without a link.");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (status === "success") successTitleRef.current?.focus();
+  }, [status]);
+
+  const hasErrors = FIELD_ORDER.some((field) => errors[field]);
+
+  function setFieldError(field: ValidatedField, nextValues: Values) {
+    setErrors((prev) => ({ ...prev, [field]: validate(field, nextValues) }));
+  }
+
+  function update<K extends keyof Values>(field: K, value: Values[K]) {
+    const nextValues = { ...values, [field]: value };
+    setValues(nextValues);
+    // Only re-validate live once a field is already flagged, so the message
+    // clears as soon as it's fixed — new errors wait for blur/submit.
+    if (errors[field as ValidatedField]) setFieldError(field as ValidatedField, nextValues);
+  }
+
+  function handleGroupBlur(field: ValidatedField) {
+    return (event: FocusEvent<HTMLElement>) => {
+      // Radios: only validate once focus actually leaves the whole group,
+      // not while arrowing between options.
+      if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
+      setFieldError(field, values);
+    };
+  }
+
+  function focusField(field: ValidatedField) {
+    const el = fieldRefs.current[field];
+    if (!el) return;
+    // Default focus scrolling only brings the field to the viewport edge,
+    // where the sticky header covers it — center it explicitly instead.
+    el.scrollIntoView({ block: "center" });
+    const target =
+      el instanceof HTMLFieldSetElement
+        ? (el.querySelector<HTMLInputElement>("input:checked") ??
+          el.querySelector<HTMLInputElement>("input"))
+        : el;
+    target?.focus({ preventScroll: true });
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (submittingRef.current) return;
+
+    // Honeypot filled → a bot. Pretend it worked, send nothing.
+    if (honeypotRef.current?.value) {
+      setStatus("success");
+      return;
+    }
+
+    const nextErrors = validateAll(values);
+    setErrors(nextErrors);
+    const firstInvalid = FIELD_ORDER.find((field) => nextErrors[field]);
+    if (firstInvalid) {
+      setShowSummary(true);
+      focusField(firstInvalid);
+      return;
+    }
+    setShowSummary(false);
+
+    submittingRef.current = true;
+    setStatus("sending");
+    const now = new Date().toISOString();
+    const result = await submitLead({
+      name: values.name.trim(),
+      email: values.email.trim(),
+      phone: values.phone.trim(),
+      projectType: values.projectType,
+      budget: values.budget,
+      language,
+      consent: true,
+      consentAt: consentAt ?? now,
+      pageUrl: window.location.href,
+      submittedAt: now,
+    });
+    submittingRef.current = false;
+    setStatus(result.ok ? "success" : "error");
+  }
+
+  function textInputClass(invalid: boolean) {
+    return `block min-h-12 w-full rounded-xl border-[1.5px] bg-white px-4 py-3 text-base text-negro placeholder:text-negro/65 focus:outline-2 focus:outline-offset-2 focus:outline-morado-oscuro ${
+      invalid ? "border-error" : "border-lila"
+    }`;
+  }
+
+  function renderTextField(
+    field: "name" | "email" | "phone",
+    inputProps: {
+      type: "text" | "email" | "tel";
+      autoComplete: string;
+      inputMode?: "email" | "tel";
+    },
+  ) {
+    const copy = c.fields[field];
+    const hint = "hint" in copy ? copy.hint : undefined;
+    const error = errors[field];
+    return (
+      <div>
+        <label htmlFor={id(field)} className={LABEL_CLASS}>
+          {copy.label}
+        </label>
+        <input
+          ref={(el) => {
+            fieldRefs.current[field] = el;
+          }}
+          id={id(field)}
+          name={field}
+          {...inputProps}
+          value={values[field]}
+          placeholder={copy.placeholder}
+          onChange={(e) => update(field, e.target.value)}
+          onBlur={() => setFieldError(field, values)}
+          aria-required={FIELD_REQUIRED[field] || undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy(hint && id(`${field}-hint`), error && id(`${field}-error`))}
+          className={`mt-2 ${textInputClass(Boolean(error))}`}
+        />
+        {hint && (
+          <p id={id(`${field}-hint`)} className={HINT_CLASS}>
+            {hint}
+          </p>
+        )}
+        {error && <ErrorMessage id={id(`${field}-error`)}>{c.errors[error]}</ErrorMessage>}
+      </div>
+    );
+  }
+
+  function renderPillGroup<K extends ProjectTypeKey | BudgetKey>(
+    field: "projectType" | "budget",
+    options: readonly K[],
+    labels: Record<K, string>,
+    hint?: string,
+  ) {
+    const error = errors[field];
+    const selected = values[field];
+    const describedById = describedBy(hint && id(`${field}-hint`), error && id(`${field}-error`));
+    return (
+      <fieldset
+        ref={(el) => {
+          fieldRefs.current[field] = el;
+        }}
+        onBlur={handleGroupBlur(field)}
+      >
+        <legend className={LABEL_CLASS}>{c.fields[field].label}</legend>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {options.map((option) => {
+            const checked = selected === option;
+            return (
+              <label
+                key={option}
+                className={`relative inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border-[1.5px] px-4 py-2 text-sm select-none has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-morado-oscuro motion-safe:transition-colors motion-safe:duration-200 motion-safe:ease-out ${
+                  checked
+                    ? "border-morado-oscuro bg-morado-oscuro font-bold text-crema"
+                    : `bg-white font-semibold text-morado-oscuro hover:bg-morado-oscuro/5 ${
+                        error ? "border-error" : "border-lila"
+                      }`
+                }`}
+              >
+                <input
+                  type="radio"
+                  name={field}
+                  value={option}
+                  checked={checked}
+                  onChange={() => update(field, option as Values[typeof field])}
+                  // aria-invalid isn't valid on role=radio; the error is
+                  // announced through aria-describedby instead.
+                  aria-describedby={describedById}
+                  className="sr-only"
+                />
+                {/* Selected state isn't color-only: check icon + bold + border. */}
+                {checked && <MdCheck aria-hidden="true" className="-ml-1 h-4 w-4 flex-none" />}
+                {labels[option]}
+              </label>
+            );
+          })}
+        </div>
+        {hint && (
+          <p id={id(`${field}-hint`)} className={HINT_CLASS}>
+            {hint}
+          </p>
+        )}
+        {error && <ErrorMessage id={id(`${field}-error`)}>{c.errors[error]}</ErrorMessage>}
+      </fieldset>
+    );
+  }
+
+  const sending = status === "sending";
+  const consentError = errors.consent;
+
+  return (
+    <section
+      id="formulario"
+      className="relative scroll-mt-20 overflow-hidden bg-amarillo px-6 py-20 sm:py-28"
+    >
+      <div className="relative mx-auto max-w-xl">
+        <Reveal className="text-center">
+          <SectionTag>{c.eyebrow}</SectionTag>
+          <h2 className="font-display mt-6 text-3xl font-semibold italic text-morado-oscuro sm:text-4xl">
+            {c.title}
+          </h2>
+          <p className="mt-4 text-lg text-negro/80">{c.subtitle}</p>
+        </Reveal>
+
+        <Reveal className="mt-10">
+          <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-10">
+            {/* Live region exists before success so its content is announced. */}
+            <div aria-live="polite">
+              {status === "success" && (
+                <div className="text-center">
+                  <h3
+                    ref={successTitleRef}
+                    tabIndex={-1}
+                    // Focus target for announcing success, not a control —
+                    // no ring needed on a non-interactive heading.
+                    className="font-display text-2xl focus:outline-none font-semibold italic text-morado-oscuro sm:text-3xl"
+                  >
+                    {c.success.title}
+                  </h3>
+                  <p className="mt-4 text-base text-negro/75">{c.success.body}</p>
+                  <a
+                    href={BOOKING_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-[1.5px] border-morado-oscuro px-6 py-3 text-base font-bold text-morado-oscuro hover:bg-morado-oscuro hover:text-crema motion-safe:transition-colors motion-safe:duration-200 ${FOCUS_RING}`}
+                  >
+                    {c.success.cta}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {status !== "success" && (
+              <form noValidate onSubmit={handleSubmit} className="relative flex flex-col gap-6">
+                {renderTextField("name", { type: "text", autoComplete: "name" })}
+                {renderTextField("email", { type: "email", autoComplete: "email", inputMode: "email" })}
+                {renderTextField("phone", { type: "tel", autoComplete: "tel", inputMode: "tel" })}
+                {renderPillGroup("projectType", PROJECT_TYPES, c.fields.projectType.options)}
+                {renderPillGroup("budget", BUDGETS, c.fields.budget.options, c.fields.budget.hint)}
+
+                <div>
+                  <label className="flex min-h-11 cursor-pointer items-start gap-3">
+                    <input
+                      ref={(el) => {
+                        fieldRefs.current.consent = el;
+                      }}
+                      type="checkbox"
+                      name="consent"
+                      checked={values.consent}
+                      onChange={(e) => {
+                        update("consent", e.target.checked);
+                        setConsentAt(e.target.checked ? new Date().toISOString() : null);
+                      }}
+                      onBlur={() => setFieldError("consent", values)}
+                      aria-required="true"
+                      aria-invalid={consentError ? true : undefined}
+                      aria-describedby={consentError ? id("consent-error") : undefined}
+                      className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
+                    />
+                    <span className="text-sm text-negro/80">
+                      {c.consent.text}
+                      {PRIVACY_POLICY_URL && (
+                        <>
+                          {" "}
+                          <a
+                            href={PRIVACY_POLICY_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
+                          >
+                            {c.consent.linkLabel}
+                          </a>
+                        </>
+                      )}
+                    </span>
+                  </label>
+                  {consentError && (
+                    <ErrorMessage id={id("consent-error")}>{c.errors[consentError]}</ErrorMessage>
+                  )}
+                </div>
+
+                {/* Honeypot: invisible to people and assistive tech, bots fill it. */}
+                <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+                  <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+                </div>
+
+                <div>
+                  {/* Always mounted (so updates are announced); empty, it adds no gap. */}
+                  <div aria-live="polite" className="mb-4 empty:mb-0">
+                    {showSummary && hasErrors ? (
+                      <ErrorMessage id={id("summary")}>{c.errors.summary}</ErrorMessage>
+                    ) : status === "error" ? (
+                      <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
+                    ) : null}
+                  </div>
+
+                  <CTAButton type="submit" surface="light" disabled={sending} className="w-full">
+                    {sending ? c.sending : c.submit}
+                  </CTAButton>
+                </div>
+              </form>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}

@@ -8,6 +8,9 @@
   --color-amarillo: #ecbf04;
   --color-coral: #e22e49;
   --color-negro: #1a1a1a;
+  /* Functional (not brand) color for form errors: coral on white is only
+     4.47:1, just under AA — this darker red is 6.9:1 on white. */
+  --color-error: #b3132e;
 }
 
 @theme inline {
@@ -17,6 +20,7 @@
   --color-amarillo: var(--color-amarillo);
   --color-coral: var(--color-coral);
   --color-negro: var(--color-negro);
+  --color-error: var(--color-error);
 
   --font-sans: var(--font-aileron);
   --font-display: var(--font-newsreader);
