@@ -20,6 +20,8 @@ const COLUMNS = [
   "name",
   "email",
   "phone",
+  "country",
+  "countryName",
   "projectType",
   "budget",
   "language",
@@ -29,7 +31,10 @@ const COLUMNS = [
   "receivedAt",
 ];
 
-const PROJECT_TYPES = ["escenicas", "musica", "visuales", "interdisciplinar", "otro", ""];
+const PROJECT_TYPES = [
+  "escenicas", "danza", "musica", "visuales", "escritura", "editorial",
+  "espiritualidad", "genero", "interdisciplinar", "otro", "",
+];
 const BUDGETS = ["lt100", "r100_150", "r150_250", "gt250", ""];
 const MAX_FIELD_LENGTH = 500;
 
@@ -71,6 +76,7 @@ function validate_(d) {
   if (d.consent !== true) return "no_consent";
   if (!d.name || !d.email || !d.phone) return "missing_fields";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(d.email))) return "invalid_email";
+  if (d.country && !/^[A-Z]{2}$/.test(String(d.country))) return "invalid_country";
   if (PROJECT_TYPES.indexOf(d.projectType) === -1) return "invalid_project_type";
   if (BUDGETS.indexOf(d.budget) === -1) return "invalid_budget";
   if (d.language !== "es" && d.language !== "pt") return "invalid_language";

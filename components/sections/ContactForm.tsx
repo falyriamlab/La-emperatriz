@@ -5,26 +5,40 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   type FocusEvent,
   type FormEvent,
   type ReactNode,
 } from "react";
 import { MdCheck, MdErrorOutline } from "react-icons/md";
 import { CTAButton } from "@/components/CTAButton";
+import { ChevronDown } from "@/components/icons/ChevronDown";
 import { Reveal } from "@/components/Reveal";
 import { SectionTag } from "@/components/SectionTag";
+import { getCountryName, getCountryOptions, type CountryCode } from "@/lib/countries";
 import { BOOKING_LINK } from "@/lib/links";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { submitLead, type BudgetKey, type ProjectTypeKey } from "@/lib/leads";
 
 // ── Config ────────────────────────────────────────────────────────────────
-const FIELD_REQUIRED = { name: true, email: true, phone: true, projectType: true, budget: true };
+const FIELD_REQUIRED = { name: true, email: true, phone: true, country: true, projectType: true, budget: true };
 const PRIVACY_POLICY_URL = ""; // TODO: URL de la política de privacidad (pendiente)
 // ──────────────────────────────────────────────────────────────────────────
 
 // Option order on screen. These keys are what gets submitted; labels are
 // looked up in the dictionary (never send the translated label).
-const PROJECT_TYPES: ProjectTypeKey[] = ["escenicas", "musica", "visuales", "interdisciplinar", "otro"];
+const PROJECT_TYPES: ProjectTypeKey[] = [
+  "escenicas",
+  "danza",
+  "musica",
+  "visuales",
+  "escritura",
+  "editorial",
+  "espiritualidad",
+  "genero",
+  "interdisciplinar",
+  "otro", // always last
+];
 const BUDGETS: BudgetKey[] = ["lt100", "r100_150", "r150_250", "gt250"];
 
 type Field = keyof typeof FIELD_REQUIRED;
@@ -39,6 +53,7 @@ type Values = {
   name: string;
   email: string;
   phone: string;
+  country: CountryCode | "";
   projectType: ProjectTypeKey | "";
   budget: BudgetKey | "";
   consent: boolean;
@@ -48,13 +63,14 @@ const INITIAL_VALUES: Values = {
   name: "",
   email: "",
   phone: "",
+  country: "",
   projectType: "",
   budget: "",
   consent: false,
 };
 
 // DOM order — the first invalid one in this list receives focus on submit.
-const FIELD_ORDER: ValidatedField[] = ["name", "email", "phone", "projectType", "budget", "consent"];
+const FIELD_ORDER: ValidatedField[] = ["name", "email", "phone", "country", "projectType", "budget", "consent"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_CHARS_RE = /^[+\d\s\-()]+$/;
@@ -62,7 +78,7 @@ const PHONE_CHARS_RE = /^[+\d\s\-()]+$/;
 function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
   if (field === "consent") return values.consent ? undefined : "consent";
 
-  if (field === "projectType" || field === "budget") {
+  if (field === "country" || field === "projectType" || field === "budget") {
     return FIELD_REQUIRED[field] && !values[field] ? "choose" : undefined;
   }
 
@@ -96,6 +112,14 @@ const HINT_CLASS = "mt-2 text-sm text-negro/70";
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro";
 
+// Country names come from the runtime's Intl data, which can differ between
+// Node (static export) and the visitor's browser — so the list is only
+// rendered after hydration to avoid a server/client text mismatch.
+const noopSubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(noopSubscribe, () => true, () => false);
+}
+
 function ErrorMessage({ id, children }: { id: string; children: ReactNode }) {
   return (
     <p id={id} className="mt-2 flex items-start gap-1.5 text-sm font-semibold text-error">
@@ -116,6 +140,9 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [showSummary, setShowSummary] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
+  const isClient = useIsClient();
+  // Re-translated on ES↔PT; the selection survives because it's the code.
+  const countryOptions = isClient ? getCountryOptions(language) : [];
 
   // Synchronous guard against double submit: the disabled button only takes
   // effect after React re-renders, a ref blocks a second click immediately.
@@ -198,6 +225,8 @@ export function ContactForm() {
       name: values.name.trim(),
       email: values.email.trim(),
       phone: values.phone.trim(),
+      country: values.country,
+      countryName: values.country ? getCountryName(values.country, "es") : "",
       projectType: values.projectType,
       budget: values.budget,
       language,
@@ -210,8 +239,9 @@ export function ContactForm() {
     setStatus(result.ok ? "success" : "error");
   }
 
-  function textInputClass(invalid: boolean) {
-    return `block min-h-12 w-full rounded-xl border-[1.5px] bg-white px-4 py-3 text-base text-negro placeholder:text-negro/65 focus:outline-2 focus:outline-offset-2 focus:outline-morado-oscuro ${
+  /** `muted`: placeholder-colored text, for a select still on its empty option. */
+  function textInputClass(invalid: boolean, muted = false) {
+    return `block min-h-12 w-full rounded-xl border-[1.5px] bg-white px-4 py-3 text-base ${muted ? "text-negro/65" : "text-negro"} placeholder:text-negro/65 focus:outline-2 focus:outline-offset-2 focus:outline-morado-oscuro ${
       invalid ? "border-error" : "border-lila"
     }`;
   }
@@ -254,6 +284,49 @@ export function ContactForm() {
           </p>
         )}
         {error && <ErrorMessage id={id(`${field}-error`)}>{c.errors[error]}</ErrorMessage>}
+      </div>
+    );
+  }
+
+  function renderCountryField() {
+    const copy = c.fields.country;
+    const error = errors.country;
+    return (
+      <div>
+        <label htmlFor={id("country")} className={LABEL_CLASS}>
+          {copy.label}
+        </label>
+        <div className="relative mt-2">
+          <select
+            ref={(el) => {
+              fieldRefs.current.country = el;
+            }}
+            id={id("country")}
+            name="country"
+            autoComplete="country"
+            value={values.country}
+            onChange={(e) => update("country", e.target.value as CountryCode)}
+            onBlur={() => setFieldError("country", values)}
+            aria-required={FIELD_REQUIRED.country || undefined}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? id("country-error") : undefined}
+            // Same box as the text inputs; native arrow swapped for the
+            // brand chevron, with right padding so long names don't run
+            // under it. Empty state uses the placeholder color.
+            className={`${textInputClass(Boolean(error), !values.country)} cursor-pointer appearance-none pr-12`}
+          >
+            <option value="" disabled>
+              {copy.placeholder}
+            </option>
+            {countryOptions.map(({ code, name }) => (
+              <option key={code} value={code} className="text-negro">
+                {name}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 text-morado-oscuro" />
+        </div>
+        {error && <ErrorMessage id={id("country-error")}>{c.errors[error]}</ErrorMessage>}
       </div>
     );
   }
@@ -367,6 +440,7 @@ export function ContactForm() {
                 {renderTextField("name", { type: "text", autoComplete: "name" })}
                 {renderTextField("email", { type: "email", autoComplete: "email", inputMode: "email" })}
                 {renderTextField("phone", { type: "tel", autoComplete: "tel", inputMode: "tel" })}
+                {renderCountryField()}
                 {renderPillGroup("projectType", PROJECT_TYPES, c.fields.projectType.options)}
                 {renderPillGroup("budget", BUDGETS, c.fields.budget.options, c.fields.budget.hint)}
 

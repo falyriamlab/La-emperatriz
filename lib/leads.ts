@@ -7,12 +7,18 @@
 // NEXT_PUBLIC_LEADS_ENDPOINT is inlined at build time (static export), so
 // it must be set in the build environment (see .github/workflows/deploy.yml).
 
+import type { CountryCode } from "@/lib/countries";
 import type { Language } from "@/lib/i18n/LanguageContext";
 
 export type ProjectTypeKey =
   | "escenicas"
+  | "danza"
   | "musica"
   | "visuales"
+  | "escritura"
+  | "editorial"
+  | "espiritualidad"
+  | "genero"
   | "interdisciplinar"
   | "otro";
 
@@ -24,6 +30,10 @@ export type LeadPayload = {
   name: string;
   email: string;
   phone: string;
+  /** ISO 3166-1 alpha-2 code, e.g. "CO". */
+  country: CountryCode | "";
+  /** Always in Spanish, whatever the UI language, so the sheet reads consistently. */
+  countryName: string;
   projectType: ProjectTypeKey | "";
   budget: BudgetKey | "";
   language: Language;

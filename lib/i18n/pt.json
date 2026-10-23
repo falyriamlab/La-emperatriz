@@ -107,9 +107,10 @@
       "name": { "label": "Nome", "placeholder": "Como você se chama?" },
       "email": { "label": "E-mail", "placeholder": "seuemail@exemplo.com" },
       "phone": { "label": "Telefone ou WhatsApp", "placeholder": "+55 11 90000-0000", "hint": "Inclua o código do seu país." },
+      "country": { "label": "País em que você mora", "placeholder": "Selecione seu país" },
       "projectType": {
         "label": "Tipo de projeto",
-        "options": { "escenicas": "Artes cênicas", "musica": "Música", "visuales": "Artes visuais", "interdisciplinar": "Interdisciplinar", "otro": "Outro" }
+        "options": { "escenicas": "Artes cênicas", "danza": "Dança", "musica": "Música", "visuales": "Artes visuais", "escritura": "Escrita criativa", "editorial": "Editorial", "espiritualidad": "Espiritualidade", "genero": "Perspectiva de gênero", "interdisciplinar": "Interdisciplinar", "otro": "Outro" }
       },
       "budget": {
         "label": "Investimento mensal",

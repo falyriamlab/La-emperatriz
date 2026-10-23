@@ -68,3 +68,12 @@ Así se conserva la misma URL `/exec`. "Nueva implementación" genera otra URL.
 
 Si cambian los rangos de inversión o los tipos de proyecto, actualiza también
 `PROJECT_TYPES` y `BUDGETS` en `Code.gs`. Si no, esos envíos se rechazan.
+
+## Al añadir columnas (p. ej. `country` y `countryName`)
+
+La fila de títulos solo se escribe cuando la pestaña "Leads" está vacía. Si
+ya tiene filas, inserta a mano las columnas nuevas en la misma posición que
+en `COLUMNS` (país y nombre del país van justo después de `phone`) antes de
+publicar la nueva versión. Otra opción es renombrar la pestaña vieja para
+que se cree una nueva. Si no, los datos quedan desplazados respecto a los
+títulos.
