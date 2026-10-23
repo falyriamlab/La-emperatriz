@@ -50,7 +50,12 @@
       { "number": "02", "title": "Encontros", "desc": "2 sessões de trabalho por mês, focadas no seu processo e nos próximos passos." },
       { "number": "03", "title": "Modalidade", "desc": "Acompanhamento 100% individual, personalizado ao seu projeto e ao seu ritmo." }
     ],
-    "extras": "As sessões incluem resumo, gravação e material complementar (guias e modelos)."
+    "extras": "As sessões incluem resumo, gravação e material complementar (guias e modelos).",
+    "purpose": {
+      "number": "04",
+      "title": "Finalidade",
+      "desc": "Os resultados de cada processo de acompanhamento dependem do compromisso e do grau de desenvolvimento de cada projeto cultural ou criativo. Não é uma fórmula mágica, mas com nossas mentorias você obterá: clareza, estrutura e coerência no seu projeto, que se traduzirão em um plano de trabalho de 12 meses, um plano de comunicação, uma estratégia de financiamento, entre outros, de acordo com as necessidades que identificarmos. Você sairá desta mentoria com mais confiança em você e no que faz, e com um caminho a seguir para que seu projeto seja sustentável."
+    }
   },
   "mentor": {
     "title": "Sua guia neste processo",
