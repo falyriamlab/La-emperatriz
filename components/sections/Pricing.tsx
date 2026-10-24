@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import {
   getPricingActual,
   getSavingsPercent,
+  getTotalMesAMes,
   PRECIO_LANZAMIENTO,
   PRECIO_REGULAR,
   STRIPE_LINKS,
@@ -59,6 +60,7 @@ export function Pricing() {
     ? STRIPE_LINKS.lanzamientoUnico
     : STRIPE_LINKS.regularUnico;
   const savingsPercent = getSavingsPercent(pricing);
+  const totalMesAMes = getTotalMesAMes(pricing);
 
   return (
     <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
@@ -123,7 +125,7 @@ export function Pricing() {
                   </span>
                 )}
                 <span className="text-5xl font-extrabold text-morado-oscuro">
-                  {pricing.mensual}€/mes
+                  {pricing.mensual}€{t.pricing.perMonth}
                 </span>
               </div>
 
@@ -151,7 +153,10 @@ export function Pricing() {
               </p>
 
               <div className="mt-8 flex items-end gap-3">
-                {pricing.esLanzamiento && (
+                {/* Struck-through anchor: during launch, the regular one-off
+                    price; afterwards, what the same 4 months cost paying
+                    month by month (4 × mensual) — the saving the card sells. */}
+                {pricing.esLanzamiento ? (
                   <span
                     className="text-lg text-lila/60 line-through"
                     aria-label={interpolate(t.pricing.regularPriceAriaLabel, {
@@ -159,6 +164,15 @@ export function Pricing() {
                     })}
                   >
                     {PRECIO_REGULAR.unico}€
+                  </span>
+                ) : (
+                  <span
+                    className="text-lg text-lila/60 line-through"
+                    aria-label={interpolate(t.pricing.monthlyTotalAriaLabel, {
+                      precio: `${totalMesAMes}€`,
+                    })}
+                  >
+                    {totalMesAMes}€
                   </span>
                 )}
                 <span className="text-5xl font-extrabold text-morado-oscuro">

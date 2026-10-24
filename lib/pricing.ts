@@ -23,13 +23,16 @@ export const FECHA_CAMBIO_PRECIO = "2026-09-11"; // lunes, hora local España
 const FECHA_CAMBIO_PRECIO_UTC = "2026-09-10T22:00:00Z";
 
 export const PRECIO_LANZAMIENTO = { mensual: 88, unico: 340 };
-export const PRECIO_REGULAR = { mensual: 150, unico: 555 };
+export const PRECIO_REGULAR = { mensual: 155, unico: 555 };
 
-// Each link is tied to a Stripe price that updates on Stripe's side when
-// the launch window ends — same link for lanzamiento/regular within a
-// payment type, but mensual and único are separate links (one per type).
-const STRIPE_MENSUAL = "https://buy.stripe.com/00wfZhbKm67ogCA7ZudjO06";
-const STRIPE_UNICO = "https://buy.stripe.com/dRmdR9eWy9jAgCA2FadjO07";
+/** Duration of the process — "inversión total" is compared against this many monthly payments. */
+export const MESES_PROCESO = 4;
+
+// Each link is tied to a Stripe price — same link for lanzamiento/regular
+// within a payment type, but mensual and único are separate links (one per
+// type). Keep the amounts above in sync with what Stripe actually charges.
+const STRIPE_MENSUAL = "https://buy.stripe.com/fZu5kD8yaeDUeus93ydjO0c"; // 155 €
+const STRIPE_UNICO = "https://buy.stripe.com/5kQ14neWy1R8fywfrWdjO0b"; // 555 €
 
 export const STRIPE_LINKS = {
   lanzamientoMensual: STRIPE_MENSUAL,
@@ -73,5 +76,11 @@ export function getPricingActual(now: Date = new Date()): PricingInfo {
  * never hardcoded, so it stays correct if the underlying prices change.
  */
 export function getSavingsPercent({ mensual, unico }: PricingInfo): number {
-  return Math.round(((mensual * 4 - unico) / (mensual * 4)) * 100);
+  const total = getTotalMesAMes({ mensual });
+  return Math.round(((total - unico) / total) * 100);
+}
+
+/** What the whole process costs paying month by month (e.g. 4 × 155 = 620). */
+export function getTotalMesAMes({ mensual }: Pick<PricingInfo, "mensual">): number {
+  return mensual * MESES_PROCESO;
 }

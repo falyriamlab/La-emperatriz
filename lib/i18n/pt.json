@@ -77,18 +77,20 @@
   "pricing": {
     "title": "Invista no seu processo",
     "subtitle": "Vagas de lançamento limitadas.",
-    "monthlyLabel": "Pagamento mensal",
+    "monthlyLabel": "Investimento mensal",
     "monthlyDesc": "Pague mês a mês durante os 4 meses do processo.",
-    "uniqueLabel": "Pagamento único",
+    "uniqueLabel": "Investimento total",
     "savingsBadge": "Economize {percent}%",
-    "uniqueDesc": "Pague os 4 meses de uma só vez e economize em relação ao pagamento mensal.",
+    "uniqueDesc": "Pagamento único por todo o processo e economize no preço mensal.",
     "includes": "4 meses de acompanhamento · 2 sessões por mês · Resumo e gravação de cada sessão · Material complementar (guias e modelos)",
     "launchBadge": "Preço de lançamento válido até domingo, 10 de setembro — a partir de 11 de setembro o preço sobe.",
     "cuposBadge": "Restam {disponibles} de {total} vagas",
     "diasBadge": "Restam {dias} dias",
-    "ctaMonthly": "Começar com pagamento mensal",
-    "ctaUnique": "Começar com pagamento único",
-    "regularPriceAriaLabel": "Preço regular: {precio}"
+    "ctaMonthly": "Começar com investimento mensal",
+    "ctaUnique": "Começar com investimento total",
+    "regularPriceAriaLabel": "Preço regular: {precio}",
+    "monthlyTotalAriaLabel": "Preço pagando mês a mês: {precio}",
+    "perMonth": "/mês"
   },
   "faq": {
     "title": "Perguntas frequentes",
