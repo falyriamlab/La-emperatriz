@@ -31,9 +31,10 @@ const COLUMNS = [
   "receivedAt",
 ];
 
+// projectType llega como lista (selección múltiple), p. ej. ["escritura", "genero"].
 const PROJECT_TYPES = [
   "escenicas", "danza", "musica", "visuales", "escritura", "editorial",
-  "espiritualidad", "genero", "interdisciplinar", "otro", "",
+  "espiritualidad", "genero", "interdisciplinar", "otro",
 ];
 const BUDGETS = ["lt100", "r100_150", "r150_250", "gt250", ""];
 const MAX_FIELD_LENGTH = 500;
@@ -77,7 +78,10 @@ function validate_(d) {
   if (!d.name || !d.email || !d.phone) return "missing_fields";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(d.email))) return "invalid_email";
   if (d.country && !/^[A-Z]{2}$/.test(String(d.country))) return "invalid_country";
-  if (PROJECT_TYPES.indexOf(d.projectType) === -1) return "invalid_project_type";
+  if (
+    !Array.isArray(d.projectType) ||
+    d.projectType.some(function (k) { return PROJECT_TYPES.indexOf(k) === -1; })
+  ) return "invalid_project_type";
   if (BUDGETS.indexOf(d.budget) === -1) return "invalid_budget";
   if (d.language !== "es" && d.language !== "pt") return "invalid_language";
   return "";
@@ -88,7 +92,8 @@ function validate_(d) {
 function sanitize_(value) {
   if (value === undefined || value === null) return "";
   if (typeof value === "boolean") return value;
-  const s = String(value).slice(0, MAX_FIELD_LENGTH);
+  // Listas (projectType) → una celda: "escritura, genero".
+  const s = (Array.isArray(value) ? value.join(", ") : String(value)).slice(0, MAX_FIELD_LENGTH);
   return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 

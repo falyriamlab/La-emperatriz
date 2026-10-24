@@ -34,7 +34,8 @@ export type LeadPayload = {
   country: CountryCode | "";
   /** Always in Spanish, whatever the UI language, so the sheet reads consistently. */
   countryName: string;
-  projectType: ProjectTypeKey | "";
+  /** One or more keys (multi-select), e.g. ["escritura", "genero"]. */
+  projectType: ProjectTypeKey[];
   budget: BudgetKey | "";
   language: Language;
   consent: true;

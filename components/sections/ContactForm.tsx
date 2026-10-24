@@ -54,7 +54,8 @@ type Values = {
   email: string;
   phone: string;
   country: CountryCode | "";
-  projectType: ProjectTypeKey | "";
+  /** Multi-select: any number of keys, kept in PROJECT_TYPES order. */
+  projectType: ProjectTypeKey[];
   budget: BudgetKey | "";
   consent: boolean;
 };
@@ -64,7 +65,7 @@ const INITIAL_VALUES: Values = {
   email: "",
   phone: "",
   country: "",
-  projectType: "",
+  projectType: [],
   budget: "",
   consent: false,
 };
@@ -79,7 +80,8 @@ function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
   if (field === "consent") return values.consent ? undefined : "consent";
 
   if (field === "country" || field === "projectType" || field === "budget") {
-    return FIELD_REQUIRED[field] && !values[field] ? "choose" : undefined;
+    // Required = at least one selected (projectType is an array).
+    return FIELD_REQUIRED[field] && values[field].length === 0 ? "choose" : undefined;
   }
 
   const value = values[field].trim();
@@ -338,7 +340,21 @@ export function ContactForm() {
     hint?: string,
   ) {
     const error = errors[field];
-    const selected = values[field];
+    // projectType: checkboxes (several, each can be unticked). budget: radios
+    // (exactly one). Same pill look either way.
+    const multiple = field === "projectType";
+    const isChecked = (option: K) =>
+      multiple
+        ? values.projectType.includes(option as ProjectTypeKey)
+        : values.budget === option;
+    const toggle = (option: K) => {
+      if (!multiple) return update("budget", option as BudgetKey);
+      const next = isChecked(option)
+        ? values.projectType.filter((key) => key !== option)
+        : [...values.projectType, option as ProjectTypeKey];
+      // Stable order in the payload regardless of click order.
+      update("projectType", PROJECT_TYPES.filter((key) => next.includes(key)));
+    };
     const describedById = describedBy(hint && id(`${field}-hint`), error && id(`${field}-error`));
     return (
       <fieldset
@@ -350,7 +366,7 @@ export function ContactForm() {
         <legend className={LABEL_CLASS}>{c.fields[field].label}</legend>
         <div className="mt-3 flex flex-wrap gap-2">
           {options.map((option) => {
-            const checked = selected === option;
+            const checked = isChecked(option);
             return (
               <label
                 key={option}
@@ -363,13 +379,14 @@ export function ContactForm() {
                 }`}
               >
                 <input
-                  type="radio"
+                  type={multiple ? "checkbox" : "radio"}
                   name={field}
                   value={option}
                   checked={checked}
-                  onChange={() => update(field, option as Values[typeof field])}
-                  // aria-invalid isn't valid on role=radio; the error is
-                  // announced through aria-describedby instead.
+                  onChange={() => toggle(option)}
+                  // aria-invalid is valid on checkboxes but not on
+                  // role=radio; aria-describedby announces the error for both.
+                  aria-invalid={multiple && error ? true : undefined}
                   aria-describedby={describedById}
                   className="sr-only"
                 />
