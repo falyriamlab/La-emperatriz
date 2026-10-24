@@ -38,6 +38,7 @@ const PROJECT_TYPES = [
 ];
 const BUDGETS = ["lt100", "r100_150", "r150_250", "gt250", ""];
 const MAX_FIELD_LENGTH = 500;
+const MAX_PROJECT_TYPES = 10;
 
 function doPost(e) {
   try {
@@ -78,10 +79,17 @@ function validate_(d) {
   if (!d.name || !d.email || !d.phone) return "missing_fields";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(d.email))) return "invalid_email";
   if (d.country && !/^[A-Z]{2}$/.test(String(d.country))) return "invalid_country";
-  if (
-    !Array.isArray(d.projectType) ||
-    d.projectType.some(function (k) { return PROJECT_TYPES.indexOf(k) === -1; })
-  ) return "invalid_project_type";
+  // projectType: lista de claves. Si cualquier elemento no es texto o no está
+  // en PROJECT_TYPES, se rechaza todo el envío. Los duplicados se quitan
+  // ANTES de aplicar el máximo, y lo que se guarda es la lista sin repetidos.
+  if (!Array.isArray(d.projectType)) return "invalid_project_type";
+  const invalidType = d.projectType.some(function (k) {
+    return typeof k !== "string" || PROJECT_TYPES.indexOf(k) === -1;
+  });
+  if (invalidType) return "invalid_project_type";
+  const uniqueTypes = Array.from(new Set(d.projectType));
+  if (uniqueTypes.length > MAX_PROJECT_TYPES) return "too_many_project_types";
+  d.projectType = uniqueTypes;
   if (BUDGETS.indexOf(d.budget) === -1) return "invalid_budget";
   if (d.language !== "es" && d.language !== "pt") return "invalid_language";
   return "";
@@ -108,10 +116,20 @@ function getSheet_() {
   return sheet;
 }
 
+// Texto que va a un encabezado de correo (p. ej. el asunto): saltos de línea
+// y caracteres de control → espacio, para que un valor del formulario no
+// pueda inyectar encabezados adicionales.
+function headerSafe_(value) {
+  return String(value === undefined || value === null ? "" : value).replace(
+    /[\u0000-\u001F\u007F-\u009F\u2028\u2029]/g,
+    " ",
+  );
+}
+
 function notify_(d) {
   MailApp.sendEmail({
     to: NOTIFY_EMAIL,
-    subject: "Nuevo lead La Emperatriz: " + d.name,
+    subject: headerSafe_("Nuevo lead La Emperatriz: " + d.name),
     body: COLUMNS.filter(function (k) { return k !== "receivedAt"; })
       .map(function (k) { return k + ": " + d[k]; })
       .join("\n"),

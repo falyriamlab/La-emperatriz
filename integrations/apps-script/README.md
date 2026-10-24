@@ -64,10 +64,42 @@ Así se conserva la misma URL `/exec`. "Nueva implementación" genera otra URL.
 | Respuesta | Significado |
 |---|---|
 | `{"ok":true}` | Fila guardada → el sitio muestra éxito |
-| `{"ok":false,"error":"..."}` | Rechazado (`no_consent`, `invalid_email`, `invalid_budget`, …) → el sitio muestra error |
+| `{"ok":false,"error":"..."}` | Rechazado (`no_consent`, `invalid_email`, `invalid_budget`, `invalid_project_type`, `too_many_project_types`, …) → el sitio muestra error |
 
 Si cambian los rangos de inversión o los tipos de proyecto, actualiza también
 `PROJECT_TYPES` y `BUDGETS` en `Code.gs`. Si no, esos envíos se rechazan.
+
+## Columnas de la hoja
+
+La pestaña "Leads" tiene exactamente estas 13 columnas, en este orden (es el
+orden de `COLUMNS` en `Code.gs`, y la fila 1 lleva estos nombres):
+
+| # | Columna | Contenido |
+|---|---|---|
+| A | `submittedAt` | Momento del envío en el navegador, texto ISO 8601 en UTC (`2026-10-24T09:15:02.123Z`) |
+| B | `name` | Nombre |
+| C | `email` | Correo electrónico |
+| D | `phone` | Teléfono o WhatsApp (empieza por `+`, así que se guarda con apóstrofo delante; ver abajo) |
+| E | `country` | Código ISO 3166-1 de 2 letras (`CO`) |
+| F | `countryName` | Nombre del país, siempre en español (`Colombia`) |
+| G | `projectType` | Claves de tipo de proyecto, sin duplicados, **unidas por coma y espacio** en el orden del formulario (`escritura, genero`) |
+| H | `budget` | Clave del rango de inversión (`lt100`, `r100_150`, `r150_250`, `gt250`) |
+| I | `language` | Idioma de la interfaz al enviar (`es` o `pt`) |
+| J | `consent` | Casilla de consentimiento (`TRUE`) |
+| K | `consentAt` | Momento en que se marcó el consentimiento, texto ISO 8601 en UTC |
+| L | `pageUrl` | URL de la página desde la que se envió |
+| M | `receivedAt` | Momento en que el script recibió el envío, texto ISO 8601 en UTC |
+
+Notas:
+
+- Los valores que empiezan por `=`, `+`, `-` o `@` se guardan con un apóstrofo
+  delante (`'+34 600…`) para que la hoja no los interprete como fórmula. El
+  apóstrofo no se ve en la celda.
+- Cada valor se recorta a 500 caracteres.
+- Las fechas (`submittedAt`, `consentAt`, `receivedAt`) se guardan como texto,
+  no como fecha de la hoja. Para ordenar o filtrar por fecha, conviértelas con
+  una columna auxiliar, p. ej. `=DATEVALUE(LEFT(A2;10))` (con `,` en lugar de
+  `;` si la hoja usa configuración regional en inglés).
 
 ## Al añadir columnas (p. ej. `country` y `countryName`)
 
