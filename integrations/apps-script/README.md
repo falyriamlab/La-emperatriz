@@ -63,8 +63,55 @@ Así se conserva la misma URL `/exec`. "Nueva implementación" genera otra URL.
 
 | Respuesta | Significado |
 |---|---|
-| `{"ok":true}` | Fila guardada → el sitio muestra éxito |
-| `{"ok":false,"error":"..."}` | Rechazado (`no_consent`, `invalid_email`, `invalid_budget`, `invalid_project_type`, `too_many_project_types`, …) → el sitio muestra error |
+| `{"ok":true}` | Fila guardada → el sitio muestra éxito. También si la fila se guardó pero el correo de aviso falló o se omitió por el límite (ver abajo). |
+| `{"ok":false,"error":"invalid_body"}` | El cuerpo no es un objeto JSON |
+| `{"ok":false,"error":"no_consent"}` | `consent` no es exactamente `true` |
+| `{"ok":false,"error":"invalid_name"}` | Nombre ausente, no es texto o queda vacío tras recortar espacios |
+| `{"ok":false,"error":"invalid_email"}` | Correo ausente, no es texto o no cumple el formato del formulario |
+| `{"ok":false,"error":"invalid_phone"}` | Teléfono no es texto, o (si es obligatorio o viene con valor) no cumple la regla del formulario: solo `+`, dígitos, espacios, guiones y paréntesis, con 7–15 dígitos |
+| `{"ok":false,"error":"invalid_country"}` | País obligatorio vacío, no son 2 letras mayúsculas, o `countryName` no es texto |
+| `{"ok":false,"error":"invalid_project_type"}` | No es una lista, algún elemento no es texto o no está permitido, o la lista queda vacía siendo obligatoria |
+| `{"ok":false,"error":"too_many_project_types"}` | Más de 10 tipos tras quitar duplicados |
+| `{"ok":false,"error":"invalid_budget"}` | Presupuesto obligatorio vacío, o no es una de las claves permitidas |
+| `{"ok":false,"error":"invalid_language"}` | `language` no es `es` ni `pt` |
+| `{"ok":false,"error":"server_error"}` | JSON inválido o error al guardar la fila |
+
+Con cualquier `ok:false` el sitio muestra el mensaje de error genérico.
+
+## Campos obligatorios (`REQUIRED`)
+
+Nombre, correo y consentimiento son siempre obligatorios. El resto se
+configura al inicio de `Code.gs`:
+
+```js
+const REQUIRED = { phone: true, country: true, budget: true, projectType: true };
+```
+
+**Debe coincidir con `FIELD_REQUIRED` en `components/sections/ContactForm.tsx`.**
+El servidor nunca debe ser más estricto que el formulario: si un campo es
+obligatorio aquí pero opcional allí, la persona recibe un error genérico que
+no puede corregir. Si cambias `FIELD_REQUIRED`, cambia `REQUIRED` y publica
+una versión nueva del script. Un campo opcional puede llegar vacío, pero si
+trae valor se valida igual (p. ej. un teléfono opcional con "12" se rechaza).
+
+Las reglas del correo y del teléfono (`EMAIL_RE`, `PHONE_CHARS_RE`, 7–15
+dígitos) están copiadas del formulario; si cambian allí, cámbialas aquí.
+
+## Correos de aviso
+
+Si `NOTIFY_EMAIL` tiene un correo, cada lead guardado envía un aviso:
+
+- La fila se guarda **antes** de enviar el aviso. Si `MailApp` falla (p. ej.
+  cuota diaria agotada), el error se registra con `Logger.log` (visible en
+  **Ejecuciones** del editor de Apps Script) y el sitio recibe igualmente
+  `{"ok":true}`, porque el lead ya está guardado.
+- Límite: **20 avisos por hora** (`MAX_NOTIFICATIONS_PER_HOUR`), contados en
+  `CacheService` por hora de reloj (de 10:00 a 10:59, de 11:00 a 11:59…).
+  Pasado el límite se siguen guardando las filas, pero sin aviso; revisa la
+  hoja directamente. `CacheService` puede borrar el contador antes de tiempo,
+  así que en casos raros podrían enviarse algunos avisos de más.
+- El asunto incluye el nombre con los saltos de línea y caracteres de control
+  reemplazados por espacios.
 
 Si cambian los rangos de inversión o los tipos de proyecto, actualiza también
 `PROJECT_TYPES` y `BUDGETS` en `Code.gs`. Si no, esos envíos se rechazan.
@@ -92,9 +139,11 @@ orden de `COLUMNS` en `Code.gs`, y la fila 1 lleva estos nombres):
 
 Notas:
 
-- Los valores que empiezan por `=`, `+`, `-` o `@` se guardan con un apóstrofo
-  delante (`'+34 600…`) para que la hoja no los interprete como fórmula. El
-  apóstrofo no se ve en la celda.
+- Los valores que empiezan por `=`, `+`, `-`, `@`, tabulador o retorno de
+  carro se guardan con un apóstrofo delante (`'+34 600…`) para que la hoja no
+  los interprete como fórmula. El apóstrofo no se ve en la celda.
+- Nombre, correo, teléfono y nombre del país se guardan sin espacios al
+  principio ni al final.
 - Cada valor se recorta a 500 caracteres.
 - Las fechas (`submittedAt`, `consentAt`, `receivedAt`) se guardan como texto,
   no como fecha de la hoja. Para ordenar o filtrar por fecha, conviértelas con
