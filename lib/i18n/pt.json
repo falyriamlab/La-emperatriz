@@ -72,7 +72,31 @@
       { "value": "Dança, Teatro, Música, Artes visuais", "label": "disciplinas culturais acompanhadas." },
       { "value": "8", "suffix": " anos", "label": "de experiência em gestão cultural." }
     ],
-    "recognition": "Parte da Rede de Empreendedores e Empreendedoras da Comunidade de Madrid \"Madrid Emprende\" e do tecido de empreendimentos reconhecidos pelo \"Colombia nos une\"."
+    "recognition": "Parte da Rede de Empreendedores e Empreendedoras da Comunidade de Madrid \"Madrid Emprende\" e do tecido de empreendimentos reconhecidos pelo \"Colombia nos une\".",
+    "testimonials": {
+      "title": "Quem já caminhou com a Puente",
+      "subtitle": "O que contam algumas das pessoas que viveram processos de acompanhamento com a Daniela.",
+      "readMore": "Ler mais",
+      "readLess": "Ler menos",
+      "translationNote": "Depoimentos originais em espanhol, traduzidos pela equipe da Puente.",
+      "carouselLabel": "Depoimentos",
+      "prev": "Depoimento anterior",
+      "next": "Próximo depoimento",
+      "items": [
+        { "id": "i", "initial": "I", "role": "Atriz e agente cultural", "countries": ["BR", "ES"], "paragraphs": [
+          "Neste ano de trabalho em colaboração direta com você, pude me aproximar da realidade do mundo cultural e de como empreender um projeto pessoal a partir dos mínimos detalhes. Considero que, nos momentos de crise que também houve da minha parte, consegui repensar minha capacidade, aliada à sua compreensão e, claramente, a um toque de “realidade”, pois tudo exige investimento.",
+          "De minha parte, só me resta agradecer e dizer que caminhar este ano com você foi um “segundo mestrado em gestão cultural”. Para mim, claramente, foi um grande desafio em todos os sentidos: pessoal e profissional.",
+          "Você está no meu coração e continuará para sempre. Isto não é uma despedida, mas um reconhecimento por todo o seu trabalho." ] },
+        { "id": "j", "initial": "J", "role": "Bailarino e coreógrafo", "countries": ["CO", "US"], "paragraphs": [
+          "Graças a estes espaços de mentoria, consegui estruturar muito melhor o meu projeto, tanto na parte de pesquisa quanto na criativa. O apoio e a orientação da Dani foram fundamentais, e o olhar crítico dela me ajudou muitíssimo a me reconectar com a minha capacidade de criar. Obrigadooo!" ] },
+        { "id": "a1", "initial": "A", "role": "Mãe e assistente social", "countries": ["CO"], "paragraphs": [
+          "Quero agradecer a você, Dani, porque a forma como você faz o que faz é única. Outra pessoa poderia te ensinar como se estrutura um projeto na parte administrativa, mas o que está por trás da forma como você faz, dessa intencionalidade que você coloca e a partir da sua verdade, sinto que é aí que está a magia. Muita gente te diz numa sessão 1:1: “olha, você abre o projeto e coloca num calendário e é assim que se faz. Passo 1, 2 e 3. Obrigada e até logo”. Mas não, com você é diferente, e a cada vez você enriquece o meu processo pessoal e profissional com algo mais, que vai até além dessa estrutura e do que temos que fazer. Sobretudo, o que mais levo comigo é a confiança e acreditar que sim, eu vou conseguir; e, nos momentos de dúvida, pude encontrar, de mãos dadas com você, muitas outras ferramentas. Toda essa sensibilidade tem uma força imparável no meu caminho. Então, muito obrigada por este espaço." ] },
+        { "id": "m", "initial": "M", "role": "Designer e empreendedora", "countries": ["VE", "ES"], "paragraphs": [
+          "Para mim, uma das coisas mais importantes das mentorias foi entender que eu não preciso fazer tudo sozinha e que, além disso, não é possível. Ter apenas uma sessão quando me sinto sobrecarregada me ajuda a ganhar perspectiva sobre o projeto e a confiar que o que estou fazendo está bem encaminhado. Obrigada, Daniela!" ] },
+        { "id": "a2", "initial": "A", "role": "Antropóloga e podcaster", "countries": ["CO"], "paragraphs": [
+          "Os espaços de formação e de assessoria com a Puente são lindíssimos, porque a metodologia deles tem um pouco de tudo: desde pedagogias até o reconhecimento de que os projetos culturais e criativos nos atravessam nos sentidos e na emoção, mas também na coletividade que se constrói com outras pessoas. E nisso que é o propósito do projeto, que transcende a nós mesmas e as criações iniciais que estamos fazendo. Por isso recomendo estes espaços com a Puente e com a Daniela, sua criadora. Vale totalmente a pena fazê-los! Além disso, tocam em temas como alianças, criações, materializações, coletividades e muitas outras coisas." ] }
+      ]
+    }
   },
   "pricing": {
     "title": "Invista no seu processo",
