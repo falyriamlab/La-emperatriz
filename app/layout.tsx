@@ -47,11 +47,16 @@ export default function RootLayout({
     >
       <head>
         {/* Runs before first paint. Entrance animations, collapsed FAQ
-            answers and clamped testimonials are only hidden under ".js", so
-            with JavaScript off (or failing) all content stays visible. */}
+            answers and clamped testimonials are only hidden under ".js" (the
+            js: variant in globals.css), so with JavaScript off all content
+            stays visible. Safety net: if React hasn't hydrated within 4 s
+            (bundle blocked or very slow), "no-hydrate" turns those hidden
+            states off for the rest of the visit. LanguageProvider sets
+            data-hydrated once React is running. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
+            __html:
+              "(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(d.dataset.hydrated!=='true')d.classList.add('no-hydrate')},4000)})()",
           }}
         />
       </head>

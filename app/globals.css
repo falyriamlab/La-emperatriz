@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* `js:` variant: styles that hide content until React takes over (entrance
+   animations, collapsed FAQ answers, clamped testimonials, CountUp's 0).
+   Active only when the inline script in app/layout.tsx has added "js" to
+   <html> AND the page hasn't been flagged "no-hydrate" (bundle didn't load
+   within 4 s). Either way out, the page falls back to its no-JS look:
+   everything visible. */
+@custom-variant js (.js:not(.no-hydrate) &);
+
 :root {
   /* Puente brand palette */
   --color-morado-oscuro: #6b398c;
@@ -40,6 +48,16 @@ body {
     transform: none !important;
     transition: none !important;
   }
+}
+
+/* Hydration didn't happen in time (see app/layout.tsx): the js: variant above
+   already stops hiding things; this makes the reveal instant instead of a
+   late fade/slide. The class is never removed during the visit, so a late
+   hydration can't bring back hidden states or cause a flicker. */
+html.no-hydrate .reveal-init,
+html.no-hydrate .reveal-init *,
+html.no-hydrate #preguntas * {
+  transition: none !important;
 }
 
 /* components/sections/Mentor.tsx: fades Daniela's photo into the section

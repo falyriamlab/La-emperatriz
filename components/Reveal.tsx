@@ -28,11 +28,11 @@ export function Reveal({ children, className = "", delay }: RevealProps) {
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={`reveal-init transition-all duration-700 ease-out motion-reduce:transition-none ${
-        // Hidden starting state only once JS is known to run (".js" on
-        // <html>, set by the inline script in app/layout.tsx).
+        // Hidden starting state only while JS is running and hydrating
+        // (js: variant, see globals.css and app/layout.tsx).
         inView
           ? "opacity-100 translate-y-0"
-          : "[.js_&]:opacity-0 [.js_&]:translate-y-4"
+          : "js:opacity-0 js:translate-y-4"
       } ${className}`}
     >
       {children}

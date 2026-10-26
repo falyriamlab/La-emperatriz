@@ -40,6 +40,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // Signals the inline script in app/layout.tsx that React hydrated, so it
+  // doesn't fall back to "no-hydrate" (everything visible, no animations).
+  useEffect(() => {
+    document.documentElement.dataset.hydrated = "true";
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);

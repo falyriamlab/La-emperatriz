@@ -108,10 +108,11 @@ function TestimonialCard({
         <div
           ref={textRef}
           id={textId}
-          // Clamped only under ".js": without JavaScript there's no "Leer
-          // más" button, so the full quote is shown.
+          // Clamped only under the js: variant: without JavaScript (or if it
+          // never hydrates) there is no working "Leer más" button, so the
+          // full quote is shown.
           className={`space-y-4 text-base leading-relaxed text-negro/85 ${
-            expanded ? "" : "[.js_&]:line-clamp-11"
+            expanded ? "" : "js:line-clamp-11"
           }`}
         >
           {item.paragraphs.map((paragraph, i) => (

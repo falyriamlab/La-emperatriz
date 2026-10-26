@@ -63,12 +63,12 @@ export function CountUp({
 
   return (
     <span ref={ref} className={className} aria-live="off">
-      <span className="[.js_&]:hidden">
+      <span className="js:hidden">
         {prefix}
         {end}
         {suffix}
       </span>
-      <span className="hidden [.js_&]:inline">
+      <span className="hidden js:inline">
         {prefix}
         {reduced ? end : display}
         {suffix}
