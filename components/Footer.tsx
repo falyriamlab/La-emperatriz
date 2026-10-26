@@ -6,6 +6,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { useInView } from "@/hooks/useInView";
 import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { LEGAL } from "@/lib/legal";
 import { BOOKING_LINK } from "@/lib/links";
 
 // Muted secondary text throughout this footer uses /70 (not the /40-/60
@@ -17,6 +18,9 @@ const MUTED = "text-negro/70";
 
 export function Footer() {
   const { t } = useLanguage();
+  const legalLinks = (["privacy", "legalNotice", "terms"] as const)
+    .filter((key) => LEGAL[key] !== "")
+    .map((key) => ({ key, href: LEGAL[key], label: t.footer.legal[key] }));
   // Same IntersectionObserver hook Reveal.tsx uses elsewhere — no
   // scroll-linked JS, just a one-shot "has this scrolled into view yet"
   // flag. Reduced motion is handled inside the hook itself (inView starts
@@ -114,6 +118,24 @@ export function Footer() {
                 {t.footer.ctaBook}
               </CTAButton>
             </div>
+
+            {/* Legal pages: only the ones that already have a URL (lib/legal.ts). */}
+            {legalLinks.length > 0 && (
+              <ul className="mt-4 flex flex-wrap gap-x-6">
+                {legalLinks.map(({ key, href, label }) => (
+                  <li key={key}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`pointer-events-auto inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4 hover:text-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro ${MUTED}`}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 

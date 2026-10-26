@@ -185,7 +185,8 @@
     "contactHeading": "CONTATO",
     "followHeading": "SIGA-NOS",
     "copyright": "© 2026 Puente. Todos os direitos reservados.",
-    "ctaBook": "Agendar sessão gratuita"
+    "ctaBook": "Agendar sessão gratuita",
+    "legal": { "privacy": "Política de privacidade", "legalNotice": "Aviso legal", "terms": "Condições de compra" }
   },
   "languageToggle": { "es": "ES", "pt": "PT" }
 }

@@ -16,13 +16,13 @@ import { ChevronDown } from "@/components/icons/ChevronDown";
 import { Reveal } from "@/components/Reveal";
 import { SectionTag } from "@/components/SectionTag";
 import { getCountryName, getCountryOptions, type CountryCode } from "@/lib/countries";
+import { LEGAL } from "@/lib/legal";
 import { BOOKING_LINK } from "@/lib/links";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { submitLead, type BudgetKey, type ProjectTypeKey } from "@/lib/leads";
 
 // ── Config ────────────────────────────────────────────────────────────────
 const FIELD_REQUIRED = { name: true, email: true, phone: true, country: true, projectType: true, budget: true };
-const PRIVACY_POLICY_URL = ""; // TODO: URL de la política de privacidad (pendiente)
 // ──────────────────────────────────────────────────────────────────────────
 
 // Option order on screen. These keys are what gets submitted; labels are
@@ -155,12 +155,6 @@ export function ContactForm() {
   const honeypotRef = useRef<HTMLInputElement>(null);
   const successTitleRef = useRef<HTMLHeadingElement>(null);
   const fieldRefs = useRef<Partial<Record<ValidatedField, HTMLElement | null>>>({});
-
-  useEffect(() => {
-    if (!PRIVACY_POLICY_URL && process.env.NODE_ENV === "development") {
-      console.warn("[ContactForm] PRIVACY_POLICY_URL is empty — consent text renders without a link.");
-    }
-  }, []);
 
   useEffect(() => {
     if (status === "success") successTitleRef.current?.focus();
@@ -485,11 +479,11 @@ export function ContactForm() {
                     />
                     <span className="text-sm text-negro/80">
                       {c.consent.text}
-                      {PRIVACY_POLICY_URL && (
+                      {LEGAL.privacy && (
                         <>
                           {" "}
                           <a
-                            href={PRIVACY_POLICY_URL}
+                            href={LEGAL.privacy}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
