@@ -54,13 +54,15 @@ export function FAQ() {
                 </button>
                 <div
                   className={`grid motion-safe:transition-[grid-template-rows] motion-safe:duration-300 motion-safe:ease-in-out ${
-                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    // Collapsed only under ".js": without JavaScript the
+                    // accordion can't open, so every answer stays visible.
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[1fr] [.js_&]:grid-rows-[0fr]"
                   }`}
                 >
                   <div className="overflow-hidden">
                     <p
                       className={`pb-6 text-base leading-relaxed text-negro/70 motion-safe:transition-opacity motion-safe:duration-300 ${
-                        isOpen ? "opacity-100" : "opacity-0"
+                        isOpen ? "opacity-100" : "[.js_&]:opacity-0"
                       }`}
                     >
                       {faq.a}

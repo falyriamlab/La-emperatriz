@@ -11,10 +11,12 @@ type RevealProps = {
 };
 
 /**
- * Fades + slides content up as it scrolls into view. The `reveal-init` class
- * is a hard CSS-level fallback (see globals.css) that forces the visible
- * state under prefers-reduced-motion, even before this component hydrates —
- * the JS check in useInView is the second layer, for the animation itself.
+ * Fades + slides content up as it scrolls into view. Without JavaScript the
+ * content is simply visible (the hidden start state is scoped to `.js`). The
+ * `reveal-init` class is a hard CSS-level fallback (see globals.css) that
+ * forces the visible state under prefers-reduced-motion, even before this
+ * component hydrates — the JS check in useInView is the second layer, for
+ * the animation itself.
  * `delay` only shifts the transition, so under reduced motion (no
  * transition at all) it has no effect.
  */
@@ -26,7 +28,11 @@ export function Reveal({ children, className = "", delay }: RevealProps) {
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={`reveal-init transition-all duration-700 ease-out motion-reduce:transition-none ${
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        // Hidden starting state only once JS is known to run (".js" on
+        // <html>, set by the inline script in app/layout.tsx).
+        inView
+          ? "opacity-100 translate-y-0"
+          : "[.js_&]:opacity-0 [.js_&]:translate-y-4"
       } ${className}`}
     >
       {children}

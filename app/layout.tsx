@@ -37,10 +37,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // suppressHydrationWarning: the inline script below adds the "js" class
+    // to <html> before React hydrates, so its className legitimately differs
+    // from the server HTML (this only silences <html>'s own attributes).
     <html
       lang="es"
       className={`${aileron.variable} ${newsreader.variable} scroll-smooth antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Runs before first paint. Entrance animations, collapsed FAQ
+            answers and clamped testimonials are only hidden under ".js", so
+            with JavaScript off (or failing) all content stays visible. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-crema text-negro font-sans">
         <LanguageProvider>{children}</LanguageProvider>
       </body>

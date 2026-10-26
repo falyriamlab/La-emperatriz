@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { prefersReducedMotion, useInView } from "@/hooks/useInView";
+import { usePrefersReducedMotion, useInView } from "@/hooks/useInView";
 
 type CountUpProps = {
   end: number;
@@ -20,11 +20,12 @@ function easeOutCubic(t: number) {
 /**
  * Counts up from 0 to `end` via requestAnimationFrame once the element
  * scrolls into view (via the shared useInView hook — no duplicate
- * IntersectionObserver logic). Under prefers-reduced-motion it renders
- * `end` immediately from the first render (lazy init, matching the same
- * reduced-motion pattern as useInView/Reveal — and avoiding a
- * setState-in-effect render cascade), with no intermediate frames and no
- * dependency on scroll position, same as Reveal's own reduced-motion path.
+ * IntersectionObserver logic). Under prefers-reduced-motion it shows `end`
+ * directly, with no intermediate frames.
+ *
+ * Two copies of the number: the final value (shown only without JS, so the
+ * static HTML never says "0") and the animated one (shown only under ".js").
+ * Both are in the server HTML, so hydration matches either way.
  */
 export function CountUp({
   end,
@@ -35,13 +36,12 @@ export function CountUp({
   className = "",
 }: CountUpProps) {
   const { ref, inView } = useInView<HTMLSpanElement>();
-  const [display, setDisplay] = useState(() =>
-    prefersReducedMotion() ? end : 0,
-  );
+  const reduced = usePrefersReducedMotion();
+  const [display, setDisplay] = useState(0);
   const startedRef = useRef(false);
 
   useEffect(() => {
-    if (prefersReducedMotion() || startedRef.current || !inView) return;
+    if (reduced || startedRef.current || !inView) return;
     startedRef.current = true;
 
     let raf = 0;
@@ -59,13 +59,20 @@ export function CountUp({
       clearTimeout(timeoutId);
       cancelAnimationFrame(raf);
     };
-  }, [inView, end, duration, delayMs]);
+  }, [inView, reduced, end, duration, delayMs]);
 
   return (
     <span ref={ref} className={className} aria-live="off">
-      {prefix}
-      {display}
-      {suffix}
+      <span className="[.js_&]:hidden">
+        {prefix}
+        {end}
+        {suffix}
+      </span>
+      <span className="hidden [.js_&]:inline">
+        {prefix}
+        {reduced ? end : display}
+        {suffix}
+      </span>
     </span>
   );
 }
