@@ -20,6 +20,16 @@ export function Header() {
           keyboard focus; jumps past the header to <main id="contenido">. */}
       <a
         href="#contenido"
+        // Move focus into <main> so the next Tab continues from there in
+        // every browser. tabindex is added only for this jump and removed
+        // as soon as focus leaves, so clicks elsewhere never focus <main>.
+        onClick={() => {
+          const main = document.getElementById("contenido");
+          if (!main) return;
+          main.setAttribute("tabindex", "-1");
+          main.focus();
+          main.addEventListener("blur", () => main.removeAttribute("tabindex"), { once: true });
+        }}
         className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-3 focus-visible:z-[60] focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:rounded-xl focus-visible:bg-morado-oscuro focus-visible:px-5 focus-visible:text-sm focus-visible:font-bold focus-visible:text-crema focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
       >
         {t.header.skipToContent}

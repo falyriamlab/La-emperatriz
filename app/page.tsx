@@ -35,9 +35,10 @@ export default function Home() {
   return (
     <>
       <Header />
-      {/* Target of the header's "skip to content" link. tabIndex -1 lets it
-          receive focus from that link without entering the Tab order. */}
-      <main id="contenido" tabIndex={-1} className="focus:outline-none">
+      {/* Target of the header's "skip to content" link (which focuses it
+          itself — no permanent tabIndex here, or any mouse click inside the
+          page would focus <main> and send the next Tab back to the top). */}
+      <main id="contenido" className="focus:outline-none">
         {SECTIONS.map(({ id, Component }) => (
           <Component key={id} />
         ))}
