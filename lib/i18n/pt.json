@@ -3,7 +3,7 @@
   "hero": {
     "title": "A Imperatriz é a mentoria que todas nós precisamos.",
     "subtitle": "Um processo de acompanhamento para que seu projeto cultural se encaminhe, germine e se expanda — a partir da sensibilidade, do prazer e da estrutura.",
-    "urgencyBadge": "Vagas de lançamento limitadas",
+    "badge": "Mentoria individual de 4 meses",
     "ctaPrimary": "Começar meu processo",
     "ctaSecondary": "Veja como funciona"
   },
@@ -125,7 +125,7 @@
     ]
   },
   "contactForm": {
-    "eyebrow": "COMEÇAR MEU PROCESSO",
+    "eyebrow": "PREFERE QUE ENTREMOS EM CONTATO?",
     "title": "Conte-nos sobre o seu projeto",
     "subtitle": "Deixe seus dados e entraremos em contato para conversar sobre o seu processo. Sem compromisso.",
     "fields": {
@@ -184,7 +184,7 @@
     "contactHeading": "CONTATO",
     "followHeading": "SIGA-NOS",
     "copyright": "© 2026 Puente. Todos os direitos reservados.",
-    "ctaBook": "Agendar sessão gratuita",
+    "ctaBook": "Agendar sessão semente gratuita",
     "legal": { "privacy": "Política de privacidade", "legalNotice": "Aviso legal", "terms": "Condições de compra" }
   },
   "languageToggle": { "es": "ES", "pt": "PT" }

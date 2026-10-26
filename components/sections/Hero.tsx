@@ -31,8 +31,7 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center text-center">
         <div className="motion-safe:[animation:hero-rise_0.5s_ease-out_both] inline-flex items-center gap-2 rounded-full border border-crema/25 bg-crema/10 px-4 py-2 text-sm font-semibold text-crema backdrop-blur-sm">
-          <span className="h-2 w-2 rounded-full bg-coral" aria-hidden />
-          {t.hero.urgencyBadge}
+          {t.hero.badge}
         </div>
 
         <h1 className="motion-safe:[animation:hero-rise_0.5s_ease-out_0.1s_both] mt-6 text-6xl leading-[0.95] font-bold tracking-tight text-crema max-[359px]:text-5xl sm:text-7xl md:text-8xl">
