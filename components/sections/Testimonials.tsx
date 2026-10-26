@@ -261,11 +261,22 @@ export function Testimonials() {
   }
 
   // Tabbing to a "Leer más" in an off-screen card: the browser only scrolls
-  // the button itself into view, so bring the whole card in.
+  // the button itself into view, so bring the whole card in. The visible
+  // zone starts at the list's padding-left (= the scroller's
+  // scroll-padding-left). We scroll to the card's own snap position rather
+  // than inline: "nearest": with mandatory snapping, an in-between offset
+  // gets re-snapped to a neighbouring card and can leave this one cut off.
   function revealCard(event: FocusEvent<HTMLLIElement>) {
-    event.currentTarget.scrollIntoView({
-      block: "nearest",
-      inline: "nearest",
+    const scroller = scrollerRef.current;
+    const list = scroller?.querySelector("ul");
+    if (!scroller || !list) return;
+    const card = event.currentTarget.getBoundingClientRect();
+    const view = scroller.getBoundingClientRect();
+    const zoneLeft = view.left + parseFloat(getComputedStyle(list).paddingLeft);
+    const fullyVisible = card.left >= zoneLeft - 1 && card.right <= view.right + 1;
+    if (fullyVisible) return;
+    scroller.scrollTo({
+      left: scroller.scrollLeft + (card.left - zoneLeft),
       behavior: prefersReducedMotion() ? "auto" : "smooth",
     });
   }
