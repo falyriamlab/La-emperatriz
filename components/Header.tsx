@@ -16,6 +16,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-morado-oscuro/10 bg-crema/85 px-6 backdrop-blur">
+      {/* First focusable element on the page. Visually hidden until it gets
+          keyboard focus; jumps past the header to <main id="contenido">. */}
+      <a
+        href="#contenido"
+        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-3 focus-visible:z-[60] focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:rounded-xl focus-visible:bg-morado-oscuro focus-visible:px-5 focus-visible:text-sm focus-visible:font-bold focus-visible:text-crema focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
+      >
+        {t.header.skipToContent}
+      </a>
       <div className="mx-auto flex max-w-6xl items-center justify-between py-2">
         <Image
           src={`${BASE_PATH}/logo/logo-horizontal-morado.svg`}
@@ -32,7 +40,11 @@ export function Header() {
             just a different skin. motion-safe on the thumb's transition
             only: under prefers-reduced-motion it still jumps straight to
             the active side, no slide. */}
-        <div className="relative inline-flex items-center rounded-full bg-morado-oscuro/10 p-1">
+        <div
+          role="group"
+          aria-label={t.header.languageLabel}
+          className="relative inline-flex items-center rounded-full bg-morado-oscuro/10 p-1"
+        >
           <span
             aria-hidden="true"
             className={`absolute inset-y-1 left-1 h-11 w-11 rounded-full bg-morado-oscuro motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out ${

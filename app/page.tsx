@@ -16,8 +16,8 @@ import { Footer } from "@/components/Footer";
 // Page order lives here — reorder this list to move sections around.
 // Keep background alternation in mind: each section's own bg is set in
 // its component (e.g. FAQ crema → ContactForm amarillo → FinalCTA morado).
+// Header and Footer sit outside <main> (they're their own landmarks).
 const SECTIONS: { id: string; Component: ComponentType }[] = [
-  { id: "header", Component: Header },
   { id: "hero", Component: Hero },
   { id: "pain", Component: Pain },
   { id: "what-is", Component: WhatIs },
@@ -29,15 +29,20 @@ const SECTIONS: { id: string; Component: ComponentType }[] = [
   { id: "faq", Component: FAQ },
   { id: "contact-form", Component: ContactForm },
   { id: "final-cta", Component: FinalCTA },
-  { id: "footer", Component: Footer },
 ];
 
 export default function Home() {
   return (
     <>
-      {SECTIONS.map(({ id, Component }) => (
-        <Component key={id} />
-      ))}
+      <Header />
+      {/* Target of the header's "skip to content" link. tabIndex -1 lets it
+          receive focus from that link without entering the Tab order. */}
+      <main id="contenido" tabIndex={-1} className="focus:outline-none">
+        {SECTIONS.map(({ id, Component }) => (
+          <Component key={id} />
+        ))}
+      </main>
+      <Footer />
     </>
   );
 }
