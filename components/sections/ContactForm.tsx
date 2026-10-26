@@ -45,7 +45,7 @@ type Field = keyof typeof FIELD_REQUIRED;
 type ValidatedField = Field | "consent";
 // Errors are stored as dictionary keys, not strings, so switching ES↔PT
 // re-translates any message already on screen.
-type ErrorKey = "required" | "email" | "phone" | "choose" | "consent";
+type ErrorKey = "required" | "email" | "phone" | "choose" | "chooseAtLeastOne" | "consent";
 type Errors = Partial<Record<ValidatedField, ErrorKey>>;
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -80,8 +80,11 @@ function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
   if (field === "consent") return values.consent ? undefined : "consent";
 
   if (field === "country" || field === "projectType" || field === "budget") {
-    // Required = at least one selected (projectType is an array).
-    return FIELD_REQUIRED[field] && values[field].length === 0 ? "choose" : undefined;
+    // Required = at least one selected (projectType is an array). The
+    // multi-select gets its own wording ("al menos una"); country and
+    // budget keep the single-choice message.
+    if (!FIELD_REQUIRED[field] || values[field].length > 0) return undefined;
+    return field === "projectType" ? "chooseAtLeastOne" : "choose";
   }
 
   const value = values[field].trim();

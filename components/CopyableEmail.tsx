@@ -70,7 +70,7 @@ export function CopyableEmail({
     setHovering(false);
   }
 
-  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleClick() {
     // Touch devices fire click without a real hover/mousemove — show the
     // centered tooltip briefly so the "¡Copiado!" confirmation is visible.
     const canHover = window.matchMedia("(hover: hover)").matches;

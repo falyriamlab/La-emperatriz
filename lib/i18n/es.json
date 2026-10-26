@@ -152,6 +152,7 @@
       "email": "Ingresa un correo válido.",
       "phone": "Ingresa un teléfono válido, con prefijo (ej. +34).",
       "choose": "Elige una opción.",
+      "chooseAtLeastOne": "Elige al menos una opción.",
       "consent": "Necesitamos tu consentimiento para continuar.",
       "submit": "No pudimos enviar tus datos. Inténtalo de nuevo o escríbenos a hola@somospuentecultural.com.",
       "summary": "Revisa los campos marcados para continuar."

@@ -152,6 +152,7 @@
       "email": "Informe um e-mail válido.",
       "phone": "Informe um telefone válido, com código do país (ex.: +55).",
       "choose": "Escolha uma opção.",
+      "chooseAtLeastOne": "Escolha pelo menos uma opção.",
       "consent": "Precisamos do seu consentimento para continuar.",
       "submit": "Não conseguimos enviar seus dados. Tente novamente ou escreva para hola@somospuentecultural.com.",
       "summary": "Revise os campos marcados para continuar."
