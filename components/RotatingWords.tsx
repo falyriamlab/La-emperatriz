@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/hooks/useInView";
+import { usePrefersReducedMotion } from "@/hooks/useInView";
 
 type RotatingWordsProps = {
   words: string[];
@@ -12,15 +12,17 @@ type RotatingWordsProps = {
 /**
  * Cycles through `words`, one at a time, every `intervalMs`.
  *
- * - The auto-rotating word is `aria-hidden` — an aria-live region that
- *   re-announces itself every 5s would be disruptive, not helpful. Screen
- *   readers instead get the full list as plain, static text (visually
- *   hidden), so no information is lost.
- * - Under prefers-reduced-motion the rotation never starts at all: per
- *   WCAG 2.2.2, auto-updating content that runs longer than 5s needs a way
- *   to stop it, so reduced-motion users just get the full static list
- *   (comma-separated, same as before this component existed) instead of a
- *   moving target with no pause control.
+ * - The visible word is `aria-hidden` — an aria-live region that
+ *   re-announces itself every few seconds would be disruptive, not helpful.
+ *   Screen readers instead get the full list as plain, static text
+ *   (visually hidden), so no information is lost.
+ * - Under prefers-reduced-motion the rotation never starts: per WCAG 2.2.2,
+ *   auto-updating content that runs longer than 5s needs a way to stop it,
+ *   so reduced-motion users get one fixed word. A single word always fits
+ *   the stat's fixed-height slot (the whole list didn't, and overlapped the
+ *   label below it).
+ * - The server HTML and the first client render are identical (first word,
+ *   no rotation); rotation only starts after hydration.
  */
 export function RotatingWords({
   words,
@@ -28,7 +30,7 @@ export function RotatingWords({
   className = "",
 }: RotatingWordsProps) {
   const [index, setIndex] = useState(0);
-  const [reduced] = useState(prefersReducedMotion);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     if (reduced || words.length <= 1) return;
@@ -38,18 +40,14 @@ export function RotatingWords({
     return () => clearInterval(id);
   }, [reduced, words, intervalMs]);
 
-  if (reduced) {
-    return <span className={className}>{words.join(", ")}</span>;
-  }
-
   return (
     <span className={`relative inline-block ${className}`}>
       <span
-        key={index}
+        key={reduced ? 0 : index}
         aria-hidden="true"
         className="inline-block whitespace-nowrap motion-safe:[animation:fade-in_0.4s_ease-out]"
       >
-        {words[index]}
+        {words[reduced ? 0 : index]}
       </span>
       <span className="sr-only">{words.join(", ")}</span>
     </span>
