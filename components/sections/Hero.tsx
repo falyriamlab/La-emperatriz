@@ -52,7 +52,7 @@ export function Hero() {
           </CTAButton>
           <a
             href="#como-funciona"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline"
+            className="-my-3 inline-flex items-center gap-1.5 py-3 text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline"
           >
             {t.hero.ctaSecondary}
             <ChevronDown className="h-[1em] w-[1em]" />

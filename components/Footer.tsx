@@ -81,7 +81,7 @@ export function Footer() {
                   href={t.footer.websiteHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto mt-3 block font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
+                  className="pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
                 >
                   {t.footer.website}
                 </a>
@@ -95,7 +95,7 @@ export function Footer() {
                   href={t.footer.instagramHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto mt-3 block font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
+                  className="pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
                 >
                   {t.footer.instagram}
                 </a>
