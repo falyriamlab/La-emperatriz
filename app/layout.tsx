@@ -42,7 +42,7 @@ export default function RootLayout({
     // from the server HTML (this only silences <html>'s own attributes).
     <html
       lang="es"
-      className={`${aileron.variable} ${newsreader.variable} scroll-smooth antialiased`}
+      className={`${aileron.variable} ${newsreader.variable} motion-safe:scroll-smooth antialiased`}
       suppressHydrationWarning
     >
       <head>
