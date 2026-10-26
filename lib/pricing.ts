@@ -1,86 +1,21 @@
-// Centralized pricing + launch-window logic for "La Emperatriz".
-//
-// This module is framework-agnostic (no "use client") so it can be imported
-// from anywhere, but the actual date comparison must only ever run
-// client-side — see components/sections/Pricing.tsx for why.
+// Pricing for "La Emperatriz": one fixed price per payment option, no dates.
+// The derived amounts (what 4 monthly payments add up to, and the saving)
+// are always computed from these constants — never written by hand.
 
-/** Human-readable cutoff date, for display copy ("desde el 11 de septiembre..."). */
-export const FECHA_CAMBIO_PRECIO = "2026-09-11"; // lunes, hora local España
+export const PRECIOS = { mensual: 155, total: 555 };
 
-/**
- * Precise UTC instant for "2026-09-11T00:00:00" in Europe/Madrid time.
- * Spain is on CEST (UTC+2) in September (DST ends late October), so
- * 2026-09-11 00:00 Madrid = 2026-09-10 22:00 UTC.
- *
- * We anchor to this exact instant — not `new Date(FECHA_CAMBIO_PRECIO)` —
- * because that string, parsed with no timezone, resolves to *the
- * visitor's local midnight*, not Spain's. A visitor several timezones
- * away from Madrid would then see the price change at the wrong moment
- * for them. The launch window is a business decision anchored to Puente's
- * own timezone, so every visitor worldwide should flip at the same
- * instant, computed from Madrid's clock.
- */
-const FECHA_CAMBIO_PRECIO_UTC = "2026-09-10T22:00:00Z";
-
-export const PRECIO_LANZAMIENTO = { mensual: 88, unico: 340 };
-export const PRECIO_REGULAR = { mensual: 155, unico: 555 };
-
-/** Duration of the process — "inversión total" is compared against this many monthly payments. */
+/** Duration of the process — the total is compared against this many monthly payments. */
 export const MESES_PROCESO = 4;
 
-// Each link is tied to a Stripe price — same link for lanzamiento/regular
-// within a payment type, but mensual and único are separate links (one per
-// type). Keep the amounts above in sync with what Stripe actually charges.
-const STRIPE_MENSUAL = "https://buy.stripe.com/fZu5kD8yaeDUeus93ydjO0c"; // 155 €
-const STRIPE_UNICO = "https://buy.stripe.com/5kQ14neWy1R8fywfrWdjO0b"; // 555 €
-
+// Stripe Payment Links. Keep the amounts above in sync with what Stripe
+// actually charges.
 export const STRIPE_LINKS = {
-  lanzamientoMensual: STRIPE_MENSUAL,
-  lanzamientoUnico: STRIPE_UNICO,
-  regularMensual: STRIPE_MENSUAL,
-  regularUnico: STRIPE_UNICO,
+  mensual: "https://buy.stripe.com/fZu5kD8yaeDUeus93ydjO0c",
+  total: "https://buy.stripe.com/9B6dR98yaanE0DC4NidjO0d",
 };
 
-export type PricingInfo = {
-  mensual: number;
-  unico: number;
-  esLanzamiento: boolean;
-  /** Días completos que quedan de precio de lanzamiento, o null si ya no aplica. */
-  diasRestantes: number | null;
-};
+/** What the whole process costs paying month by month (4 × mensual). */
+export const sumaMensual = PRECIOS.mensual * MESES_PROCESO;
 
-/**
- * Resolves today's actual pricing. Pass `now` explicitly in tests; in the
- * app, always call this client-side (e.g. inside a useEffect) — this page
- * is statically prerendered at build time, so if this ran during the
- * server render, `now` would be frozen at build time forever, not the
- * visitor's real date.
- */
-export function getPricingActual(now: Date = new Date()): PricingInfo {
-  const cambio = new Date(FECHA_CAMBIO_PRECIO_UTC);
-  const esLanzamiento = now.getTime() < cambio.getTime();
-  const precios = esLanzamiento ? PRECIO_LANZAMIENTO : PRECIO_REGULAR;
-  const diasRestantes = esLanzamiento
-    ? Math.max(
-        0,
-        Math.ceil((cambio.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
-      )
-    : null;
-
-  return { ...precios, esLanzamiento, diasRestantes };
-}
-
-/**
- * % saved by paying "pago único" up front vs. 4 months of "pago mensual",
- * against whichever pricing (lanzamiento or regular) is currently active —
- * never hardcoded, so it stays correct if the underlying prices change.
- */
-export function getSavingsPercent({ mensual, unico }: PricingInfo): number {
-  const total = getTotalMesAMes({ mensual });
-  return Math.round(((total - unico) / total) * 100);
-}
-
-/** What the whole process costs paying month by month (e.g. 4 × 155 = 620). */
-export function getTotalMesAMes({ mensual }: Pick<PricingInfo, "mensual">): number {
-  return mensual * MESES_PROCESO;
-}
+/** How much paying the total up front saves vs. paying month by month. */
+export const ahorro = sumaMensual - PRECIOS.total;

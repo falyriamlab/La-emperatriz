@@ -1,21 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { CTAButton } from "@/components/CTAButton";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import {
-  getPricingActual,
-  getSavingsPercent,
-  getTotalMesAMes,
-  PRECIO_LANZAMIENTO,
-  PRECIO_REGULAR,
-  STRIPE_LINKS,
-  type PricingInfo,
-} from "@/lib/pricing";
-
-const CUPOS_DISPONIBLES = 6;
-const CUPOS_TOTALES = 10;
+import { PRECIOS, STRIPE_LINKS, sumaMensual } from "@/lib/pricing";
 
 /** Minimal `{token}` substitution — no plural rules needed, see Pricing.tsx callers. */
 function interpolate(template: string, values: Record<string, string | number>) {
@@ -24,43 +12,9 @@ function interpolate(template: string, values: Record<string, string | number>) 
   );
 }
 
-// This page is statically prerendered at build time (see lib/pricing.ts),
-// so the initial render — both the server-rendered HTML and React's first
-// client pass during hydration — must never depend on `new Date()`, or
-// visitors would see whatever date the site happened to be built on,
-// frozen forever. This default is a plain constant (launch pricing, no
-// days-remaining count yet) so that first render is always identical on
-// server and client. The real, date-correct pricing is only computed
-// inside the effect below, which runs client-side after mount — i.e.
-// resolved against the visitor's actual clock, not build time.
-const DEFAULT_PRICING: PricingInfo = {
-  ...PRECIO_LANZAMIENTO,
-  esLanzamiento: true,
-  diasRestantes: null,
-};
-
 export function Pricing() {
   const { t } = useLanguage();
-  const [pricing, setPricing] = useState<PricingInfo>(DEFAULT_PRICING);
-
-  useEffect(() => {
-    // Deliberately NOT computed via useState's lazy initializer: that
-    // function still runs during the server prerender pass for a "use
-    // client" component, so `new Date()` there would evaluate to build
-    // time, not the visitor's real clock — the exact bug this effect
-    // exists to avoid. It has to happen here, after mount, client-only.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPricing(getPricingActual());
-  }, []);
-
-  const linkMensual = pricing.esLanzamiento
-    ? STRIPE_LINKS.lanzamientoMensual
-    : STRIPE_LINKS.regularMensual;
-  const linkUnico = pricing.esLanzamiento
-    ? STRIPE_LINKS.lanzamientoUnico
-    : STRIPE_LINKS.regularUnico;
-  const savingsPercent = getSavingsPercent(pricing);
-  const totalMesAMes = getTotalMesAMes(pricing);
+  const savingsPercent = Math.round(((sumaMensual - PRECIOS.total) / sumaMensual) * 100);
 
   return (
     <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
@@ -75,34 +29,6 @@ export function Pricing() {
         </Reveal>
 
         <Reveal>
-          {/* Two separate urgency signals — cupos and precio — kept as
-              distinct badges rather than merged into one sentence. */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-coral/30 bg-coral/10 px-4 py-2 text-sm font-semibold text-coral">
-              <span className="h-2 w-2 rounded-full bg-coral" aria-hidden />
-              {interpolate(t.pricing.cuposBadge, {
-                disponibles: CUPOS_DISPONIBLES,
-                total: CUPOS_TOTALES,
-              })}
-            </div>
-
-            {pricing.esLanzamiento && (
-              <div className="inline-flex items-center gap-2 rounded-full border border-amarillo/40 bg-amarillo/15 px-4 py-2 text-sm font-semibold text-morado-oscuro">
-                <span className="h-2 w-2 rounded-full bg-amarillo" aria-hidden />
-                {t.pricing.launchBadge}
-                {pricing.diasRestantes !== null && (
-                  <span className="text-morado-oscuro/70">
-                    {" "}
-                    {interpolate(t.pricing.diasBadge, {
-                      dias: pricing.diasRestantes,
-                    })}
-                    .
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
           <div className="mt-14 grid gap-8 text-left md:grid-cols-2">
             {/* Pago mensual */}
             <div className="flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm max-[359px]:p-6">
@@ -114,24 +40,14 @@ export function Pricing() {
               </p>
 
               <div className="mt-8 flex items-end gap-3">
-                {pricing.esLanzamiento && (
-                  <span
-                    className="text-lg text-lila/60 line-through"
-                    aria-label={interpolate(t.pricing.regularPriceAriaLabel, {
-                      precio: `${PRECIO_REGULAR.mensual}€`,
-                    })}
-                  >
-                    {PRECIO_REGULAR.mensual}€
-                  </span>
-                )}
                 <span className="text-5xl font-extrabold text-morado-oscuro max-[359px]:text-4xl">
-                  {pricing.mensual}€{t.pricing.perMonth}
+                  {PRECIOS.mensual}€{t.pricing.perMonth}
                 </span>
               </div>
 
               <CTAButton
                 surface="light"
-                href={linkMensual}
+                href={STRIPE_LINKS.mensual}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-10"
@@ -153,36 +69,22 @@ export function Pricing() {
               </p>
 
               <div className="mt-8 flex items-end gap-3">
-                {/* Struck-through anchor: during launch, the regular one-off
-                    price; afterwards, what the same 4 months cost paying
-                    month by month (4 × mensual) — the saving the card sells. */}
-                {pricing.esLanzamiento ? (
-                  <span
-                    className="text-lg text-lila/60 line-through"
-                    aria-label={interpolate(t.pricing.regularPriceAriaLabel, {
-                      precio: `${PRECIO_REGULAR.unico}€`,
-                    })}
-                  >
-                    {PRECIO_REGULAR.unico}€
-                  </span>
-                ) : (
-                  <span
-                    className="text-lg text-lila/60 line-through"
-                    aria-label={interpolate(t.pricing.monthlyTotalAriaLabel, {
-                      precio: `${totalMesAMes}€`,
-                    })}
-                  >
-                    {totalMesAMes}€
-                  </span>
-                )}
+                <span
+                  className="text-lg text-lila/60 line-through"
+                  aria-label={interpolate(t.pricing.monthlyTotalAriaLabel, {
+                    precio: `${sumaMensual}€`,
+                  })}
+                >
+                  {sumaMensual}€
+                </span>
                 <span className="text-5xl font-extrabold text-morado-oscuro max-[359px]:text-4xl">
-                  {pricing.unico}€
+                  {PRECIOS.total}€
                 </span>
               </div>
 
               <CTAButton
                 surface="light"
-                href={linkUnico}
+                href={STRIPE_LINKS.total}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-10"
