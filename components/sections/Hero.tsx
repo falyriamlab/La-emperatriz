@@ -35,7 +35,7 @@ export function Hero() {
           {t.hero.urgencyBadge}
         </div>
 
-        <h1 className="motion-safe:[animation:hero-rise_0.5s_ease-out_0.1s_both] mt-6 text-6xl leading-[0.95] font-bold tracking-tight text-crema sm:text-7xl md:text-8xl">
+        <h1 className="motion-safe:[animation:hero-rise_0.5s_ease-out_0.1s_both] mt-6 text-6xl leading-[0.95] font-bold tracking-tight text-crema max-[359px]:text-5xl sm:text-7xl md:text-8xl">
           <span className="block font-display font-semibold italic">
             {accent}
           </span>

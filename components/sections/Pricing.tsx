@@ -105,7 +105,7 @@ export function Pricing() {
 
           <div className="mt-14 grid gap-8 text-left md:grid-cols-2">
             {/* Pago mensual */}
-            <div className="flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm">
+            <div className="flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm max-[359px]:p-6">
               <h3 className="text-xl font-bold text-morado-oscuro">
                 {t.pricing.monthlyLabel}
               </h3>
@@ -124,7 +124,7 @@ export function Pricing() {
                     {PRECIO_REGULAR.mensual}€
                   </span>
                 )}
-                <span className="text-5xl font-extrabold text-morado-oscuro">
+                <span className="text-5xl font-extrabold text-morado-oscuro max-[359px]:text-4xl">
                   {pricing.mensual}€{t.pricing.perMonth}
                 </span>
               </div>
@@ -141,7 +141,7 @@ export function Pricing() {
             </div>
 
             {/* Pago único */}
-            <div className="relative flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm">
+            <div className="relative flex flex-col rounded-3xl border border-morado-oscuro/10 bg-white/70 p-10 shadow-sm max-[359px]:p-6">
               <span className="absolute -top-4 right-6 rounded-full border-2 border-crema bg-amarillo px-4 py-1.5 text-sm font-extrabold text-morado-oscuro shadow-sm">
                 {interpolate(t.pricing.savingsBadge, { percent: savingsPercent })}
               </span>
@@ -175,7 +175,7 @@ export function Pricing() {
                     {totalMesAMes}€
                   </span>
                 )}
-                <span className="text-5xl font-extrabold text-morado-oscuro">
+                <span className="text-5xl font-extrabold text-morado-oscuro max-[359px]:text-4xl">
                   {pricing.unico}€
                 </span>
               </div>
