@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { CTAButton } from "@/components/CTAButton";
 import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage, type Language } from "@/lib/i18n/LanguageContext";
 
@@ -13,9 +15,31 @@ const ARIA_LABELS: Record<Language, string> = {
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
+  const headerRef = useRef<HTMLElement>(null);
+  // The header CTA only shows once the Hero (with its own identical CTA) has
+  // scrolled away, so the first screen never has two "Comenzar" buttons.
+  // Starts "visible" on the server and the first client render alike, so
+  // hydration matches.
+  const [heroVisible, setHeroVisible] = useState(true);
+
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    const header = headerRef.current;
+    if (!hero || !header) return;
+    // The Hero counts as gone once its bottom passes under the sticky header.
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroVisible(entry.isIntersecting),
+      { rootMargin: `-${header.offsetHeight}px 0px 0px 0px` },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-morado-oscuro/10 bg-crema/85 px-6 backdrop-blur">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 border-b border-morado-oscuro/10 bg-crema/85 px-6 backdrop-blur max-[359px]:px-4"
+    >
       {/* First focusable element on the page. Visually hidden until it gets
           keyboard focus; jumps past the header to <main id="contenido">. */}
       <a
@@ -43,40 +67,58 @@ export function Header() {
           className="h-5 w-auto sm:h-6"
         />
 
-        {/* Pill switch: the thumb is a purely decorative absolutely-positioned
-            layer sliding under the buttons — the buttons themselves stay
-            real, independent <button>s (aria-label + aria-current untouched)
-            so screen readers/keyboard nav see the same semantics as before,
-            just a different skin. motion-safe on the thumb's transition
-            only: under prefers-reduced-motion it still jumps straight to
-            the active side, no slide. */}
-        <div
-          role="group"
-          aria-label={t.header.languageLabel}
-          className="relative inline-flex items-center rounded-full bg-morado-oscuro/10 p-1"
-        >
-          <span
-            aria-hidden="true"
-            className={`absolute inset-y-1 left-1 h-11 w-11 rounded-full bg-morado-oscuro motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out ${
-              language === "pt" ? "translate-x-11" : "translate-x-0"
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Hidden only via the js: variant (globals.css): without JS, or if
+              the page never hydrates (no-hydrate), it is always shown. The
+              hidden state is invisible (not just transparent) so it's out of
+              the Tab order and the accessibility tree. The fade is
+              motion-safe only. Below sm only the arrow shows; the label
+              stays in the DOM as the link's accessible name. */}
+          <div
+            className={`motion-safe:transition-[opacity,visibility] motion-safe:duration-300 motion-safe:ease-out ${
+              heroVisible ? "js:invisible js:opacity-0" : ""
             }`}
-          />
-          {(["es", "pt"] as const).map((lang) => (
-            <button
-              key={lang}
-              type="button"
-              onClick={() => setLanguage(lang)}
-              aria-label={ARIA_LABELS[lang]}
-              aria-current={language === lang ? "true" : undefined}
-              className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
-                language === lang
-                  ? "text-crema"
-                  : "text-negro/40 hover:text-negro/60"
+          >
+            <CTAButton href="#inversion" surface="light" size="compact">
+              <span className="sr-only sm:not-sr-only">{t.header.cta}</span>
+            </CTAButton>
+          </div>
+
+          {/* Pill switch: the thumb is a purely decorative absolutely-positioned
+              layer sliding under the buttons — the buttons themselves stay
+              real, independent <button>s (aria-label + aria-current untouched)
+              so screen readers/keyboard nav see the same semantics as before,
+              just a different skin. motion-safe on the thumb's transition
+              only: under prefers-reduced-motion it still jumps straight to
+              the active side, no slide. */}
+          <div
+            role="group"
+            aria-label={t.header.languageLabel}
+            className="relative inline-flex items-center rounded-full bg-morado-oscuro/10 p-1"
+          >
+            <span
+              aria-hidden="true"
+              className={`absolute inset-y-1 left-1 h-11 w-11 rounded-full bg-morado-oscuro motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out ${
+                language === "pt" ? "translate-x-11" : "translate-x-0"
               }`}
-            >
-              {t.languageToggle[lang]}
-            </button>
-          ))}
+            />
+            {(["es", "pt"] as const).map((lang) => (
+              <button
+                key={lang}
+                type="button"
+                onClick={() => setLanguage(lang)}
+                aria-label={ARIA_LABELS[lang]}
+                aria-current={language === lang ? "true" : undefined}
+                className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
+                  language === lang
+                    ? "text-crema"
+                    : "text-negro/40 hover:text-negro/60"
+                }`}
+              >
+                {t.languageToggle[lang]}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </header>

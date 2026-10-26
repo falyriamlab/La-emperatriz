@@ -5,7 +5,16 @@ type CTAButtonBaseProps = {
   children: ReactNode;
   /** Which section background this sits on — picks the accent/text pairing. */
   surface?: "light" | "dark";
+  /** "compact": 44 px tall, smaller label — for the sticky header. */
+  size?: "default" | "compact";
   className?: string;
+};
+
+// Padding + label size per size. "default" is exactly the original look
+// (every pre-existing use renders the same classes as before).
+const sizeStyles = {
+  default: { box: "px-6 py-4", label: "text-base" },
+  compact: { box: "min-h-11 px-3 py-2 sm:px-4", label: "text-sm" },
 };
 
 // Two render modes sharing one look: a link (every existing use — pass
@@ -77,9 +86,10 @@ const surfaceStyles: Record<
 };
 
 export function CTAButton(props: CTAButtonProps) {
-  const { children, surface = "light", className = "" } = props;
+  const { children, surface = "light", size = "default", className = "" } = props;
   const s = surfaceStyles[surface];
-  const rootClassName = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-4 ${s.restBg} ${className}`;
+  const z = sizeStyles[size];
+  const rootClassName = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl ${z.box} ${s.restBg} ${className}`;
 
   const content = (
     <>
@@ -107,7 +117,7 @@ export function CTAButton(props: CTAButtonProps) {
 
       {/* Label */}
       <span
-        className={`relative z-10 text-base font-bold motion-safe:transition-colors motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
+        className={`relative z-10 ${z.label} font-bold motion-safe:transition-colors motion-safe:duration-[350ms] motion-safe:ease-out ${s.text} ${s.textHover}`}
       >
         {children}
       </span>
