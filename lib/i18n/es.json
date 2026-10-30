@@ -187,5 +187,69 @@
     "ctaBook": "Agendar sesión semilla gratis",
     "legal": { "privacy": "Política de privacidad", "legalNotice": "Aviso legal", "terms": "Condiciones de compra" }
   },
-  "languageToggle": { "es": "ES", "pt": "PT" }
+  "languageToggle": { "es": "ES", "pt": "PT" },
+  "masterclass": {
+    "badge": "Masterclass",
+    "title": [
+      "Reserva tu lugar",
+      "en la masterclass"
+    ],
+    "subtitle": "Déjanos tus datos para inscribirte. Después te invitamos a la comunidad en la que compartiremos toda la información.",
+    "steps": {
+      "label": "Progreso de la inscripción",
+      "data": "Tus datos",
+      "community": "Comunidad",
+      "done": "completado"
+    },
+    "formTitle": "Cuéntanos quién eres",
+    "formSubtitle": "Todos los campos son obligatorios.",
+    "fields": {
+      "name": {
+        "label": "Nombre y apellido",
+        "placeholder": "¿Cómo te llamas?"
+      },
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "tucorreo@ejemplo.com"
+      },
+      "phone": {
+        "label": "Teléfono o WhatsApp",
+        "placeholder": "+34 600 000 000",
+        "hint": "Incluye el prefijo de tu país."
+      },
+      "country": {
+        "label": "País de residencia",
+        "placeholder": "Ej. Colombia"
+      },
+      "gender": {
+        "label": "Género",
+        "placeholder": "Selecciona una opción",
+        "options": {
+          "masculino": "Masculino",
+          "femenino": "Femenino",
+          "no_binario": "No binario",
+          "prefiero_no_decirlo": "Prefiero no decirlo"
+        }
+      },
+      "sector": {
+        "label": "Sector en el que trabajas",
+        "placeholder": "Ej. música, literatura, teatro…"
+      },
+      "project": {
+        "label": "Cuéntanos un poco de tu proyecto",
+        "placeholder": "¿De qué trata? ¿En qué momento está?",
+        "hint": "Unas líneas son suficientes."
+      }
+    },
+    "consent": "Acepto que Puente trate mis datos para gestionar mi inscripción a la masterclass.",
+    "submit": "Inscribirme",
+    "sending": "Enviando…",
+    "community": {
+      "title": "Ya casi estamos",
+      "body": "Tu inscripción quedó registrada, {name}. Último paso: únete a nuestra comunidad de WhatsApp, en la que compartiremos toda la información de la masterclass.",
+      "cta": "Unirme a la comunidad",
+      "newTab": "se abre en una pestaña nueva",
+      "note": "WhatsApp se abre en una pestaña nueva."
+    }
+  }
 }
