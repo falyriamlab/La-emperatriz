@@ -210,3 +210,35 @@ Si `NOTIFY_EMAIL` está configurado, cada inscripción manda un aviso con el
 asunto "Nueva inscripción a la masterclass: <nombre>" (comparte el límite de
 20 avisos por hora con los leads). Si cambian las opciones de género, cambia
 `GENDERS` en `Code.gs` y en `MasterclassForm.tsx` a la vez.
+
+## Pruebas
+
+`Code.gs` se prueba en Node, sin Google: `tests/harness.mjs` lo carga con
+servicios simulados (SpreadsheetApp, LockService, CacheService, MailApp,
+Logger, ContentService), y cada prueba arranca una instancia limpia con sus
+propias hojas, correos, registros y reloj.
+
+Desde la raíz del proyecto, un solo comando corre todas (Node 20 o superior,
+sin dependencias nuevas):
+
+```
+node --test "integrations/apps-script/tests/*.test.mjs"
+```
+
+Funciona igual en PowerShell, cmd y bash: las comillas hacen que el patrón lo
+resuelva Node y no la terminal. Sale con código 0 si todo pasa.
+
+| Archivo | Qué cubre |
+|---|---|
+| `tests/contact.test.mjs` | Formulario de la landing (hoja "Leads"): las 59 pruebas originales — `REQUIRED` sincronizado con el formulario, validación campo por campo, apóstrofo anti-fórmula, aviso por correo (la fila se escribe antes del correo y un fallo del correo no cambia la respuesta), límite de 20 avisos/hora y paridad con `ContactForm.tsx`. |
+| `tests/masterclass.test.mjs` | Inscripción de `/masterclass` (hoja "Masterclass"): enrutado por `form` (desconocido, `constructor`, `__proto__`… → `invalid_form`), un caso válido y uno inválido por campo, apóstrofo en todas las columnas de texto, recorte a 500 y a 2000 caracteres en `project`, contador de avisos compartido con la landing y paridad con `MasterclassForm.tsx`. |
+
+Las pruebas de paridad leen las reglas del propio código del sitio
+(`components/form/fields.tsx`, `ContactForm.tsx`, `MasterclassForm.tsx`), así
+que si cambian allí y no en `Code.gs`, fallan.
+
+**Pendiente conocido (marcado como `todo`, no hace fallar el comando):**
+`Code.gs` acepta `"form": ["masterclass"]` (un array), porque
+`hasOwnProperty` lo convierte en el texto `"masterclass"`. El nombre de la
+hoja sigue saliendo de la lista cerrada `FORMS`, así que no es una inyección;
+la corrección sería exigir `typeof form === "string"` en `doPost`.
