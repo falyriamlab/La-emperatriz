@@ -16,6 +16,10 @@ concurrency:
 
 jobs:
   build:
+    # Production only ever comes from main. A manual "Run workflow" on any
+    # other branch shows this job (and deploy, which needs it) as skipped,
+    # not failed.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
