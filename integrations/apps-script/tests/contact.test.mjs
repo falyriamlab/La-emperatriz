@@ -130,6 +130,12 @@ test("8 aviso: guardar fila → enviar aviso (la fila se escribe antes del corre
   assert.ok(failing.events.lastIndexOf(`row:${LEADS}`) < failing.events.indexOf("mail"), `eventos: ${failing.events.join(", ")}`);
   assert.equal(failing.rowsOf(LEADS).length, 1);
 });
+test("8 aviso: con el valor real de Code.gs, el aviso va a hola@somospuentecultural.com", () => {
+  const s = load({ notifyEmail: null });
+  assert.equal(s.post(ok).ok, true);
+  assert.equal(s.mails.length, 1);
+  assert.equal(s.mails[0].to, "hola@somospuentecultural.com");
+});
 test("8 aviso: NOTIFY_EMAIL vacío → no se envía correo", () => {
   const s = load({ notifyEmail: "" }); s.post(ok);
   assert.equal(s.mails.length, 0);

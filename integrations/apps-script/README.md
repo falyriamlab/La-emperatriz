@@ -20,7 +20,9 @@ mano en Apps Script.
 2. En la hoja: **Extensiones → Apps Script**. Así el script queda vinculado a
    esa hoja.
 3. Borra el contenido de `Código.gs`, pega `Code.gs` y guarda.
-4. Opcional: pon un correo en `NOTIFY_EMAIL` para recibir un aviso por lead.
+4. `NOTIFY_EMAIL` ya viene con `hola@somospuentecultural.com`: cada lead o
+   inscripción guardada manda un aviso a ese correo. Cámbialo si los avisos
+   deben ir a otra dirección, o déjalo vacío (`""`) para no enviar avisos.
 
 ## 2. Desplegar como Web App
 
@@ -31,6 +33,19 @@ mano en Apps Script.
    inicio de sesión y el formulario muestra error.
 4. Autoriza los permisos. Si aparece "Google no ha verificado esta app":
    **Configuración avanzada → Ir a … (no seguro)**. Es tu propio script.
+   Google pedirá solo dos permisos:
+   - **Ver y editar la hoja de cálculo en la que está instalado el script.**
+     `Code.gs` empieza con `/** @OnlyCurrentDoc */`, así que el acceso se
+     limita a esta hoja (sin esa línea pediría acceso a *todas* las hojas de
+     la cuenta). Por eso el script tiene que crearse desde la hoja
+     (**Extensiones → Apps Script**), no como proyecto suelto.
+   - **Enviar correo electrónico en tu nombre**, para los avisos a
+     `NOTIFY_EMAIL` (`MailApp`). Lo pide aunque `NOTIFY_EMAIL` esté vacío,
+     porque `MailApp` aparece en el código.
+
+   `LockService`, `CacheService`, `ContentService` y `Logger` no piden
+   permisos. Los avisos salen de la cuenta que autoriza el script ("Ejecutar
+   como: Yo") y cuentan para su cuota diaria de correo.
 5. Copia la URL que termina en `/exec` (no la de `/dev`).
 6. Comprueba que responde: abre la URL en el navegador y debe mostrar
    `{"ok":true,"service":"la-emperatriz-leads"}`.
@@ -49,6 +64,10 @@ del dominio. Hay dos salidas:
 
 Usa **Implementar → Gestionar implementaciones → editar → Versión: nueva**.
 Así se conserva la misma URL `/exec`. "Nueva implementación" genera otra URL.
+
+Si el script ya estaba autorizado sin `@OnlyCurrentDoc`, al pegar esta
+versión Google puede volver a pedir los permisos (ahora más reducidos):
+acéptalos antes de publicar la versión nueva.
 
 ## 3. Conectar el sitio
 
@@ -108,7 +127,9 @@ dígitos) están copiadas del formulario; si cambian allí, cámbialas aquí.
 
 ## Correos de aviso
 
-Si `NOTIFY_EMAIL` tiene un correo, cada lead guardado envía un aviso:
+`NOTIFY_EMAIL` está configurado con `hola@somospuentecultural.com` (el correo
+público que ya aparece en la web), así que cada lead guardado envía un aviso
+a esa dirección. Con `""` no se envía ninguno.
 
 - La fila se guarda **antes** de enviar el aviso. Si `MailApp` falla (p. ej.
   cuota diaria agotada), el error se registra con `Logger.log` (visible en
@@ -206,9 +227,9 @@ Columnas de la pestaña "Masterclass" (orden de `MASTERCLASS_COLUMNS`):
 | L | `pageUrl` | URL desde la que se envió |
 | M | `receivedAt` | Momento en que el script recibió el envío (ISO 8601, UTC) |
 
-Si `NOTIFY_EMAIL` está configurado, cada inscripción manda un aviso con el
-asunto "Nueva inscripción a la masterclass: <nombre>" (comparte el límite de
-20 avisos por hora con los leads). Si cambian las opciones de género, cambia
+Con `NOTIFY_EMAIL` configurado (hoy `hola@somospuentecultural.com`), cada
+inscripción manda un aviso con el asunto "Nueva inscripción a la masterclass:
+<nombre>" (comparte el límite de 20 avisos por hora con los leads). Si cambian las opciones de género, cambia
 `GENDERS` en `Code.gs` y en `MasterclassForm.tsx` a la vez.
 
 ## Pruebas
@@ -230,7 +251,7 @@ resuelva Node y no la terminal. Sale con código 0 si todo pasa.
 
 | Archivo | Qué cubre |
 |---|---|
-| `tests/contact.test.mjs` | Formulario de la landing (hoja "Leads"): las 59 pruebas originales — `REQUIRED` sincronizado con el formulario, validación campo por campo, apóstrofo anti-fórmula, aviso por correo (la fila se escribe antes del correo y un fallo del correo no cambia la respuesta), límite de 20 avisos/hora y paridad con `ContactForm.tsx`. |
+| `tests/contact.test.mjs` | Formulario de la landing (hoja "Leads"): las 59 pruebas originales más una que comprueba que, con el valor real de `NOTIFY_EMAIL`, el aviso va a `hola@somospuentecultural.com` — `REQUIRED` sincronizado con el formulario, validación campo por campo, apóstrofo anti-fórmula, aviso por correo (la fila se escribe antes del correo y un fallo del correo no cambia la respuesta), límite de 20 avisos/hora y paridad con `ContactForm.tsx`. |
 | `tests/masterclass.test.mjs` | Inscripción de `/masterclass` (hoja "Masterclass"): enrutado por `form` (desconocido, `constructor`, `__proto__`… → `invalid_form`), un caso válido y uno inválido por campo, apóstrofo en todas las columnas de texto, recorte a 500 y a 2000 caracteres en `project`, contador de avisos compartido con la landing y paridad con `MasterclassForm.tsx`. |
 
 Las pruebas de paridad leen las reglas del propio código del sitio

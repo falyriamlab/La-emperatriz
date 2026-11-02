@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 /**
  * La Emperatriz — receptor de leads (Google Apps Script Web App).
  *
@@ -16,8 +17,8 @@
 // ── Config ────────────────────────────────────────────────────────────────
 const SHEET_NAME = "Leads";
 const MASTERCLASS_SHEET_NAME = "Masterclass";
-// Correo que recibe un aviso por cada lead. Vacío = sin aviso.
-const NOTIFY_EMAIL = "";
+// Correo que recibe un aviso por cada lead o inscripción. Vacío = sin aviso.
+const NOTIFY_EMAIL = "hola@somospuentecultural.com";
 // Máximo de correos de aviso por hora; pasado el límite se siguen guardando
 // las filas, pero sin aviso.
 const MAX_NOTIFICATIONS_PER_HOUR = 20;

@@ -13,7 +13,7 @@ export const CODE_GS = read("integrations/apps-script/Code.gs");
 
 /**
  * @param {object}  [opts]
- * @param {string}  [opts.notifyEmail=""]  value for NOTIFY_EMAIL
+ * @param {string|null} [opts.notifyEmail=""] value for NOTIFY_EMAIL; null keeps the one in Code.gs
  * @param {boolean} [opts.mailThrows=false] MailApp.sendEmail throws (e.g. quota)
  * @param {number}  [opts.now]             fixed clock (ms) for Date.now()
  * @param {string}  [opts.source]          Code.gs source to run (defaults to the real file)
@@ -57,7 +57,12 @@ export function load({ notifyEmail = "", mailThrows = false, now = 1_800_000_000
     ContentService: { MimeType: { JSON: "json" }, createTextOutput: (s) => ({ setMimeType: () => s }) },
   };
   vm.createContext(ctx);
-  vm.runInContext(source.replace('const NOTIFY_EMAIL = "";', `const NOTIFY_EMAIL = ${JSON.stringify(notifyEmail)};`), ctx);
+  // Override NOTIFY_EMAIL whatever its value in Code.gs. Fail loudly if the
+  // line isn't found, so a test can never silently run with the real address.
+  const NOTIFY_LINE = /const NOTIFY_EMAIL = "[^"]*";/;
+  if (!NOTIFY_LINE.test(source)) throw new Error("harness: no se encontró `const NOTIFY_EMAIL = \"…\";` en Code.gs");
+  const code = notifyEmail === null ? source : source.replace(NOTIFY_LINE, `const NOTIFY_EMAIL = ${JSON.stringify(notifyEmail)};`);
+  vm.runInContext(code, ctx);
 
   const post = (body) => JSON.parse(ctx.doPost({ postData: { contents: typeof body === "string" ? body : JSON.stringify(body) } }));
   /** Data rows (header excluded) of a sheet. */
