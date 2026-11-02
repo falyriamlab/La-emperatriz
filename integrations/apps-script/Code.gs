@@ -2,15 +2,20 @@
  * La Emperatriz — receptor de leads (Google Apps Script Web App).
  *
  * Recibe el POST de lib/leads.ts (body JSON enviado como text/plain para
- * evitar el preflight CORS), añade una fila a la hoja "Leads" y responde
- * { ok: true } / { ok: false, error }. El sitio solo considera éxito
- * cuando la respuesta trae ok === true.
+ * evitar el preflight CORS), añade una fila a la hoja que corresponda y
+ * responde { ok: true } / { ok: false, error }. El sitio solo considera
+ * éxito cuando la respuesta trae ok === true.
+ *
+ * Dos formularios comparten este script, según el campo "form" del body:
+ * - sin "form": formulario de contacto de la landing → hoja "Leads".
+ * - "masterclass": inscripción de /masterclass → hoja "Masterclass".
  *
  * Instalación: ver integrations/apps-script/README.md.
  */
 
 // ── Config ────────────────────────────────────────────────────────────────
 const SHEET_NAME = "Leads";
+const MASTERCLASS_SHEET_NAME = "Masterclass";
 // Correo que recibe un aviso por cada lead. Vacío = sin aviso.
 const NOTIFY_EMAIL = "";
 // Máximo de correos de aviso por hora; pasado el límite se siguen guardando
@@ -46,7 +51,29 @@ const PROJECT_TYPES = [
   "espiritualidad", "genero", "interdisciplinar", "otro",
 ];
 const BUDGETS = ["lt100", "r100_150", "r150_250", "gt250"];
+// Columnas de la hoja "Masterclass" (inscripción de /masterclass). Todos
+// los campos son obligatorios, como en MasterclassForm.tsx.
+const MASTERCLASS_COLUMNS = [
+  "submittedAt",
+  "name",
+  "email",
+  "phone",
+  "country",
+  "gender",
+  "sector",
+  "project",
+  "language",
+  "consent",
+  "consentAt",
+  "pageUrl",
+  "receivedAt",
+];
+// Claves de GENDERS en MasterclassForm.tsx.
+const GENDERS = ["masculino", "femenino", "no_binario", "prefiero_no_decirlo"];
 const MAX_FIELD_LENGTH = 500;
+// "Cuéntanos de tu proyecto" es texto largo: mismo tope que el maxLength del
+// textarea en MasterclassForm.tsx.
+const MAX_PROJECT_LENGTH = 2000;
 const MAX_PROJECT_TYPES = 10;
 
 // Copiadas tal cual de ContactForm.tsx (EMAIL_RE, PHONE_CHARS_RE y la regla
@@ -60,7 +87,13 @@ const COUNTRY_RE = /^[A-Z]{2}$/;
 function doPost(e) {
   try {
     const data = JSON.parse((e && e.postData && e.postData.contents) || "");
-    const error = validate_(data);
+    if (!data || typeof data !== "object") return json_({ ok: false, error: "invalid_body" });
+    const formKey = data.form === undefined ? "contact" : data.form;
+    if (!Object.prototype.hasOwnProperty.call(FORMS, formKey)) {
+      return json_({ ok: false, error: "invalid_form" });
+    }
+    const form = FORMS[formKey];
+    const error = form.validate(data);
     if (error) return json_({ ok: false, error: error });
 
     // Evita que dos envíos simultáneos escriban en la misma fila (y que el
@@ -69,10 +102,11 @@ function doPost(e) {
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
-      const sheet = getSheet_();
+      const sheet = getSheet_(form.sheetName, form.columns);
       const receivedAt = new Date().toISOString();
-      const row = COLUMNS.map(function (key) {
-        return key === "receivedAt" ? receivedAt : sanitize_(data[key]);
+      const row = form.columns.map(function (key) {
+        if (key === "receivedAt") return receivedAt;
+        return sanitize_(data[key], key === "project" ? MAX_PROJECT_LENGTH : MAX_FIELD_LENGTH);
       });
       sheet.appendRow(row);
       shouldNotify = NOTIFY_EMAIL !== "" && takeNotificationSlot_();
@@ -84,7 +118,7 @@ function doPost(e) {
     // agotada) se registra, pero no convierte el envío en error.
     if (shouldNotify) {
       try {
-        notify_(data);
+        notify_(form, data);
       } catch (mailErr) {
         Logger.log("Aviso por correo no enviado: " + mailErr);
       }
@@ -100,6 +134,23 @@ function doPost(e) {
 function doGet() {
   return json_({ ok: true, service: "la-emperatriz-leads" });
 }
+
+// Formularios aceptados, por el valor de "form" en el body ("contact" cuando
+// no viene, que es lo que envía el formulario de la landing).
+const FORMS = {
+  contact: {
+    sheetName: SHEET_NAME,
+    columns: COLUMNS,
+    validate: validate_,
+    subject: "Nuevo lead La Emperatriz: ",
+  },
+  masterclass: {
+    sheetName: MASTERCLASS_SHEET_NAME,
+    columns: MASTERCLASS_COLUMNS,
+    validate: validateMasterclass_,
+    subject: "Nueva inscripción a la masterclass: ",
+  },
+};
 
 // Mismas reglas que el formulario (ContactForm.tsx), nunca más estrictas.
 // Los textos válidos se guardan recortados (trim), como los envía el cliente.
@@ -166,14 +217,59 @@ function validate_(d) {
   return "";
 }
 
+// Inscripción de /masterclass (MasterclassForm.tsx). Todos los campos son
+// obligatorios; país y sector son texto libre.
+function validateMasterclass_(d) {
+  if (d.consent !== true) return "no_consent";
+
+  const name = requiredText_(d.name);
+  if (name === null) return "invalid_name";
+  d.name = name;
+
+  if (typeof d.email !== "string") return "invalid_email";
+  d.email = d.email.trim();
+  if (!EMAIL_RE.test(d.email)) return "invalid_email";
+
+  if (typeof d.phone !== "string") return "invalid_phone";
+  d.phone = d.phone.trim();
+  const digits = d.phone.replace(/\D/g, "").length;
+  if (!PHONE_CHARS_RE.test(d.phone) || digits < PHONE_MIN_DIGITS || digits > PHONE_MAX_DIGITS) {
+    return "invalid_phone";
+  }
+
+  const country = requiredText_(d.country);
+  if (country === null) return "invalid_country";
+  d.country = country;
+
+  if (GENDERS.indexOf(d.gender) === -1) return "invalid_gender";
+
+  const sector = requiredText_(d.sector);
+  if (sector === null) return "invalid_sector";
+  d.sector = sector;
+
+  const project = requiredText_(d.project);
+  if (project === null) return "invalid_project";
+  d.project = project;
+
+  if (d.language !== "es" && d.language !== "pt") return "invalid_language";
+  return "";
+}
+
+// Texto obligatorio: devuelve el valor recortado, o null si no es texto o
+// queda vacío.
+function requiredText_(value) {
+  if (typeof value !== "string" || value.trim() === "") return null;
+  return value.trim();
+}
+
 // Las celdas que empiezan por = + - @, tabulador o retorno de carro se
 // interpretarían como fórmula (el teléfono "+34…" incluido): el apóstrofo
 // las fuerza a texto.
-function sanitize_(value) {
+function sanitize_(value, maxLength) {
   if (value === undefined || value === null) return "";
   if (typeof value === "boolean") return value;
   // Listas (projectType) → una celda: "escritura, genero".
-  const s = (Array.isArray(value) ? value.join(", ") : String(value)).slice(0, MAX_FIELD_LENGTH);
+  const s = (Array.isArray(value) ? value.join(", ") : String(value)).slice(0, maxLength);
   return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
 }
 
@@ -190,12 +286,12 @@ function takeNotificationSlot_() {
   return true;
 }
 
-function getSheet_() {
+function getSheet_(name, columns) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) sheet = ss.insertSheet(name);
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(COLUMNS);
+    sheet.appendRow(columns);
     sheet.setFrozenRows(1);
   }
   return sheet;
@@ -211,11 +307,11 @@ function headerSafe_(value) {
   );
 }
 
-function notify_(d) {
+function notify_(form, d) {
   MailApp.sendEmail({
     to: NOTIFY_EMAIL,
-    subject: headerSafe_("Nuevo lead La Emperatriz: " + d.name),
-    body: COLUMNS.filter(function (k) { return k !== "receivedAt"; })
+    subject: headerSafe_(form.subject + d.name),
+    body: form.columns.filter(function (k) { return k !== "receivedAt"; })
       .map(function (k) { return k + ": " + d[k]; })
       .join("\n"),
   });

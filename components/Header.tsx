@@ -13,7 +13,12 @@ const ARIA_LABELS: Record<Language, string> = {
   pt: "Mudar para português",
 };
 
-export function Header() {
+type HeaderProps = {
+  /** "Comenzar mi proceso" button. Off on pages without the landing's Hero and pricing (/masterclass). */
+  showCta?: boolean;
+};
+
+export function Header({ showCta = true }: HeaderProps) {
   const { language, setLanguage, t } = useLanguage();
   const headerRef = useRef<HTMLElement>(null);
   // The header CTA only shows once the Hero (with its own identical CTA) has
@@ -23,6 +28,7 @@ export function Header() {
   const [heroVisible, setHeroVisible] = useState(true);
 
   useEffect(() => {
+    if (!showCta) return;
     const hero = document.getElementById("hero");
     const header = headerRef.current;
     if (!hero || !header) return;
@@ -33,7 +39,7 @@ export function Header() {
     );
     observer.observe(hero);
     return () => observer.disconnect();
-  }, []);
+  }, [showCta]);
 
   return (
     <header
@@ -74,15 +80,17 @@ export function Header() {
               the Tab order and the accessibility tree. The fade is
               motion-safe only. Below sm only the arrow shows; the label
               stays in the DOM as the link's accessible name. */}
-          <div
-            className={`motion-safe:transition-[opacity,visibility] motion-safe:duration-300 motion-safe:ease-out ${
-              heroVisible ? "js:invisible js:opacity-0" : ""
-            }`}
-          >
-            <CTAButton href="#inversion" surface="light" size="compact">
-              <span className="sr-only sm:not-sr-only">{t.header.cta}</span>
-            </CTAButton>
-          </div>
+          {showCta && (
+            <div
+              className={`motion-safe:transition-[opacity,visibility] motion-safe:duration-300 motion-safe:ease-out ${
+                heroVisible ? "js:invisible js:opacity-0" : ""
+              }`}
+            >
+              <CTAButton href="#inversion" surface="light" size="compact">
+                <span className="sr-only sm:not-sr-only">{t.header.cta}</span>
+              </CTAButton>
+            </div>
+          )}
 
           {/* Pill switch: the thumb is a purely decorative absolutely-positioned
               layer sliding under the buttons — the buttons themselves stay

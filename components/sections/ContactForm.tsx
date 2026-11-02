@@ -8,10 +8,19 @@ import {
   useSyncExternalStore,
   type FocusEvent,
   type FormEvent,
-  type ReactNode,
 } from "react";
-import { MdCheck, MdErrorOutline } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
 import { CTAButton } from "@/components/CTAButton";
+import {
+  describedBy,
+  EMAIL_RE,
+  ErrorMessage,
+  FOCUS_RING,
+  HINT_CLASS,
+  isValidPhone,
+  LABEL_CLASS,
+  textInputClass,
+} from "@/components/form/fields";
 import { ChevronDown } from "@/components/icons/ChevronDown";
 import { Reveal } from "@/components/Reveal";
 import { SectionTag } from "@/components/SectionTag";
@@ -73,9 +82,6 @@ const INITIAL_VALUES: Values = {
 // DOM order — the first invalid one in this list receives focus on submit.
 const FIELD_ORDER: ValidatedField[] = ["name", "email", "phone", "country", "projectType", "budget", "consent"];
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE_CHARS_RE = /^[+\d\s\-()]+$/;
-
 function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
   if (field === "consent") return values.consent ? undefined : "consent";
 
@@ -91,10 +97,7 @@ function validate(field: ValidatedField, values: Values): ErrorKey | undefined {
   if (!value) return FIELD_REQUIRED[field] ? "required" : undefined;
 
   if (field === "email" && !EMAIL_RE.test(value)) return "email";
-  if (field === "phone") {
-    const digits = value.replace(/\D/g, "").length;
-    if (!PHONE_CHARS_RE.test(value) || digits < 7 || digits > 15) return "phone";
-  }
+  if (field === "phone" && !isValidPhone(value)) return "phone";
   return undefined;
 }
 
@@ -107,31 +110,12 @@ function validateAll(values: Values): Errors {
   return errors;
 }
 
-/** Ids joined for aria-describedby, skipping the ones not rendered. */
-function describedBy(...ids: (string | false | undefined)[]) {
-  return ids.filter(Boolean).join(" ") || undefined;
-}
-
-const LABEL_CLASS = "block text-sm font-bold text-morado-oscuro";
-const HINT_CLASS = "mt-2 text-sm text-negro/70";
-const FOCUS_RING =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro";
-
 // Country names come from the runtime's Intl data, which can differ between
 // Node (static export) and the visitor's browser — so the list is only
 // rendered after hydration to avoid a server/client text mismatch.
 const noopSubscribe = () => () => {};
 function useIsClient() {
   return useSyncExternalStore(noopSubscribe, () => true, () => false);
-}
-
-function ErrorMessage({ id, children }: { id: string; children: ReactNode }) {
-  return (
-    <p id={id} className="mt-2 flex items-start gap-1.5 text-sm font-semibold text-error">
-      <MdErrorOutline aria-hidden="true" className="mt-0.5 h-4 w-4 flex-none" />
-      <span>{children}</span>
-    </p>
-  );
 }
 
 export function ContactForm() {
@@ -236,13 +220,6 @@ export function ContactForm() {
     });
     submittingRef.current = false;
     setStatus(result.ok ? "success" : "error");
-  }
-
-  /** `muted`: placeholder-colored text, for a select still on its empty option. */
-  function textInputClass(invalid: boolean, muted = false) {
-    return `block min-h-12 w-full rounded-xl border-[1.5px] bg-white px-4 py-3 text-base ${muted ? "text-negro/65" : "text-negro"} placeholder:text-negro/65 focus:outline-2 focus:outline-offset-2 focus:outline-morado-oscuro ${
-      invalid ? "border-error" : "border-lila"
-    }`;
   }
 
   function renderTextField(

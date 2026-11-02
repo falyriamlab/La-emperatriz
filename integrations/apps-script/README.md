@@ -1,8 +1,17 @@
 # Receptor de leads (Google Apps Script)
 
-`Code.gs` recibe los envíos del formulario de contacto
-(`components/sections/ContactForm.tsx` → `lib/leads.ts`) y los guarda en una
-Google Sheet. No forma parte del build de Next: se copia a mano en Apps Script.
+`Code.gs` recibe los envíos de los dos formularios del sitio y los guarda en
+una Google Sheet, cada uno en su pestaña:
+
+- Formulario de contacto de la landing (`components/sections/ContactForm.tsx`
+  → `submitLead()` en `lib/leads.ts`) → pestaña **"Leads"**.
+- Inscripción de `/masterclass` (`components/masterclass/MasterclassForm.tsx`
+  → `submitMasterclass()`, que añade `"form": "masterclass"` al cuerpo) →
+  pestaña **"Masterclass"** (ver [más abajo](#inscripciones-a-la-masterclass)).
+
+Las dos usan la misma URL `/exec` y la misma variable
+`NEXT_PUBLIC_LEADS_ENDPOINT`. No forma parte del build de Next: se copia a
+mano en Apps Script.
 
 ## 1. Crear la hoja y el script
 
@@ -158,3 +167,46 @@ en `COLUMNS` (país y nombre del país van justo después de `phone`) antes de
 publicar la nueva versión. Otra opción es renombrar la pestaña vieja para
 que se cree una nueva. Si no, los datos quedan desplazados respecto a los
 títulos.
+
+## Inscripciones a la masterclass
+
+La página `/masterclass` no está enlazada desde la landing (se comparte por
+enlace y lleva `noindex`). Al enviar el paso 1, el script guarda la fila en la
+pestaña "Masterclass" y solo entonces el sitio muestra el paso 2 (invitación
+a la comunidad de WhatsApp). Si el guardado falla, la persona sigue en el
+paso 1 con el mensaje de error.
+
+Todos los campos son obligatorios. Errores propios de este formulario, además
+de `invalid_name`, `invalid_email`, `invalid_phone`, `invalid_language` y
+`no_consent` (mismas reglas que arriba):
+
+| Respuesta | Significado |
+|---|---|
+| `{"ok":false,"error":"invalid_form"}` | `form` trae un valor que el script no conoce |
+| `{"ok":false,"error":"invalid_country"}` | País vacío o no es texto (aquí es texto libre, no código ISO) |
+| `{"ok":false,"error":"invalid_gender"}` | No es una de las claves de `GENDERS` |
+| `{"ok":false,"error":"invalid_sector"}` | Sector vacío o no es texto |
+| `{"ok":false,"error":"invalid_project"}` | Descripción del proyecto vacía o no es texto |
+
+Columnas de la pestaña "Masterclass" (orden de `MASTERCLASS_COLUMNS`):
+
+| # | Columna | Contenido |
+|---|---|---|
+| A | `submittedAt` | Momento del envío en el navegador (ISO 8601, UTC) |
+| B | `name` | Nombre y apellido |
+| C | `email` | Correo electrónico |
+| D | `phone` | Teléfono o WhatsApp |
+| E | `country` | País de residencia, tal como lo escribió la persona |
+| F | `gender` | `masculino`, `femenino`, `no_binario` o `prefiero_no_decirlo` |
+| G | `sector` | Sector en el que trabaja (texto libre) |
+| H | `project` | Descripción del proyecto, hasta 2000 caracteres (`MAX_PROJECT_LENGTH`) |
+| I | `language` | Idioma de la interfaz al enviar (`es` o `pt`) |
+| J | `consent` | Casilla de consentimiento (`TRUE`) |
+| K | `consentAt` | Momento en que se marcó el consentimiento (ISO 8601, UTC) |
+| L | `pageUrl` | URL desde la que se envió |
+| M | `receivedAt` | Momento en que el script recibió el envío (ISO 8601, UTC) |
+
+Si `NOTIFY_EMAIL` está configurado, cada inscripción manda un aviso con el
+asunto "Nueva inscripción a la masterclass: <nombre>" (comparte el límite de
+20 avisos por hora con los leads). Si cambian las opciones de género, cambia
+`GENDERS` en `Code.gs` y en `MasterclassForm.tsx` a la vez.
