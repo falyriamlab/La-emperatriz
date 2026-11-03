@@ -64,23 +64,19 @@ test('form: "contact" explícito → hoja Leads', () => {
   assert.equal(s.rowsOf(MC).length, 0);
 });
 test("form desconocido → invalid_form", () => rejected({ ...mc, form: "newsletter" }, "invalid_form"));
-for (const bad of ["constructor", "__proto__", "toString", "hasOwnProperty", "Masterclass", "MASTERCLASS", ""]) {
+// Exact match only: no case folding, no trimming.
+for (const bad of ["constructor", "__proto__", "toString", "hasOwnProperty", "Masterclass", "MASTERCLASS", " masterclass", "masterclass ", ""]) {
   test(`form ${JSON.stringify(bad)} → rechazado (invalid_form)`, () => rejected({ ...mc, form: bad }, "invalid_form"));
 }
-for (const bad of [null, 1, true, ["masterclass"], { a: 1 }]) {
-  // KNOWN GAP (Code.gs not changed here): hasOwnProperty.call(FORMS, value)
-  // coerces ["masterclass"] to the string "masterclass", so a one-item array
-  // is accepted and routed to the Masterclass sheet. The sheet name still
-  // comes from the closed FORMS list, so it isn't an injection — just a
-  // type the server shouldn't accept. Fix: require typeof form === "string".
-  const todo = Array.isArray(bad) ? 'Code.gs acepta form: ["masterclass"] (el array se convierte en texto); falta exigir que form sea string' : undefined;
-  test(`form no texto ${JSON.stringify(bad)} → rechazado`, { todo }, () => {
-    const s = load();
-    const r = s.post({ ...mc, form: bad });
-    assert.equal(r.ok, false, JSON.stringify(r));
-    assert.equal(s.rowsOf(MC).length + s.rowsOf(LEADS).length, 0);
-  });
+// form must be a string: hasOwnProperty.call(FORMS, value) would coerce
+// ["masterclass"] to "masterclass" and route it to the Masterclass sheet.
+for (const bad of [null, 1, 0, true, ["masterclass"], [], { a: 1 }, { masterclass: true }]) {
+  test(`form no texto ${JSON.stringify(bad)} → invalid_form`, () => rejected({ ...mc, form: bad }, "invalid_form"));
 }
+test('form ["masterclass"] con payload de contacto → invalid_form, no va a Leads', () =>
+  rejected({ ...contact, form: ["masterclass"] }, "invalid_form"));
+test('form ["contact"] → invalid_form (no cae en el formulario de contacto)', () =>
+  rejected({ ...contact, form: ["contact"] }, "invalid_form"));
 test("payload de contacto con form masterclass → rechazado por la validación de masterclass", () =>
   rejected({ ...contact, form: "masterclass" }, "invalid_gender"));
 
@@ -121,6 +117,19 @@ test("consent false / ausente → no_consent", () => {
   const body = { ...mc }; delete body.consent;
   rejected(body, "no_consent");
 });
+
+// ── Metadatos del navegador (consentAt, pageUrl, submittedAt) ──────────────
+for (const field of ["consentAt", "pageUrl", "submittedAt"]) {
+  for (const bad of [["https://x/"], { a: 1 }, 12345, true]) {
+    test(`${field}: no texto ${JSON.stringify(bad)} → invalid_metadata`, () =>
+      rejected({ ...mc, [field]: bad }, "invalid_metadata"));
+  }
+  test(`${field}: ausente o null → se acepta con celda vacía (como antes)`, () => {
+    const body = { ...mc }; delete body[field];
+    assert.equal(accepted(body).cell(MC, field), "");
+    assert.equal(accepted({ ...mc, [field]: null }).cell(MC, field), "");
+  });
+}
 
 // ── Apóstrofo anti-fórmula en todas las columnas de texto ──────────────────
 test("apóstrofo anti-fórmula en todas las columnas que admiten texto libre", () => {

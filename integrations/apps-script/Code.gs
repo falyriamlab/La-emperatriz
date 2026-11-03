@@ -90,7 +90,8 @@ function doPost(e) {
     const data = JSON.parse((e && e.postData && e.postData.contents) || "");
     if (!data || typeof data !== "object") return json_({ ok: false, error: "invalid_body" });
     const formKey = data.form === undefined ? "contact" : data.form;
-    if (!Object.prototype.hasOwnProperty.call(FORMS, formKey)) {
+    // Solo texto: hasOwnProperty convertiría ["masterclass"] en "masterclass".
+    if (typeof formKey !== "string" || !Object.prototype.hasOwnProperty.call(FORMS, formKey)) {
       return json_({ ok: false, error: "invalid_form" });
     }
     const form = FORMS[formKey];
@@ -215,7 +216,7 @@ function validate_(d) {
   }
 
   if (d.language !== "es" && d.language !== "pt") return "invalid_language";
-  return "";
+  return metadataError_(d);
 }
 
 // Inscripción de /masterclass (MasterclassForm.tsx). Todos los campos son
@@ -253,6 +254,19 @@ function validateMasterclass_(d) {
   d.project = project;
 
   if (d.language !== "es" && d.language !== "pt") return "invalid_language";
+  return metadataError_(d);
+}
+
+// consentAt, pageUrl y submittedAt los pone el navegador (siempre texto).
+// Ausentes o null → celda vacía, como hasta ahora; cualquier otro tipo se
+// rechaza en vez de guardarse convertido ("[object Object]", "a, b").
+// No se recortan ni se valida su formato.
+function metadataError_(d) {
+  const fields = ["consentAt", "pageUrl", "submittedAt"];
+  for (let i = 0; i < fields.length; i++) {
+    const value = d[fields[i]];
+    if (value !== undefined && value !== null && typeof value !== "string") return "invalid_metadata";
+  }
   return "";
 }
 

@@ -102,6 +102,8 @@ acéptalos antes de publicar la versión nueva.
 | `{"ok":false,"error":"too_many_project_types"}` | Más de 10 tipos tras quitar duplicados |
 | `{"ok":false,"error":"invalid_budget"}` | Presupuesto obligatorio vacío, o no es una de las claves permitidas |
 | `{"ok":false,"error":"invalid_language"}` | `language` no es `es` ni `pt` |
+| `{"ok":false,"error":"invalid_metadata"}` | `consentAt`, `pageUrl` o `submittedAt` vienen con un valor que no es texto (lista, objeto, número…). Ausentes o `null` se aceptan y quedan en blanco |
+| `{"ok":false,"error":"invalid_form"}` | `form` no es texto (lista, objeto, número, `null`…) o no es exactamente una clave de `FORMS` |
 | `{"ok":false,"error":"server_error"}` | JSON inválido o error al guardar la fila |
 
 Con cualquier `ok:false` el sitio muestra el mensaje de error genérico.
@@ -198,12 +200,12 @@ a la comunidad de WhatsApp). Si el guardado falla, la persona sigue en el
 paso 1 con el mensaje de error.
 
 Todos los campos son obligatorios. Errores propios de este formulario, además
-de `invalid_name`, `invalid_email`, `invalid_phone`, `invalid_language` y
-`no_consent` (mismas reglas que arriba):
+de `invalid_name`, `invalid_email`, `invalid_phone`, `invalid_language`,
+`invalid_metadata` y `no_consent` (mismas reglas que arriba):
 
 | Respuesta | Significado |
 |---|---|
-| `{"ok":false,"error":"invalid_form"}` | `form` trae un valor que el script no conoce |
+| `{"ok":false,"error":"invalid_form"}` | `form` no es texto, o no es exactamente `"masterclass"` (sin mayúsculas ni espacios) |
 | `{"ok":false,"error":"invalid_country"}` | País vacío o no es texto (aquí es texto libre, no código ISO) |
 | `{"ok":false,"error":"invalid_gender"}` | No es una de las claves de `GENDERS` |
 | `{"ok":false,"error":"invalid_sector"}` | Sector vacío o no es texto |
@@ -251,15 +253,9 @@ resuelva Node y no la terminal. Sale con código 0 si todo pasa.
 
 | Archivo | Qué cubre |
 |---|---|
-| `tests/contact.test.mjs` | Formulario de la landing (hoja "Leads"): las 59 pruebas originales más una que comprueba que, con el valor real de `NOTIFY_EMAIL`, el aviso va a `hola@somospuentecultural.com` — `REQUIRED` sincronizado con el formulario, validación campo por campo, apóstrofo anti-fórmula, aviso por correo (la fila se escribe antes del correo y un fallo del correo no cambia la respuesta), límite de 20 avisos/hora y paridad con `ContactForm.tsx`. |
-| `tests/masterclass.test.mjs` | Inscripción de `/masterclass` (hoja "Masterclass"): enrutado por `form` (desconocido, `constructor`, `__proto__`… → `invalid_form`), un caso válido y uno inválido por campo, apóstrofo en todas las columnas de texto, recorte a 500 y a 2000 caracteres en `project`, contador de avisos compartido con la landing y paridad con `MasterclassForm.tsx`. |
+| `tests/contact.test.mjs` | Formulario de la landing (hoja "Leads"): las 59 pruebas originales más una que comprueba que, con el valor real de `NOTIFY_EMAIL`, el aviso va a `hola@somospuentecultural.com` — `REQUIRED` sincronizado con el formulario, validación campo por campo, apóstrofo anti-fórmula, metadatos y `form` que no son texto (→ `invalid_metadata` / `invalid_form`), aviso por correo (la fila se escribe antes del correo y un fallo del correo no cambia la respuesta), límite de 20 avisos/hora y paridad con `ContactForm.tsx`. |
+| `tests/masterclass.test.mjs` | Inscripción de `/masterclass` (hoja "Masterclass"): enrutado por `form` (desconocido, `constructor`, `__proto__`, `"Masterclass"`, `" masterclass"`, o no texto como `["masterclass"]`, objeto, número o `null` → `invalid_form`), un caso válido y uno inválido por campo, metadatos que no son texto (→ `invalid_metadata`), apóstrofo en todas las columnas de texto, recorte a 500 y a 2000 caracteres en `project`, contador de avisos compartido con la landing y paridad con `MasterclassForm.tsx`. |
 
 Las pruebas de paridad leen las reglas del propio código del sitio
 (`components/form/fields.tsx`, `ContactForm.tsx`, `MasterclassForm.tsx`), así
 que si cambian allí y no en `Code.gs`, fallan.
-
-**Pendiente conocido (marcado como `todo`, no hace fallar el comando):**
-`Code.gs` acepta `"form": ["masterclass"]` (un array), porque
-`hasOwnProperty` lo convierte en el texto `"masterclass"`. El nombre de la
-hoja sigue saliendo de la lista cerrada `FORMS`, así que no es una inyección;
-la corrección sería exigir `typeof form === "string"` en `doPost`.

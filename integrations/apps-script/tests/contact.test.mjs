@@ -100,6 +100,24 @@ test("7 fórmulas: pageUrl con retorno de carro delante → apóstrofo", () => {
   assert.equal(s.cell(LEADS, "pageUrl"), "'\r=1");
 });
 
+// ── 7b. Metadatos del navegador (consentAt, pageUrl, submittedAt) ──────────
+// Before: a list or object was stored converted ("a, b", "[object Object]").
+for (const field of ["consentAt", "pageUrl", "submittedAt"]) {
+  for (const bad of [["https://x/"], { a: 1 }, 12345, true]) {
+    test(`7b ${field}: no texto ${JSON.stringify(bad)} → invalid_metadata`, () =>
+      expectErr({ ...ok, [field]: bad }, "invalid_metadata"));
+  }
+  test(`7b ${field}: ausente o null → se acepta con celda vacía (como antes)`, () => {
+    const body = { ...ok }; delete body[field];
+    expectOk(body, (s) => assert.equal(s.cell(LEADS, field), ""));
+    expectOk({ ...ok, [field]: null }, (s) => assert.equal(s.cell(LEADS, field), ""));
+  });
+}
+for (const bad of [null, ["contact"], { a: 1 }, 1]) {
+  test(`7b form no texto ${JSON.stringify(bad)} con payload de contacto → invalid_form`, () =>
+    expectErr({ ...ok, form: bad }, "invalid_form"));
+}
+
 // ── 8. Aviso por correo ────────────────────────────────────────────────────
 test("8 aviso: MailApp falla (cuota) → {ok:true}, fila guardada, error en Logger", () => {
   const s = load({ notifyEmail: "aviso@example.com", mailThrows: true });
