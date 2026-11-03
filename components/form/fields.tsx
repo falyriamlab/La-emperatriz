@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { MdErrorOutline } from "react-icons/md";
+import { MdErrorOutline, MdExpandMore } from "react-icons/md";
 
 // Shared look and validation rules for the site's forms (ContactForm on the
 // landing, MasterclassForm on /masterclass). The Apps Script receiver
@@ -38,5 +38,42 @@ export function ErrorMessage({ id, children }: { id: string; children: ReactNode
       <MdErrorOutline aria-hidden="true" className="mt-0.5 h-4 w-4 flex-none" />
       <span>{children}</span>
     </p>
+  );
+}
+
+/**
+ * Layered privacy information under the consent checkbox, aligned with its
+ * text (h-5 box + gap-3): a short line that is always visible (point the
+ * checkbox's aria-describedby at `summaryId`) and the full notice in a
+ * native <details>, closed by default — it opens without JavaScript and
+ * screen readers announce its expanded/collapsed state.
+ */
+export function PrivacyInfo({
+  summaryId,
+  summary,
+  more,
+  notice,
+}: {
+  summaryId: string;
+  summary: string;
+  more: string;
+  notice: string;
+}) {
+  return (
+    <div className="mt-2 pl-8 text-sm leading-relaxed text-negro/70">
+      <p id={summaryId}>{summary}</p>
+      <details className="group">
+        <summary
+          className={`inline-flex min-h-11 cursor-pointer list-none items-center gap-1 rounded font-semibold text-morado-oscuro underline decoration-morado-oscuro/40 underline-offset-2 hover:decoration-current [&::-webkit-details-marker]:hidden ${FOCUS_RING}`}
+        >
+          {more}
+          <MdExpandMore
+            aria-hidden="true"
+            className="h-5 w-5 flex-none group-open:rotate-180 motion-safe:transition-transform motion-safe:duration-200"
+          />
+        </summary>
+        <p className="pb-1">{notice}</p>
+      </details>
+    </div>
   );
 }

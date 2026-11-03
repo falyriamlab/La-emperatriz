@@ -13,6 +13,7 @@ import {
   HINT_CLASS,
   isValidPhone,
   LABEL_CLASS,
+  PrivacyInfo,
   textInputClass,
 } from "@/components/form/fields";
 import { ChevronDown } from "@/components/icons/ChevronDown";
@@ -447,7 +448,7 @@ export function MasterclassForm() {
                       onBlur={() => setFieldError("consent", values)}
                       aria-required="true"
                       aria-invalid={errors.consent ? true : undefined}
-                      aria-describedby={errors.consent ? id("consent-error") : undefined}
+                      aria-describedby={describedBy(errors.consent && id("consent-error"), id("privacy-summary"))}
                       className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
                     />
                     <span className="text-sm text-negro/80">
@@ -468,6 +469,12 @@ export function MasterclassForm() {
                     </span>
                   </label>
                   {renderError("consent")}
+                  <PrivacyInfo
+                    summaryId={id("privacy-summary")}
+                    summary={m.privacySummary}
+                    more={m.privacyMore}
+                    notice={m.privacyNotice}
+                  />
                 </div>
               </div>
 
