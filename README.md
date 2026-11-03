@@ -38,3 +38,5 @@ npm run dev      # servidor de desarrollo (Turbopack)
 npm run build    # type-check + build de producción
 npm run lint     # eslint
 ```
+
+Despliegue: GitHub Pages publica solo desde `main` (push o "Run workflow" con `main` seleccionada); lanzado manualmente desde otra rama, el workflow aparece como omitido y no publica nada.
