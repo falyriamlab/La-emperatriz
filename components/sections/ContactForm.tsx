@@ -19,6 +19,7 @@ import {
   HINT_CLASS,
   isValidPhone,
   LABEL_CLASS,
+  PrivacyInfo,
   textInputClass,
 } from "@/components/form/fields";
 import { ChevronDown } from "@/components/icons/ChevronDown";
@@ -451,7 +452,7 @@ export function ContactForm() {
                       onBlur={() => setFieldError("consent", values)}
                       aria-required="true"
                       aria-invalid={consentError ? true : undefined}
-                      aria-describedby={consentError ? id("consent-error") : undefined}
+                      aria-describedby={describedBy(consentError && id("consent-error"), id("privacy-summary"))}
                       className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
                     />
                     <span className="text-sm text-negro/80">
@@ -474,6 +475,12 @@ export function ContactForm() {
                   {consentError && (
                     <ErrorMessage id={id("consent-error")}>{c.errors[consentError]}</ErrorMessage>
                   )}
+                  <PrivacyInfo
+                    summaryId={id("privacy-summary")}
+                    summary={c.privacySummary}
+                    more={c.privacyMore}
+                    notice={c.privacyNotice}
+                  />
                 </div>
 
                 {/* Honeypot: invisible to people and assistive tech, bots fill it. */}

@@ -13,6 +13,7 @@ import {
   HINT_CLASS,
   isValidPhone,
   LABEL_CLASS,
+  PrivacyInfo,
   textInputClass,
 } from "@/components/form/fields";
 import { ChevronDown } from "@/components/icons/ChevronDown";
@@ -344,7 +345,9 @@ export function MasterclassForm() {
           // when step 2 scrolls the card into view.
           className="motion-safe:[animation:hero-rise_0.5s_ease-out_0.3s_both] relative mx-auto -mt-32 max-w-2xl scroll-mt-24 rounded-3xl bg-white p-6 shadow-[0_24px_60px_-24px_rgba(107,57,140,0.35)] sm:-mt-40 sm:p-10"
         >
-          <ol aria-label={m.steps.label} className="flex items-center gap-3">
+          {/* Below 375px: tighter gaps and circles, labels may wrap and the
+              connector keeps 12px, so "Comunidade" (PT) fits at 320px. */}
+          <ol aria-label={m.steps.label} className="flex items-center gap-1.5 min-[375px]:gap-3">
             {steps.map((label, index) => {
               const done = index < currentStep;
               const current = index === currentStep;
@@ -352,11 +355,11 @@ export function MasterclassForm() {
                 <li
                   key={label}
                   aria-current={current ? "step" : undefined}
-                  className="flex flex-1 items-center gap-3 last:flex-none"
+                  className="flex flex-1 items-center gap-1.5 last:flex-none min-[375px]:gap-3"
                 >
                   <span
                     aria-hidden="true"
-                    className={`flex h-9 w-9 flex-none items-center justify-center rounded-full text-sm font-bold motion-safe:transition-colors motion-safe:duration-300 ${
+                    className={`flex h-7 w-7 flex-none items-center min-[375px]:h-9 min-[375px]:w-9 justify-center rounded-full text-sm font-bold motion-safe:transition-colors motion-safe:duration-300 ${
                       done || current
                         ? "bg-morado-oscuro text-crema"
                         : "border-[1.5px] border-lila text-lila"
@@ -365,13 +368,13 @@ export function MasterclassForm() {
                     {done ? <MdCheck className="h-5 w-5" /> : index + 1}
                   </span>
                   <span
-                    className={`text-sm font-bold whitespace-nowrap ${current ? "text-morado-oscuro" : done ? "text-morado-oscuro/70" : "text-negro/60"}`}
+                    className={`text-sm font-bold min-[375px]:whitespace-nowrap ${current ? "text-morado-oscuro" : done ? "text-morado-oscuro/70" : "text-negro/60"}`}
                   >
                     {label}
                     {done && <span className="sr-only"> ({m.steps.done})</span>}
                   </span>
                   {index < steps.length - 1 && (
-                    <span aria-hidden="true" className="h-0.5 flex-1 overflow-hidden rounded-full bg-lila/25">
+                    <span aria-hidden="true" className="h-0.5 flex-1 overflow-hidden rounded-full bg-lila/25 max-[374px]:min-w-3">
                       <span
                         className={`block h-full origin-left bg-morado-oscuro motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-out ${
                           done ? "scale-x-100" : "scale-x-0"
@@ -447,7 +450,7 @@ export function MasterclassForm() {
                       onBlur={() => setFieldError("consent", values)}
                       aria-required="true"
                       aria-invalid={errors.consent ? true : undefined}
-                      aria-describedby={errors.consent ? id("consent-error") : undefined}
+                      aria-describedby={describedBy(errors.consent && id("consent-error"), id("privacy-summary"))}
                       className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
                     />
                     <span className="text-sm text-negro/80">
@@ -468,6 +471,12 @@ export function MasterclassForm() {
                     </span>
                   </label>
                   {renderError("consent")}
+                  <PrivacyInfo
+                    summaryId={id("privacy-summary")}
+                    summary={m.privacySummary}
+                    more={m.privacyMore}
+                    notice={m.privacyNotice}
+                  />
                 </div>
               </div>
 

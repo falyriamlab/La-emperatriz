@@ -144,6 +144,9 @@
       }
     },
     "consent": { "text": "Aceito que a Puente trate meus dados para entrar em contato sobre este processo.", "linkLabel": "Política de privacidade" },
+    "privacySummary": "Responsável: Daniela Betancourt Morales (Puente). Usamos seus dados para responder à sua consulta. Você pode exercer seus direitos em hola@somospuentecultural.com.",
+    "privacyMore": "Mais informações sobre privacidade",
+    "privacyNotice": "Responsável: Daniela Betancourt Morales (Puente Consultora Cultural). Finalidade: responder à sua consulta e entrar em contato sobre A Imperatriz. Base legal: o seu consentimento. Conservação: até 12 meses desde o último contato. Destinatários: Google, que armazena as respostas e envia os avisos; não cedemos os seus dados a terceiros, salvo obrigação legal. Direitos: acesso, retificação, apagamento, oposição, limitação e portabilidade, escrevendo para hola@somospuentecultural.com. Você pode apresentar reclamação à Agência Espanhola de Proteção de Dados (aepd.es).",
     "submit": "Enviar meus dados",
     "sending": "Enviando…",
     "errors": {
@@ -242,6 +245,9 @@
       }
     },
     "consent": "Aceito que a Puente trate meus dados para gerenciar minha inscrição na masterclass.",
+    "privacySummary": "Responsável: Daniela Betancourt Morales (Puente). Usamos seus dados para gerenciar sua inscrição na masterclass. Você pode exercer seus direitos em hola@somospuentecultural.com.",
+    "privacyMore": "Mais informações sobre privacidade",
+    "privacyNotice": "Responsável: Daniela Betancourt Morales (Puente Consultora Cultural). Finalidade: gerenciar a sua inscrição na masterclass e enviar informações sobre ela. Os dados de gênero e setor são usados para elaborar métricas e ter uma aproximação da sua relação com o seu projeto. Base legal: o seu consentimento. Conservação: até 12 meses desde o último contato. Destinatários: Google, que armazena as respostas e envia os avisos; não cedemos os seus dados a terceiros, salvo obrigação legal. Direitos: acesso, retificação, apagamento, oposição, limitação e portabilidade, escrevendo para hola@somospuentecultural.com. Você pode apresentar reclamação à Agência Espanhola de Proteção de Dados (aepd.es).",
     "submit": "Inscrever-me",
     "sending": "Enviando…",
     "community": {
