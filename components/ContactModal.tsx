@@ -7,26 +7,31 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   type MouseEvent,
   type ReactNode,
 } from "react";
 import { MdClose } from "react-icons/md";
 import { FOCUS_RING } from "@/components/form/fields";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ContactForm } from "@/components/sections/ContactForm";
+import { ContactForm, type ContactFormMode } from "@/components/sections/ContactForm";
 import { FORMS_READY } from "@/lib/features";
+import { BOOKING_LINK } from "@/lib/links";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-const CONTACT_EMAIL = "hola@somospuentecultural.com";
+type OpenModal = (trigger: HTMLElement, mode: ContactFormMode) => void;
+const OpenContext = createContext<OpenModal | null>(null);
 
-const OpenContext = createContext<((trigger: HTMLElement) => void) | null>(null);
+const noopSubscribe = () => () => {};
 
 /**
- * The landing's contact form, in a native modal <dialog> opened from
- * ContactModalButton. Wraps the page so any section can place a button.
+ * The landing's contact form, in a native modal <dialog>. Wraps the page so
+ * any section can open it — today, the "Agendar sesión semilla" links
+ * (useBookingLink), in "semilla" mode.
  * The form stays mounted while closed (what was typed survives reopening);
  * after a successful send it is remounted on close, fresh for next time.
- * Without FORMS_READY there's no dialog and the buttons render nothing.
+ * Without FORMS_READY there's no dialog and the links go straight to the
+ * calendar.
  */
 export function ContactModalProvider({ children }: { children: ReactNode }) {
   const { t } = useLanguage();
@@ -34,33 +39,37 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const titleId = useId();
   const subtitleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   // Whether the press started on the backdrop: a text selection dragged out
   // of the window must not count as a click outside.
   const pressedOutsideRef = useRef(false);
   const [formKey, setFormKey] = useState(0);
-  const sentRef = useRef(false);
+  const [mode, setMode] = useState<ContactFormMode>("semilla");
+  const successTitleId = useId();
+  // After a successful send only the success title, text and button show;
+  // closing resets the form (new key) and brings the form title back.
+  const [sent, setSent] = useState(false);
 
-  const open = useCallback((trigger: HTMLElement) => {
+  const open = useCallback<OpenModal>((trigger, nextMode) => {
     const dialog = dialogRef.current;
     if (!dialog || dialog.open) return;
     triggerRef.current = trigger;
+    setMode(nextMode);
     dialog.showModal();
     // Page behind stays put while the modal scrolls on its own.
     document.documentElement.style.overflow = "hidden";
-    dialog.scrollTop = 0;
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
     dialog.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
   }, []);
 
-  const markSent = useCallback(() => {
-    sentRef.current = true;
-  }, []);
+  const markSent = useCallback(() => setSent(true), []);
 
   // Runs for every way of closing: the X, Esc (native cancel) and the backdrop.
   function handleClose() {
     document.documentElement.style.overflow = "";
-    if (sentRef.current) {
-      sentRef.current = false;
+    if (sent) {
+      setSent(false);
       setFormKey((key) => key + 1);
     }
     triggerRef.current?.focus();
@@ -74,13 +83,15 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
 
   if (!FORMS_READY) return <>{children}</>;
 
+  const seed = mode === "semilla";
+
   return (
     <OpenContext.Provider value={open}>
       {children}
       <dialog
         ref={dialogRef}
-        aria-labelledby={titleId}
-        aria-describedby={subtitleId}
+        aria-labelledby={sent ? successTitleId : titleId}
+        aria-describedby={sent ? undefined : subtitleId}
         onClose={handleClose}
         onPointerDown={(event) => {
           pressedOutsideRef.current = isBackdrop(event);
@@ -88,11 +99,18 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         onClick={(event) => {
           if (pressedOutsideRef.current && isBackdrop(event)) dialogRef.current?.close();
         }}
-        // < 640 px: the whole screen. From sm: centered, up to 640 px wide
-        // and 90vh tall; the dialog itself is the scroll area.
-        className="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto overscroll-contain bg-white p-0 text-negro backdrop:bg-negro/60 open:motion-safe:animate-[fade-in_200ms_ease-out] sm:m-auto sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-[640px] sm:rounded-3xl sm:shadow-xl"
+        // < 640 px: the whole screen, no radius. From sm: centered, up to
+        // 640 px wide and 90vh tall, four rounded corners — the dialog
+        // clips (overflow-hidden) and the inner layer scrolls, so the
+        // scrollbar never squares off the corners. sm:h-fit, not h-auto: a
+        // modal dialog is pinned with inset 0, so "auto" would stretch it
+        // to the max height even when the content (e.g. success) is short.
+        className="m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-white p-0 text-negro backdrop:bg-negro/60 open:motion-safe:animate-[fade-in_200ms_ease-out] sm:m-auto sm:h-fit sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-[640px] sm:rounded-3xl sm:shadow-xl"
       >
-        <div className="flex min-h-full flex-col">
+        <div
+          ref={scrollRef}
+          className="h-full overflow-y-auto overscroll-contain sm:h-auto sm:max-h-[90vh]"
+        >
           <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-morado-oscuro/10 bg-white/95 px-4 py-2 backdrop-blur sm:px-6">
             <LanguageToggle />
             <button
@@ -106,17 +124,26 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
           </div>
 
           <div className="px-6 pt-6 pb-10 sm:px-10">
-            <h2
-              id={titleId}
-              className="font-display text-3xl font-semibold italic text-morado-oscuro sm:text-4xl"
-            >
-              {c.title}
-            </h2>
-            <p id={subtitleId} className="mt-3 text-lg text-negro/80">
-              {c.subtitle}
-            </p>
-            <div className="mt-8">
-              <ContactForm key={formKey} onSuccess={markSent} />
+            {!sent && (
+              <>
+                <h2
+                  id={titleId}
+                  className="font-display text-3xl font-semibold italic text-morado-oscuro sm:text-4xl"
+                >
+                  {seed ? c.semilla.title : c.title}
+                </h2>
+                <p id={subtitleId} className="mt-3 text-lg text-negro/80">
+                  {seed ? c.semilla.subtitle : c.subtitle}
+                </p>
+              </>
+            )}
+            <div className={sent ? "pt-4" : "mt-8"}>
+              <ContactForm
+                key={formKey}
+                mode={mode}
+                onSuccess={markSent}
+                successTitleId={successTitleId}
+              />
             </div>
           </div>
         </div>
@@ -125,46 +152,30 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const LINK_CLASS: Record<"light" | "dark", string> = {
-  light:
-    "text-morado-oscuro decoration-morado-oscuro/40 hover:text-coral hover:decoration-coral focus-visible:outline-morado-oscuro",
-  dark: "text-crema decoration-crema/50 hover:text-amarillo hover:decoration-amarillo focus-visible:outline-amarillo",
-};
-
 /**
- * Secondary text-link-style action that opens the contact modal — below the
- * payment buttons in the hierarchy, never competing with them.
- * Without JavaScript (or if the page never hydrates: no-hydrate) the js:
- * variant swaps it for a mailto: link with the same text.
+ * Props for every "Agendar sesión semilla" link. Progressive enhancement:
+ * it is always a real link to the calendar (BOOKING_LINK, new tab); with
+ * JavaScript and FORMS_READY the click is intercepted and the form opens
+ * first, in "semilla" mode. Without JS, with no-hydrate, without
+ * FORMS_READY, or on ctrl/cmd/shift/middle click, it goes to the calendar.
  */
-export function ContactModalButton({
-  surface = "light",
-  className = "",
-}: {
-  /** Background it sits on: crema/white ("light") or morado ("dark"). */
-  surface?: "light" | "dark";
-  className?: string;
-}) {
+export function useBookingLink() {
   const open = useContext(OpenContext);
-  const { t } = useLanguage();
-  if (!FORMS_READY) return null;
+  // false on the server and during hydration, so the markup matches.
+  const hydrated = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const enabled = FORMS_READY && open !== null && hydrated;
 
-  const label = t.contactForm.openButton;
-  const base = `min-h-11 items-center justify-center text-center text-base font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 ${LINK_CLASS[surface]} ${className}`;
-
-  return (
-    <>
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        onClick={(event) => open?.(event.currentTarget)}
-        className={`hidden cursor-pointer js:inline-flex ${base}`}
-      >
-        {label}
-      </button>
-      <a href={`mailto:${CONTACT_EMAIL}`} className={`inline-flex js:hidden ${base}`}>
-        {label}
-      </a>
-    </>
-  );
+  return {
+    href: BOOKING_LINK,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    "aria-haspopup": enabled ? ("dialog" as const) : undefined,
+    onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+      if (!enabled || !open) return;
+      if (document.documentElement.classList.contains("no-hydrate")) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      open(event.currentTarget, "semilla");
+    },
+  };
 }

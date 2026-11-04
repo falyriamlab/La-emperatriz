@@ -1,13 +1,14 @@
 "use client";
 
-import { ContactModalButton } from "@/components/ContactModal";
+import { useBookingLink } from "@/components/ContactModal";
 import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
-import { BOOKING_LINK } from "@/lib/links";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function FinalCTA() {
   const { t } = useLanguage();
+  // Calendar link that opens the form first (see useBookingLink).
+  const bookingLink = useBookingLink();
 
   return (
     <section
@@ -39,20 +40,11 @@ export function FinalCTA() {
         </h2>
         <p className="mt-6 text-lg text-crema/80">{t.finalCta.paragraph}</p>
 
-        <CTAButton
-          surface="dark"
-          href={BOOKING_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-10"
-        >
+        <CTAButton surface="dark" {...bookingLink} className="mt-10">
           {t.finalCta.cta}
         </CTAButton>
 
         <p className="mt-4 text-sm text-crema/75">{t.finalCta.note}</p>
-
-        {/* Secondary action, under the seed-session button (FORMS_READY only). */}
-        <ContactModalButton surface="dark" className="mt-6" />
 
         <p className="mt-8 text-sm font-semibold tracking-wide text-crema/75">
           {t.finalCta.brand}
