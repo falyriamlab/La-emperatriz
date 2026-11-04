@@ -131,16 +131,20 @@ function hasInput(field: ValidatedField, values: Values) {
 /**
  * Contact form body (no section, title or card of its own): it lives inside
  * ContactModal, which supplies the title, subtitle and surface. `onSuccess`
- * lets the modal reset it (remount) once it's closed after a sent lead.
+ * lets the modal swap its title for the success one and reset the form
+ * (remount) once it's closed after a sent lead; `successTitleId` is the id
+ * of that success heading, for the dialog's aria-labelledby.
  * `mode` only swaps texts (submit, success, error fallback); validation,
  * privacy notices and the submission are the same.
  */
 export function ContactForm({
   onSuccess,
   mode = "contacto",
+  successTitleId,
 }: {
   onSuccess?: () => void;
   mode?: ContactFormMode;
+  successTitleId?: string;
 }) {
   const { t, language } = useLanguage();
   const c = t.contactForm;
@@ -424,6 +428,7 @@ export function ContactForm({
           <div className="text-center">
             <h3
               ref={successTitleRef}
+              id={successTitleId}
               tabIndex={-1}
               // Focus target for announcing success, not a control —
               // no ring needed on a non-interactive heading.

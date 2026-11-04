@@ -46,7 +46,10 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const pressedOutsideRef = useRef(false);
   const [formKey, setFormKey] = useState(0);
   const [mode, setMode] = useState<ContactFormMode>("semilla");
-  const sentRef = useRef(false);
+  const successTitleId = useId();
+  // After a successful send only the success title, text and button show;
+  // closing resets the form (new key) and brings the form title back.
+  const [sent, setSent] = useState(false);
 
   const open = useCallback<OpenModal>((trigger, nextMode) => {
     const dialog = dialogRef.current;
@@ -60,15 +63,13 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
     dialog.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
   }, []);
 
-  const markSent = useCallback(() => {
-    sentRef.current = true;
-  }, []);
+  const markSent = useCallback(() => setSent(true), []);
 
   // Runs for every way of closing: the X, Esc (native cancel) and the backdrop.
   function handleClose() {
     document.documentElement.style.overflow = "";
-    if (sentRef.current) {
-      sentRef.current = false;
+    if (sent) {
+      setSent(false);
       setFormKey((key) => key + 1);
     }
     triggerRef.current?.focus();
@@ -89,8 +90,8 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       {children}
       <dialog
         ref={dialogRef}
-        aria-labelledby={titleId}
-        aria-describedby={subtitleId}
+        aria-labelledby={sent ? successTitleId : titleId}
+        aria-describedby={sent ? undefined : subtitleId}
         onClose={handleClose}
         onPointerDown={(event) => {
           pressedOutsideRef.current = isBackdrop(event);
@@ -123,17 +124,26 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
           </div>
 
           <div className="px-6 pt-6 pb-10 sm:px-10">
-            <h2
-              id={titleId}
-              className="font-display text-3xl font-semibold italic text-morado-oscuro sm:text-4xl"
-            >
-              {seed ? c.semilla.title : c.title}
-            </h2>
-            <p id={subtitleId} className="mt-3 text-lg text-negro/80">
-              {seed ? c.semilla.subtitle : c.subtitle}
-            </p>
-            <div className="mt-8">
-              <ContactForm key={formKey} mode={mode} onSuccess={markSent} />
+            {!sent && (
+              <>
+                <h2
+                  id={titleId}
+                  className="font-display text-3xl font-semibold italic text-morado-oscuro sm:text-4xl"
+                >
+                  {seed ? c.semilla.title : c.title}
+                </h2>
+                <p id={subtitleId} className="mt-3 text-lg text-negro/80">
+                  {seed ? c.semilla.subtitle : c.subtitle}
+                </p>
+              </>
+            )}
+            <div className={sent ? "pt-4" : "mt-8"}>
+              <ContactForm
+                key={formKey}
+                mode={mode}
+                onSuccess={markSent}
+                successTitleId={successTitleId}
+              />
             </div>
           </div>
         </div>
