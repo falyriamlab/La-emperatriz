@@ -38,7 +38,7 @@
     "noTitle": "No es para ti si...",
     "noItems": [
       "Buscas una fórmula genérica sin personalización.",
-      "No estás dispuesta a comprometerte con un proceso de 4 meses.",
+      "Buscas resultados inmediatos, de un día para otro.",
       "Esperas resultados sin poner tu propio trabajo y reflexión en el camino."
     ]
   },
@@ -54,7 +54,7 @@
     "purpose": {
       "title": "Finalidad",
       "lead": "Saldrás de esta mentoría con más confianza en ti y en lo que haces y con un camino a seguir para que tu proyecto sea sostenible.",
-      "intro": "Con nuestras mentorías obtendrás claridad, estructura y coherencia en tu proyecto, que se traducirán en:",
+      "intro": "Con nuestras mentorías obtendrás claridad, estructura y coherencia en tu proyecto, que se podrían traducir en:",
       "deliverables": ["Un plan de trabajo de 12 meses", "Un plan de comunicación", "Una estrategia de financiación"],
       "more": "Entre otros, acorde con las necesidades que identifiquemos.",
       "note": "Los resultados de cada proceso de acompañamiento dependen del compromiso y el grado de desarrollo de cada proyecto cultural o creativo. No es una fórmula mágica."
@@ -73,9 +73,9 @@
     "stats": [
       { "value": "6", "label": "países acompañados: Colombia, España, Brasil, Francia, Portugal y Chile." },
       { "value": "Danza, Teatro, Música, Artes visuales", "label": "disciplinas culturales acompañadas." },
-      { "value": "8", "suffix": " años", "label": "de experiencia en gestión cultural." }
+      { "value": "9", "suffix": " años", "label": "de experiencia en gestión cultural." }
     ],
-    "recognition": "Parte de la Red de Emprendedores y Emprendedoras de la Comunidad de Madrid \"Madrid Emprende\" y del tejido de emprendimientos reconocidos por \"Colombia nos une\".",
+    "recognition": "Puente forma parte de la red de emprendedores de Madrid Emprende, donde Daniela es mentora.",
     "testimonials": {
       "title": "Quienes ya caminaron con Puente",
       "subtitle": "Lo que cuentan algunas de las personas que han vivido procesos de acompañamiento con Daniela.",
@@ -105,7 +105,7 @@
     "title": "Invierte en tu proceso",
     "subtitle": "Elige cómo prefieres invertir en tu proceso.",
     "monthlyLabel": "Inversión mensual",
-    "monthlyDesc": "Paga mes a mes durante los 4 meses del proceso.",
+    "monthlyDesc": "Paga mes a mes, sin permanencia: tras el primer mes decides si continúas.",
     "uniqueLabel": "Inversión total",
     "uniqueDesc": "Pago único por todo el proceso y ahorra en el precio mensual.",
     "ctaMonthly": "Comenzar con inversión mensual",
@@ -121,6 +121,10 @@
   "faq": {
     "title": "Preguntas frecuentes",
     "items": [
+      { "q": "¿Dónde y cómo son las sesiones?", "a": "Todas las sesiones se hacen por Google Meet y duran 1 hora y 30 minutos." },
+      { "q": "¿Y si vivo en otro país o zona horaria?", "a": "Los horarios son flexibles: acordamos juntas los días y las horas que mejor se adapten a ti, estés donde estés." },
+      { "q": "¿Puedo dejarlo después del primer mes?", "a": "Sí. La inversión mensual no tiene permanencia: si después del primer mes ves que no es para ti, basta con escribirnos a hola@somospuentecultural.com antes de la siguiente factura." },
+      { "q": "¿Las sesiones se graban?", "a": "Sí, si das tu consentimiento: recibes el enlace a una carpeta de Drive con las grabaciones, disponible durante 1 año. Si prefieres que no se grabe, recibes solo el resumen escrito." },
       { "q": "¿Qué pasa si no puedo asistir a una sesión?", "a": "Escríbenos y buscamos juntas la mejor forma de reagendar dentro del mes, para que no pierdas tu espacio de acompañamiento." },
       { "q": "¿Necesito tener el proyecto ya definido para empezar?", "a": "No. La Emperatriz también acompaña proyectos en etapa temprana — lo importante es que tengas la intención de encaminarlo con estructura y sensibilidad." },
       { "q": "¿En qué idioma son las sesiones?", "a": "Las sesiones se adaptan a tu idioma: español o portugués, según tu preferencia." },

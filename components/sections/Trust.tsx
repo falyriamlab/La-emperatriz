@@ -85,6 +85,11 @@ export function Trust() {
                 );
               })}
             </div>
+
+            {/* Recognition: plain text, no logos. crema/80 keeps AA (≈5:1) on morado. */}
+            <p className="mx-auto mt-12 max-w-xl text-sm text-crema/80">
+              {t.trust.recognition}
+            </p>
           </Reveal>
         </div>
       </div>

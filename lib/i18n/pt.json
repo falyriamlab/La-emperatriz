@@ -38,7 +38,7 @@
     "noTitle": "Não é para você se...",
     "noItems": [
       "Procura uma fórmula genérica, sem personalização.",
-      "Não está disposta a se comprometer com um processo de 4 meses.",
+      "Busca resultados imediatos, de um dia para o outro.",
       "Espera resultados sem colocar seu próprio trabalho e reflexão no caminho."
     ]
   },
@@ -54,7 +54,7 @@
     "purpose": {
       "title": "Finalidade",
       "lead": "Você sairá desta mentoria com mais confiança em você e no que faz, e com um caminho a seguir para que seu projeto seja sustentável.",
-      "intro": "Com nossas mentorias, você obterá clareza, estrutura e coerência no seu projeto, que se traduzirão em:",
+      "intro": "Com nossas mentorias, você obterá clareza, estrutura e coerência no seu projeto, que poderiam se traduzir em:",
       "deliverables": ["Um plano de trabalho de 12 meses", "Um plano de comunicação", "Uma estratégia de financiamento"],
       "more": "Entre outros, de acordo com as necessidades que identificarmos.",
       "note": "Os resultados de cada processo de acompanhamento dependem do compromisso e do grau de desenvolvimento de cada projeto cultural ou criativo. Não é uma fórmula mágica."
@@ -73,9 +73,9 @@
     "stats": [
       { "value": "6", "label": "países acompanhados: Colômbia, Espanha, Brasil, França, Portugal e Chile." },
       { "value": "Dança, Teatro, Música, Artes visuais", "label": "disciplinas culturais acompanhadas." },
-      { "value": "8", "suffix": " anos", "label": "de experiência em gestão cultural." }
+      { "value": "9", "suffix": " anos", "label": "de experiência em gestão cultural." }
     ],
-    "recognition": "Parte da Rede de Empreendedores e Empreendedoras da Comunidade de Madrid \"Madrid Emprende\" e do tecido de empreendimentos reconhecidos pelo \"Colombia nos une\".",
+    "recognition": "A Puente faz parte da rede de empreendedores do Madrid Emprende, onde a Daniela é mentora.",
     "testimonials": {
       "title": "Quem já caminhou com a Puente",
       "subtitle": "O que contam algumas das pessoas que viveram processos de acompanhamento com a Daniela.",
@@ -105,7 +105,7 @@
     "title": "Invista no seu processo",
     "subtitle": "Escolha como prefere investir no seu processo.",
     "monthlyLabel": "Investimento mensal",
-    "monthlyDesc": "Pague mês a mês durante os 4 meses do processo.",
+    "monthlyDesc": "Pague mês a mês, sem fidelidade: depois do primeiro mês, você decide se continua.",
     "uniqueLabel": "Investimento total",
     "uniqueDesc": "Pagamento único por todo o processo e economize em relação ao preço mensal.",
     "ctaMonthly": "Começar com investimento mensal",
@@ -121,6 +121,10 @@
   "faq": {
     "title": "Perguntas frequentes",
     "items": [
+      { "q": "Onde e como são as sessões?", "a": "Todas as sessões acontecem pelo Google Meet e duram 1 hora e 30 minutos." },
+      { "q": "E se eu moro em outro país ou fuso horário?", "a": "Os horários são flexíveis: combinamos juntas os dias e horários que melhor se adaptem a você, esteja onde estiver." },
+      { "q": "Posso parar depois do primeiro mês?", "a": "Sim. O investimento mensal não tem fidelidade: se depois do primeiro mês você perceber que não é para você, basta escrever para hola@somospuentecultural.com antes da próxima fatura." },
+      { "q": "As sessões são gravadas?", "a": "Sim, se você der o seu consentimento: você recebe o link de uma pasta do Drive com as gravações, disponível durante 1 ano. Se preferir não ser gravada, você recebe apenas o resumo escrito." },
       { "q": "O que acontece se eu não puder comparecer a uma sessão?", "a": "Escreva para nós e buscamos juntas a melhor forma de reagendar dentro do mês, para que você não perca seu espaço de acompanhamento." },
       { "q": "Preciso já ter o projeto definido para começar?", "a": "Não. A Imperatriz também acompanha projetos em estágio inicial — o importante é que você tenha a intenção de encaminhá-lo com estrutura e sensibilidade." },
       { "q": "Em que idioma são as sessões?", "a": "As sessões se adaptam ao seu idioma: espanhol ou português, de acordo com a sua preferência." },
