@@ -1,5 +1,6 @@
 "use client";
 
+import { ContactModalButton } from "@/components/ContactModal";
 import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { BOOKING_LINK } from "@/lib/links";
@@ -49,6 +50,9 @@ export function FinalCTA() {
         </CTAButton>
 
         <p className="mt-4 text-sm text-crema/75">{t.finalCta.note}</p>
+
+        {/* Secondary action, under the seed-session button (FORMS_READY only). */}
+        <ContactModalButton surface="dark" className="mt-6" />
 
         <p className="mt-8 text-sm font-semibold tracking-wide text-crema/75">
           {t.finalCta.brand}
