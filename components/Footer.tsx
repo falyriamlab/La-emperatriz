@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { useBookingLink } from "@/components/ContactModal";
 import { CopyableEmail } from "@/components/CopyableEmail";
 import { CTAButton } from "@/components/CTAButton";
 import { useInView } from "@/hooks/useInView";
 import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { LEGAL } from "@/lib/legal";
-import { BOOKING_LINK } from "@/lib/links";
 
 // Muted secondary text throughout this footer uses /70 (not the /40-/60
 // the umanodesign.studio reference gets away with on plain white) — crema
@@ -18,6 +18,9 @@ const MUTED = "text-negro/70";
 
 export function Footer() {
   const { t } = useLanguage();
+  // Calendar link; on the landing it opens the form first (useBookingLink).
+  // On pages without ContactModalProvider (/masterclass) it's a plain link.
+  const bookingLink = useBookingLink();
   const legalLinks = (["privacy", "legalNotice", "terms"] as const)
     .filter((key) => LEGAL[key] !== "")
     .map((key) => ({ key, href: LEGAL[key], label: t.footer.legal[key] }));
@@ -108,13 +111,7 @@ export function Footer() {
 
             <div className="mt-8 flex min-w-0 flex-1 flex-col flex-wrap items-start justify-end gap-4 border-t border-morado-oscuro/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className={`text-xs ${MUTED}`}>{t.footer.copyright}</p>
-              <CTAButton
-                surface="light"
-                href={BOOKING_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="pointer-events-auto"
-              >
+              <CTAButton surface="light" {...bookingLink} className="pointer-events-auto">
                 {t.footer.ctaBook}
               </CTAButton>
             </div>

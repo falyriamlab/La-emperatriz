@@ -117,14 +117,34 @@ function useIsClient() {
   return useSyncExternalStore(noopSubscribe, () => true, () => false);
 }
 
+/** "semilla": opened from an "Agendar sesión semilla" link — same form, other texts, and the calendar comes after. */
+export type ContactFormMode = "contacto" | "semilla";
+
+// Whether the person has entered anything in a field. Leaving an untouched,
+// empty field shows no error (e.g. tabbing past it or closing the modal);
+// empty required fields are flagged on submit.
+function hasInput(field: ValidatedField, values: Values) {
+  if (field === "consent") return values.consent;
+  return values[field].length > 0;
+}
+
 /**
  * Contact form body (no section, title or card of its own): it lives inside
  * ContactModal, which supplies the title, subtitle and surface. `onSuccess`
  * lets the modal reset it (remount) once it's closed after a sent lead.
+ * `mode` only swaps texts (submit, success, error fallback); validation,
+ * privacy notices and the submission are the same.
  */
-export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
+export function ContactForm({
+  onSuccess,
+  mode = "contacto",
+}: {
+  onSuccess?: () => void;
+  mode?: ContactFormMode;
+}) {
   const { t, language } = useLanguage();
   const c = t.contactForm;
+  const seed = mode === "semilla";
   const uid = useId();
   const id = (part: string) => `${uid}-${part}`;
 
@@ -164,12 +184,18 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     if (errors[field as ValidatedField]) setFieldError(field as ValidatedField, nextValues);
   }
 
+  function handleBlur(field: ValidatedField) {
+    // A field already flagged keeps being checked; an untouched one waits for submit.
+    if (!errors[field] && !hasInput(field, values)) return;
+    setFieldError(field, values);
+  }
+
   function handleGroupBlur(field: ValidatedField) {
     return (event: FocusEvent<HTMLElement>) => {
       // Radios: only validate once focus actually leaves the whole group,
       // not while arrowing between options.
       if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
-      setFieldError(field, values);
+      handleBlur(field);
     };
   }
 
@@ -254,7 +280,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
           value={values[field]}
           placeholder={copy.placeholder}
           onChange={(e) => update(field, e.target.value)}
-          onBlur={() => setFieldError(field, values)}
+          onBlur={() => handleBlur(field)}
           aria-required={FIELD_REQUIRED[field] || undefined}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy(hint && id(`${field}-hint`), error && id(`${field}-error`))}
@@ -288,7 +314,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             autoComplete="country"
             value={values.country}
             onChange={(e) => update("country", e.target.value as CountryCode)}
-            onBlur={() => setFieldError("country", values)}
+            onBlur={() => handleBlur("country")}
             aria-required={FIELD_REQUIRED.country || undefined}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? id("country-error") : undefined}
@@ -403,17 +429,33 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
               // no ring needed on a non-interactive heading.
               className="font-display text-2xl focus:outline-none font-semibold italic text-morado-oscuro sm:text-3xl"
             >
-              {c.success.title}
+              {seed ? c.semilla.successTitle : c.success.title}
             </h3>
-            <p className="mt-4 text-base text-negro/75">{c.success.body}</p>
-            <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-[1.5px] border-morado-oscuro px-6 py-3 text-base font-bold text-morado-oscuro hover:bg-morado-oscuro hover:text-crema motion-safe:transition-colors motion-safe:duration-200 ${FOCUS_RING}`}
-            >
-              {c.success.cta}
-            </a>
+            <p className="mt-4 text-base text-negro/75">
+              {seed ? c.semilla.successBody : c.success.body}
+            </p>
+            {/* Seed mode: the calendar is the next step, but it only opens
+                when the person asks for it — never automatically. */}
+            {seed ? (
+              <CTAButton
+                href={BOOKING_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                surface="light"
+                className="mt-8"
+              >
+                {c.semilla.successCta}
+              </CTAButton>
+            ) : (
+              <a
+                href={BOOKING_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-[1.5px] border-morado-oscuro px-6 py-3 text-base font-bold text-morado-oscuro hover:bg-morado-oscuro hover:text-crema motion-safe:transition-colors motion-safe:duration-200 ${FOCUS_RING}`}
+              >
+                {c.success.cta}
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -440,7 +482,7 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                   update("consent", e.target.checked);
                   setConsentAt(e.target.checked ? new Date().toISOString() : null);
                 }}
-                onBlur={() => setFieldError("consent", values)}
+                onBlur={() => handleBlur("consent")}
                 aria-required="true"
                 aria-invalid={consentError ? true : undefined}
                 aria-describedby={describedBy(consentError && id("consent-error"), id("privacy-summary"))}
@@ -485,12 +527,25 @@ export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
               {showSummary && hasErrors ? (
                 <ErrorMessage id={id("summary")}>{c.errors.summary}</ErrorMessage>
               ) : status === "error" ? (
-                <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
+                <>
+                  <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
+                  {/* Seed mode: the form failing must not block booking. */}
+                  {seed && (
+                    <a
+                      href={BOOKING_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`mt-1 inline-flex min-h-11 items-center text-sm font-bold text-morado-oscuro underline underline-offset-4 hover:text-coral ${FOCUS_RING}`}
+                    >
+                      {c.semilla.errorFallback}
+                    </a>
+                  )}
+                </>
               ) : null}
             </div>
 
             <CTAButton type="submit" surface="light" disabled={sending} className="w-full">
-              {sending ? c.sending : c.submit}
+              {sending ? c.sending : seed ? c.semilla.submit : c.submit}
             </CTAButton>
           </div>
         </form>

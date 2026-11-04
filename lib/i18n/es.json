@@ -128,8 +128,16 @@
     ]
   },
   "contactForm": {
-    "openButton": "¿Prefieres que te contactemos? Cuéntanos sobre tu proyecto",
     "close": "Cerrar",
+    "semilla": {
+      "title": "Antes de agendar, cuéntanos sobre tu proyecto",
+      "subtitle": "Así llegamos a la sesión semilla conociendo tu proyecto. Después eliges el día y la hora.",
+      "submit": "Enviar y elegir horario",
+      "successTitle": "¡Gracias! Ahora elige tu horario",
+      "successBody": "Recibimos tus datos. Elige el día y la hora de tu sesión semilla gratuita.",
+      "successCta": "Elegir día y hora",
+      "errorFallback": "Agendar sin enviar el formulario"
+    },
     "title": "Cuéntanos sobre tu proyecto",
     "subtitle": "Déjanos tus datos y te escribiremos para conversar sobre tu proceso. Sin compromiso.",
     "fields": {

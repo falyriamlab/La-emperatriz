@@ -5,8 +5,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { LEGAL } from "@/lib/legal";
-import { ContactModalButton } from "@/components/ContactModal";
-import { BOOKING_LINK } from "@/lib/links";
+import { useBookingLink } from "@/components/ContactModal";
 import { PRECIOS, STRIPE_LINKS, ahorro, sumaMensual } from "@/lib/pricing";
 
 // Prices are fixed constants (no dates), so the server-rendered HTML already
@@ -50,6 +49,7 @@ const PRICE_CLASS =
 export function Pricing() {
   const { t } = useLanguage();
   const p = t.pricing;
+  const bookingLink = useBookingLink();
 
   return (
     <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
@@ -116,21 +116,16 @@ export function Pricing() {
 
           <p className="mx-auto mt-10 max-w-xl text-sm text-negro/50">{p.includes}</p>
 
-          {/* Secondary paths for the undecided: plain text links, clearly
+          {/* Secondary path for the undecided: a plain text link, clearly
               below the two payment buttons in the hierarchy. Same booking
-              URL as FinalCTA (lib/links.ts); the contact form opens in a
-              modal (only with FORMS_READY). */}
-          <div className="mt-6 flex flex-col items-center gap-1">
-            <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center text-base font-semibold text-morado-oscuro underline decoration-morado-oscuro/40 underline-offset-4 hover:text-coral hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
-            >
-              {p.doubtsLink}
-            </a>
-            <ContactModalButton surface="light" />
-          </div>
+              link as FinalCTA and the footer (useBookingLink: the form
+              first, then the calendar). */}
+          <a
+            {...bookingLink}
+            className="mt-6 inline-flex min-h-11 items-center text-base font-semibold text-morado-oscuro underline decoration-morado-oscuro/40 underline-offset-4 hover:text-coral hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
+          >
+            {p.doubtsLink}
+          </a>
 
           {/* Only once there's a purchase-terms page (lib/legal.ts). */}
           {LEGAL.terms && (

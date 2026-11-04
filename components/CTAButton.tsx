@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 import { MdArrowForward } from "react-icons/md";
 
 type CTAButtonBaseProps = {
@@ -25,6 +25,9 @@ type CTAButtonLinkProps = CTAButtonBaseProps & {
   href: string;
   target?: string;
   rel?: string;
+  /** e.g. the booking links, which open the form modal first (useBookingLink). */
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  "aria-haspopup"?: "dialog";
   type?: never;
   disabled?: never;
 };
@@ -33,6 +36,8 @@ type CTAButtonButtonProps = CTAButtonBaseProps & {
   href?: never;
   target?: never;
   rel?: never;
+  onClick?: never;
+  "aria-haspopup"?: never;
   type: "submit" | "button";
   disabled?: boolean;
 };
@@ -143,6 +148,8 @@ export function CTAButton(props: CTAButtonProps) {
       href={props.href}
       target={props.target}
       rel={props.rel}
+      onClick={props.onClick}
+      aria-haspopup={props["aria-haspopup"]}
       className={rootClassName}
     >
       {content}
