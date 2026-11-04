@@ -23,8 +23,6 @@ import {
   textInputClass,
 } from "@/components/form/fields";
 import { ChevronDown } from "@/components/icons/ChevronDown";
-import { Reveal } from "@/components/Reveal";
-import { SectionTag } from "@/components/SectionTag";
 import { getCountryName, getCountryOptions, type CountryCode } from "@/lib/countries";
 import { LEGAL } from "@/lib/legal";
 import { BOOKING_LINK } from "@/lib/links";
@@ -119,7 +117,12 @@ function useIsClient() {
   return useSyncExternalStore(noopSubscribe, () => true, () => false);
 }
 
-export function ContactForm() {
+/**
+ * Contact form body (no section, title or card of its own): it lives inside
+ * ContactModal, which supplies the title, subtitle and surface. `onSuccess`
+ * lets the modal reset it (remount) once it's closed after a sent lead.
+ */
+export function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
   const { t, language } = useLanguage();
   const c = t.contactForm;
   const uid = useId();
@@ -142,8 +145,10 @@ export function ContactForm() {
   const fieldRefs = useRef<Partial<Record<ValidatedField, HTMLElement | null>>>({});
 
   useEffect(() => {
-    if (status === "success") successTitleRef.current?.focus();
-  }, [status]);
+    if (status !== "success") return;
+    successTitleRef.current?.focus();
+    onSuccess?.();
+  }, [status, onSuccess]);
 
   const hasErrors = FIELD_ORDER.some((field) => errors[field]);
 
@@ -171,8 +176,8 @@ export function ContactForm() {
   function focusField(field: ValidatedField) {
     const el = fieldRefs.current[field];
     if (!el) return;
-    // Default focus scrolling only brings the field to the viewport edge,
-    // where the sticky header covers it — center it explicitly instead.
+    // Default focus scrolling only brings the field to the edge of the
+    // modal's scroll area, under its sticky top bar — center it instead.
     el.scrollIntoView({ block: "center" });
     const target =
       el instanceof HTMLFieldSetElement
@@ -386,127 +391,110 @@ export function ContactForm() {
   const consentError = errors.consent;
 
   return (
-    <section
-      id="formulario"
-      className="relative scroll-mt-20 overflow-hidden bg-amarillo px-6 py-20 sm:py-28"
-    >
-      <div className="relative mx-auto max-w-xl">
-        <Reveal className="text-center">
-          <SectionTag>{c.eyebrow}</SectionTag>
-          <h2 className="font-display mt-6 text-3xl font-semibold italic text-morado-oscuro sm:text-4xl">
-            {c.title}
-          </h2>
-          <p className="mt-4 text-lg text-negro/80">{c.subtitle}</p>
-        </Reveal>
+    <div>
+      {/* Live region exists before success so its content is announced. */}
+      <div aria-live="polite">
+        {status === "success" && (
+          <div className="text-center">
+            <h3
+              ref={successTitleRef}
+              tabIndex={-1}
+              // Focus target for announcing success, not a control —
+              // no ring needed on a non-interactive heading.
+              className="font-display text-2xl focus:outline-none font-semibold italic text-morado-oscuro sm:text-3xl"
+            >
+              {c.success.title}
+            </h3>
+            <p className="mt-4 text-base text-negro/75">{c.success.body}</p>
+            <a
+              href={BOOKING_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-[1.5px] border-morado-oscuro px-6 py-3 text-base font-bold text-morado-oscuro hover:bg-morado-oscuro hover:text-crema motion-safe:transition-colors motion-safe:duration-200 ${FOCUS_RING}`}
+            >
+              {c.success.cta}
+            </a>
+          </div>
+        )}
+      </div>
 
-        <Reveal className="mt-10">
-          <div className="rounded-3xl bg-white p-6 shadow-sm sm:p-10">
-            {/* Live region exists before success so its content is announced. */}
-            <div aria-live="polite">
-              {status === "success" && (
-                <div className="text-center">
-                  <h3
-                    ref={successTitleRef}
-                    tabIndex={-1}
-                    // Focus target for announcing success, not a control —
-                    // no ring needed on a non-interactive heading.
-                    className="font-display text-2xl focus:outline-none font-semibold italic text-morado-oscuro sm:text-3xl"
-                  >
-                    {c.success.title}
-                  </h3>
-                  <p className="mt-4 text-base text-negro/75">{c.success.body}</p>
-                  <a
-                    href={BOOKING_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`mt-8 inline-flex min-h-11 items-center justify-center rounded-xl border-[1.5px] border-morado-oscuro px-6 py-3 text-base font-bold text-morado-oscuro hover:bg-morado-oscuro hover:text-crema motion-safe:transition-colors motion-safe:duration-200 ${FOCUS_RING}`}
-                  >
-                    {c.success.cta}
-                  </a>
-                </div>
-              )}
+      {status !== "success" && (
+        <form noValidate onSubmit={handleSubmit} className="relative flex flex-col gap-6">
+          {renderTextField("name", { type: "text", autoComplete: "name" })}
+          {renderTextField("email", { type: "email", autoComplete: "email", inputMode: "email" })}
+          {renderTextField("phone", { type: "tel", autoComplete: "tel", inputMode: "tel" })}
+          {renderCountryField()}
+          {renderPillGroup("projectType", PROJECT_TYPES, c.fields.projectType.options)}
+          {renderPillGroup("budget", BUDGETS, c.fields.budget.options, c.fields.budget.hint)}
+
+          <div>
+            <label className="flex min-h-11 cursor-pointer items-start gap-3">
+              <input
+                ref={(el) => {
+                  fieldRefs.current.consent = el;
+                }}
+                type="checkbox"
+                name="consent"
+                checked={values.consent}
+                onChange={(e) => {
+                  update("consent", e.target.checked);
+                  setConsentAt(e.target.checked ? new Date().toISOString() : null);
+                }}
+                onBlur={() => setFieldError("consent", values)}
+                aria-required="true"
+                aria-invalid={consentError ? true : undefined}
+                aria-describedby={describedBy(consentError && id("consent-error"), id("privacy-summary"))}
+                className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
+              />
+              <span className="text-sm text-negro/80">
+                {c.consent.text}
+                {LEGAL.privacy && (
+                  <>
+                    {" "}
+                    <a
+                      href={LEGAL.privacy}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
+                    >
+                      {c.consent.linkLabel}
+                    </a>
+                  </>
+                )}
+              </span>
+            </label>
+            {consentError && (
+              <ErrorMessage id={id("consent-error")}>{c.errors[consentError]}</ErrorMessage>
+            )}
+            <PrivacyInfo
+              summaryId={id("privacy-summary")}
+              summary={c.privacySummary}
+              more={c.privacyMore}
+              notice={c.privacyNotice}
+            />
+          </div>
+
+          {/* Honeypot: invisible to people and assistive tech, bots fill it. */}
+          <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+            <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+          </div>
+
+          <div>
+            {/* Always mounted (so updates are announced); empty, it adds no gap. */}
+            <div aria-live="polite" className="mb-4 empty:mb-0">
+              {showSummary && hasErrors ? (
+                <ErrorMessage id={id("summary")}>{c.errors.summary}</ErrorMessage>
+              ) : status === "error" ? (
+                <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
+              ) : null}
             </div>
 
-            {status !== "success" && (
-              <form noValidate onSubmit={handleSubmit} className="relative flex flex-col gap-6">
-                {renderTextField("name", { type: "text", autoComplete: "name" })}
-                {renderTextField("email", { type: "email", autoComplete: "email", inputMode: "email" })}
-                {renderTextField("phone", { type: "tel", autoComplete: "tel", inputMode: "tel" })}
-                {renderCountryField()}
-                {renderPillGroup("projectType", PROJECT_TYPES, c.fields.projectType.options)}
-                {renderPillGroup("budget", BUDGETS, c.fields.budget.options, c.fields.budget.hint)}
-
-                <div>
-                  <label className="flex min-h-11 cursor-pointer items-start gap-3">
-                    <input
-                      ref={(el) => {
-                        fieldRefs.current.consent = el;
-                      }}
-                      type="checkbox"
-                      name="consent"
-                      checked={values.consent}
-                      onChange={(e) => {
-                        update("consent", e.target.checked);
-                        setConsentAt(e.target.checked ? new Date().toISOString() : null);
-                      }}
-                      onBlur={() => setFieldError("consent", values)}
-                      aria-required="true"
-                      aria-invalid={consentError ? true : undefined}
-                      aria-describedby={describedBy(consentError && id("consent-error"), id("privacy-summary"))}
-                      className={`mt-0.5 h-5 w-5 flex-none cursor-pointer accent-morado-oscuro ${FOCUS_RING}`}
-                    />
-                    <span className="text-sm text-negro/80">
-                      {c.consent.text}
-                      {LEGAL.privacy && (
-                        <>
-                          {" "}
-                          <a
-                            href={LEGAL.privacy}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
-                          >
-                            {c.consent.linkLabel}
-                          </a>
-                        </>
-                      )}
-                    </span>
-                  </label>
-                  {consentError && (
-                    <ErrorMessage id={id("consent-error")}>{c.errors[consentError]}</ErrorMessage>
-                  )}
-                  <PrivacyInfo
-                    summaryId={id("privacy-summary")}
-                    summary={c.privacySummary}
-                    more={c.privacyMore}
-                    notice={c.privacyNotice}
-                  />
-                </div>
-
-                {/* Honeypot: invisible to people and assistive tech, bots fill it. */}
-                <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
-                  <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
-                </div>
-
-                <div>
-                  {/* Always mounted (so updates are announced); empty, it adds no gap. */}
-                  <div aria-live="polite" className="mb-4 empty:mb-0">
-                    {showSummary && hasErrors ? (
-                      <ErrorMessage id={id("summary")}>{c.errors.summary}</ErrorMessage>
-                    ) : status === "error" ? (
-                      <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
-                    ) : null}
-                  </div>
-
-                  <CTAButton type="submit" surface="light" disabled={sending} className="w-full">
-                    {sending ? c.sending : c.submit}
-                  </CTAButton>
-                </div>
-              </form>
-            )}
+            <CTAButton type="submit" surface="light" disabled={sending} className="w-full">
+              {sending ? c.sending : c.submit}
+            </CTAButton>
           </div>
-        </Reveal>
-      </div>
-    </section>
+        </form>
+      )}
+    </div>
   );
 }

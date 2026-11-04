@@ -128,7 +128,8 @@
     ]
   },
   "contactForm": {
-    "eyebrow": "¿PREFIERES QUE TE CONTACTEMOS?",
+    "openButton": "¿Prefieres que te contactemos? Cuéntanos sobre tu proyecto",
+    "close": "Cerrar",
     "title": "Cuéntanos sobre tu proyecto",
     "subtitle": "Déjanos tus datos y te escribiremos para conversar sobre tu proceso. Sin compromiso.",
     "fields": {
