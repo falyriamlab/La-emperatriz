@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
@@ -31,12 +30,23 @@ export function Mentor() {
               imgClassName="h-40 w-auto sm:h-48"
             />
             <div className="group relative z-10 aspect-[4/5] w-full overflow-hidden rounded-2xl mentor-photo-fade">
-              <Image
-                src={`${BASE_PATH}/elements/daniela.png`}
+              {/* WebP with transparency at 1x/2x of the largest rendered width
+                  (the box is max-w-sm = 24rem = 384px; below 432px it's the
+                  viewport minus the section's px-6). Plain <img>: with
+                  images.unoptimized (static export) next/image can't emit a
+                  srcset. width/height give the aspect ratio; the box itself
+                  is fixed by aspect-[4/5], so nothing shifts while it loads. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${BASE_PATH}/elements/daniela-768.webp`}
+                srcSet={`${BASE_PATH}/elements/daniela-384.webp 384w, ${BASE_PATH}/elements/daniela-768.webp 768w`}
+                sizes="(min-width: 432px) 24rem, calc(100vw - 3rem)"
+                width={768}
+                height={917}
                 alt={t.mentor.name}
-                fill
-                sizes="(min-width: 768px) 24rem, 100vw"
-                className="object-contain object-bottom motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-contain object-bottom motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-[1.02]"
               />
             </div>
           </div>
