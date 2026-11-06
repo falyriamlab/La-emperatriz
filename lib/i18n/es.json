@@ -207,6 +207,7 @@
     "legal": { "privacy": "Política de privacidad", "legalNotice": "Aviso legal", "terms": "Condiciones de compra" }
   },
   "languageToggle": { "es": "ES", "pt": "PT" },
+  "legalPage": { "back": "← Volver a La Emperatriz" },
   "masterclass": {
     "badge": "Masterclass",
     "title": [
