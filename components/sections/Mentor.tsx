@@ -4,6 +4,7 @@ import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function Mentor() {
   const { t } = useLanguage();
@@ -15,7 +16,7 @@ export function Mentor() {
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>
-          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+          <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {t.mentor.title}
           </h2>
         </Reveal>

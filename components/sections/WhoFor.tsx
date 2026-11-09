@@ -4,6 +4,7 @@ import { MdCheck, MdRemove } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function WhoFor() {
   const { t } = useLanguage();
@@ -20,7 +21,7 @@ export function WhoFor() {
               className="relative shrink-0 opacity-80"
               imgClassName="h-8 w-auto"
             />
-            <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+            <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
               {t.whoFor.title}
             </h2>
           </div>

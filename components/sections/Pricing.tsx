@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { LEGAL } from "@/lib/legal";
 import { useBookingLink } from "@/components/ContactModal";
 import { PRECIOS, STRIPE_LINKS, ahorro, sumaMensual } from "@/lib/pricing";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 // Prices are fixed constants (no dates), so the server-rendered HTML already
 // shows the real amounts — nothing here waits for the client.
@@ -55,7 +56,7 @@ export function Pricing() {
     <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-4xl text-center">
         <Reveal>
-          <h2 className="font-display text-3xl font-semibold italic text-morado-oscuro sm:text-4xl">
+          <h2 className={`${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {p.title}
           </h2>
           <p className="mt-4 text-lg text-negro/70">{p.subtitle}</p>

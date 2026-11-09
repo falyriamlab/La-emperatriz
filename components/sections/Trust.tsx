@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { RotatingWords } from "@/components/RotatingWords";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 const VALUE_CLASS = "font-extrabold text-amarillo text-5xl sm:text-6xl";
 // The rotating word ("Artes visuales" is the longest) never wraps (see
@@ -41,7 +42,7 @@ export function Trust() {
         />
         <div className="relative mx-auto max-w-4xl text-center">
           <Reveal>
-            <h2 className="font-display text-3xl font-semibold italic text-crema sm:text-4xl">
+            <h2 className={`${SECTION_TITLE_CLASS} text-crema`}>
               {t.trust.title}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-crema/70">

@@ -5,6 +5,7 @@ import { MdAdd } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function FAQ() {
   const { t } = useLanguage();
@@ -24,7 +25,7 @@ export function FAQ() {
       />
       <div className="relative mx-auto max-w-3xl">
         <Reveal>
-          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+          <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {t.faq.title}
           </h2>
         </Reveal>
