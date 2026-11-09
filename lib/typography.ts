@@ -3,4 +3,11 @@
 // text-morado-oscuro on light backgrounds, text-crema on morado ones.
 // Not for the Hero's h1 (mixes serif and sans on purpose) or card titles
 // and subtitles (h3, sans bold).
-export const SECTION_TITLE_CLASS = "font-display text-3xl font-semibold italic sm:text-4xl";
+const SECTION_TITLE_FONT = "font-display font-semibold italic";
+
+export const SECTION_TITLE_CLASS = `${SECTION_TITLE_FONT} text-3xl sm:text-4xl`;
+
+// Deliberate exception, like the Hero's h1: the closing section's title
+// ("Hablemos antes de que decidas.") keeps the same serif but stays larger —
+// 36px on mobile, 48px from sm, line height 1.1 — as the page's last call.
+export const CLOSING_TITLE_CLASS = `${SECTION_TITLE_FONT} text-4xl leading-[1.1] sm:text-5xl`;

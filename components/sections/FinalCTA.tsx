@@ -4,7 +4,7 @@ import { useBookingLink } from "@/components/ContactModal";
 import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { SECTION_TITLE_CLASS } from "@/lib/typography";
+import { CLOSING_TITLE_CLASS } from "@/lib/typography";
 
 export function FinalCTA() {
   const { t } = useLanguage();
@@ -36,7 +36,7 @@ export function FinalCTA() {
           {t.finalCta.eyebrow}
         </span>
 
-        <h2 className={`mt-6 ${SECTION_TITLE_CLASS} text-crema`}>
+        <h2 className={`mt-6 ${CLOSING_TITLE_CLASS} text-crema`}>
           {t.finalCta.title}
         </h2>
         <p className="mt-6 text-lg text-crema/80">{t.finalCta.paragraph}</p>
