@@ -5,15 +5,18 @@ import { MdAdd } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function FAQ() {
   const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
+    // Lighter cream (the cards' bg-white/70 over the body's crema) so it
+    // doesn't run into Pricing, which stays crema.
     <section
       id="preguntas"
-      className="relative overflow-hidden bg-crema px-6 py-20 sm:py-28"
+      className="relative overflow-hidden bg-white/70 px-6 py-20 sm:py-28"
     >
       <DecorativeSvg
         src="/elements/star-ellipse-morado.svg"
@@ -24,7 +27,7 @@ export function FAQ() {
       />
       <div className="relative mx-auto max-w-3xl">
         <Reveal>
-          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+          <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {t.faq.title}
           </h2>
         </Reveal>

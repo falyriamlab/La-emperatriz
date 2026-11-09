@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function WhatIs() {
   const { t } = useLanguage();
@@ -10,7 +11,7 @@ export function WhatIs() {
     <section id="que-es" className="bg-morado-oscuro px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-3xl text-center">
         <Reveal>
-          <h2 className="font-display text-3xl font-semibold italic text-crema sm:text-4xl">
+          <h2 className={`${SECTION_TITLE_CLASS} text-crema`}>
             {t.whatIs.title}
           </h2>
 

@@ -4,6 +4,7 @@ import { MdCheck } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 // Shared by the purpose card and the 3 step cards so they stay one visual
 // family: same shape, padding and lift-on-hover. Only the surface differs.
@@ -48,7 +49,7 @@ export function HowItWorks() {
       />
       <div className="relative mx-auto max-w-5xl text-center">
         <Reveal>
-          <h2 className="text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+          <h2 className={`${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {t.howItWorks.title}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-negro/70">

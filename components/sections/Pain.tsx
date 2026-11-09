@@ -3,6 +3,7 @@
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 const icons = [
   <div key={0} className="flex flex-col items-center gap-1.5" aria-hidden>
@@ -30,7 +31,7 @@ export function Pain() {
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>
-          <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+          <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
             {t.pain.title}
           </h2>
         </Reveal>

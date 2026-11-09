@@ -4,12 +4,15 @@ import { MdCheck, MdRemove } from "react-icons/md";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { SECTION_TITLE_CLASS } from "@/lib/typography";
 
 export function WhoFor() {
   const { t } = useLanguage();
 
   return (
-    <section id="para-quien" className="bg-crema px-6 py-20 sm:py-28">
+    // Lighter cream (the cards' bg-white/70 over the body's crema) so it
+    // doesn't run into "Cómo funciona", which stays crema.
+    <section id="para-quien" className="bg-white/70 px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -20,7 +23,7 @@ export function WhoFor() {
               className="relative shrink-0 opacity-80"
               imgClassName="h-8 w-auto"
             />
-            <h2 className="text-center text-3xl font-extrabold text-morado-oscuro sm:text-4xl">
+            <h2 className={`text-center ${SECTION_TITLE_CLASS} text-morado-oscuro`}>
               {t.whoFor.title}
             </h2>
           </div>
@@ -62,7 +65,7 @@ export function WhoFor() {
                     >
                       <MdRemove className="h-3.5 w-3.5" />
                     </span>
-                    <span className="text-base leading-relaxed text-negro/55">
+                    <span className="text-base leading-relaxed text-negro/70">
                       {item}
                     </span>
                   </li>
