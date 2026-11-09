@@ -22,6 +22,11 @@ type DecorativeSvgProps = {
  * knows the real aspect ratio up front (no layout shift while it loads) and
  * a single CSS dimension drives the rendered size with the other on auto —
  * never a fixed height+width box that squeezes/crops a mismatched aspect ratio.
+ *
+ * Always lazy + async (next/image's defaults, spelled out here): several of
+ * these are "hidden sm:block", and a lazy image that isn't displayed is
+ * never downloaded — so phones skip them entirely, even the ones in the
+ * first screen on desktop.
  */
 export function DecorativeSvg({
   src,
@@ -32,7 +37,15 @@ export function DecorativeSvg({
 }: DecorativeSvgProps) {
   return (
     <div aria-hidden="true" className={`pointer-events-none select-none ${className}`}>
-      <Image src={`${BASE_PATH}${src}`} alt="" width={width} height={height} className={imgClassName} />
+      <Image
+        src={`${BASE_PATH}${src}`}
+        alt=""
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        className={imgClassName}
+      />
     </div>
   );
 }

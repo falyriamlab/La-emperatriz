@@ -64,6 +64,9 @@ export function Header({ showCta = true }: HeaderProps) {
           alt={t.header.logoAlt}
           width={666}
           height={102}
+          // First thing on screen: load right away, not lazily (next/image's default).
+          loading="eager"
+          fetchPriority="high"
           className="h-5 w-auto sm:h-6"
         />
 
