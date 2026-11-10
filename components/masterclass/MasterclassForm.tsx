@@ -462,7 +462,7 @@ export function MasterclassForm() {
                             href={LEGAL.privacy}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
+                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:decoration-coral ${FOCUS_RING}`}
                           >
                             {t.contactForm.consent.linkLabel}
                           </a>

@@ -7,7 +7,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { LegalDocs } from "@/lib/legalContent";
 import type { Block, Inline } from "@/lib/markdown";
 
-const LINK_CLASS = `font-semibold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`;
+const LINK_CLASS = `font-semibold text-morado-oscuro underline underline-offset-2 hover:decoration-coral ${FOCUS_RING}`;
 
 function plainText(nodes: Inline[]): string {
   return nodes.map((n) => (n.type === "text" ? n.value : plainText(n.children))).join("");
@@ -138,7 +138,7 @@ export function LegalDocument({ docs }: { docs: LegalDocs }) {
       <div className="mx-auto max-w-[70ch] text-base leading-[1.75] text-negro/80">
         <a
           href={`${BASE_PATH}/`}
-          className={`inline-flex min-h-11 items-center text-sm font-bold text-morado-oscuro underline-offset-4 hover:text-coral hover:underline ${FOCUS_RING}`}
+          className={`inline-flex min-h-11 items-center text-sm font-bold text-morado-oscuro underline-offset-4 hover:underline hover:decoration-coral ${FOCUS_RING}`}
         >
           {t.legalPage.back}
         </a>

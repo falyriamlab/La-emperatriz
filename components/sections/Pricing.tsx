@@ -123,7 +123,7 @@ export function Pricing() {
               first, then the calendar). */}
           <a
             {...bookingLink}
-            className="mt-6 inline-flex min-h-11 items-center text-base font-semibold text-morado-oscuro underline decoration-morado-oscuro/40 underline-offset-4 hover:text-coral hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
+            className="mt-6 inline-flex min-h-11 items-center text-base font-semibold text-morado-oscuro underline decoration-morado-oscuro/40 underline-offset-4 hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
           >
             {p.doubtsLink}
           </a>
@@ -136,7 +136,7 @@ export function Pricing() {
                 href={LEGAL.terms}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-morado-oscuro underline underline-offset-2 hover:text-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
+                className="font-semibold text-morado-oscuro underline underline-offset-2 hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro"
               >
                 {p.termsLinkLabel}
               </a>
