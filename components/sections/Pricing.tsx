@@ -115,7 +115,7 @@ export function Pricing() {
             </div>
           </div>
 
-          <p className="mx-auto mt-10 max-w-xl text-sm text-negro/50">{p.includes}</p>
+          <p className="mx-auto mt-10 max-w-xl text-sm text-negro/65">{p.includes}</p>
 
           {/* Secondary path for the undecided: a plain text link, clearly
               below the two payment buttons in the hierarchy. Same booking
