@@ -45,7 +45,7 @@ export function LanguageToggle() {
           className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
             language === lang
               ? "text-crema"
-              : "text-negro/40 hover:text-negro/60"
+              : "text-negro/70 hover:text-negro/80"
           }`}
         >
           {t.languageToggle[lang]}
