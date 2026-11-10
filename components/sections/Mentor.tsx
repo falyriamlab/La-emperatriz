@@ -56,10 +56,8 @@ export function Mentor() {
             <h3 className="text-2xl font-extrabold text-morado-oscuro">
               {t.mentor.name}
             </h3>
-            {/* Text in morado-oscuro (coral fell short of AA at this size);
-                the coral stays only as a decorative accent line. */}
-            <p className="mt-1 flex items-center gap-2 text-sm font-semibold tracking-wide text-morado-oscuro uppercase">
-              <span aria-hidden="true" className="h-0.5 w-5 flex-none rounded-full bg-coral" />
+            {/* morado-oscuro, not coral: coral fell short of AA at this size. */}
+            <p className="mt-1 text-sm font-semibold tracking-wide text-morado-oscuro uppercase">
               {t.mentor.role}
             </p>
 
