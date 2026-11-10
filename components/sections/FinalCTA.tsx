@@ -45,9 +45,9 @@ export function FinalCTA() {
           {t.finalCta.cta}
         </CTAButton>
 
-        <p className="mt-4 text-sm text-crema/75">{t.finalCta.note}</p>
+        <p className="mt-4 text-sm text-crema/80">{t.finalCta.note}</p>
 
-        <p className="mt-8 text-sm font-semibold tracking-wide text-crema/75">
+        <p className="mt-8 text-sm font-semibold tracking-wide text-crema/80">
           {t.finalCta.brand}
         </p>
       </div>
