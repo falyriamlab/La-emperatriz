@@ -45,7 +45,7 @@ export function Trust() {
             <h2 className={`${SECTION_TITLE_CLASS} text-crema`}>
               {t.trust.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-crema/70">
+            <p className="mx-auto mt-4 max-w-xl text-lg text-crema/80">
               {t.trust.intro}
             </p>
           </Reveal>
@@ -79,7 +79,7 @@ export function Trust() {
                         />
                       )}
                     </div>
-                    <p className="max-w-[16rem] text-sm text-crema/70">
+                    <p className="max-w-[16rem] text-sm text-crema/80">
                       {stat.label}
                     </p>
                   </div>
