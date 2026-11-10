@@ -19,6 +19,9 @@ export const LABEL_CLASS = "block text-sm font-bold text-morado-oscuro";
 export const HINT_CLASS = "mt-2 text-sm text-negro/70";
 export const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro";
+/** Same ring for controls on morado backgrounds (Hero, closing section): crema instead of morado. */
+export const FOCUS_RING_ON_DARK =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-crema";
 
 /** `muted`: placeholder-colored text, for a select still on its empty option. */
 export function textInputClass(invalid: boolean, muted = false) {

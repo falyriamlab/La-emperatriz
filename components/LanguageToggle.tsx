@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage, type Language } from "@/lib/i18n/LanguageContext";
+import { FOCUS_RING } from "@/components/form/fields";
 
 // Fixed per-button labels: each one names the action in the language it
 // switches *to*, independent of which language is currently active.
@@ -42,7 +43,7 @@ export function LanguageToggle() {
           onClick={() => setLanguage(lang)}
           aria-label={ARIA_LABELS[lang]}
           aria-current={language === lang ? "true" : undefined}
-          className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center text-sm font-bold transition-colors ${
+          className={`relative z-10 flex min-h-11 min-w-11 items-center justify-center rounded-full text-sm font-bold transition-colors ${FOCUS_RING} ${
             language === lang
               ? "text-crema"
               : "text-negro/70 hover:text-negro/80"

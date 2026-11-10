@@ -1,5 +1,6 @@
 import type { MouseEventHandler, ReactNode } from "react";
 import { MdArrowForward } from "react-icons/md";
+import { FOCUS_RING, FOCUS_RING_ON_DARK } from "@/components/form/fields";
 
 type CTAButtonBaseProps = {
   children: ReactNode;
@@ -94,7 +95,10 @@ export function CTAButton(props: CTAButtonProps) {
   const { children, surface = "light", size = "default", className = "" } = props;
   const s = surfaceStyles[surface];
   const z = sizeStyles[size];
-  const rootClassName = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl ${z.box} ${s.restBg} ${className}`;
+  // Own focus ring (not the browser's two-tone one): morado on light
+  // surfaces, crema on morado ones.
+  const focusRing = surface === "dark" ? FOCUS_RING_ON_DARK : FOCUS_RING;
+  const rootClassName = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl ${z.box} ${s.restBg} ${focusRing} ${className}`;
 
   const content = (
     <>
