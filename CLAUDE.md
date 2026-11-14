@@ -108,7 +108,6 @@ Hooks en `.claude/settings.json` (se ejecutan siempre):
 4. Analítica: decide Daniela. Si se añade, hay que actualizar la política de privacidad (hoy dice que no hay analítica).
 5. Tareas de Daniela: quitar a Val el acceso a la hoja y a las carpetas de grabaciones, y activar en Stripe la aceptación de condiciones en los dos links de pago.
 6. Revisión legal de los tres textos y revisión del portugués por una persona nativa.
-7. Avisar a Juan Pablo de los cambios de color en el indicador de pasos de `/masterclass`.
-8. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
+7. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
 
 Actualiza esta lista cuando cierres o descubras tareas, en el mismo Pull Request del cambio.
