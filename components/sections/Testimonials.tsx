@@ -127,7 +127,7 @@ function TestimonialCard({
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
           aria-controls={textId}
-          className={`mt-2 inline-flex min-h-11 min-w-11 cursor-pointer items-center self-start rounded-md text-sm font-bold text-morado-oscuro underline underline-offset-4 hover:text-coral ${FOCUS_RING_DARK}`}
+          className={`mt-2 inline-flex min-h-11 min-w-11 cursor-pointer items-center self-start rounded-md text-sm font-bold text-morado-oscuro underline underline-offset-4 hover:decoration-coral ${FOCUS_RING_DARK}`}
         >
           {expanded ? readLess : readMore}
         </button>

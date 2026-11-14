@@ -6,6 +6,7 @@ import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { SECTION_TITLE_CLASS } from "@/lib/typography";
+import { FOCUS_RING } from "@/components/form/fields";
 
 export function FAQ() {
   const { t } = useLanguage();
@@ -40,7 +41,7 @@ export function FAQ() {
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
+                  className={`flex w-full items-center justify-between gap-6 py-6 text-left ${FOCUS_RING}`}
                   aria-expanded={isOpen}
                 >
                   <span className="text-lg font-bold text-morado-oscuro">

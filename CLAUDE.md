@@ -102,13 +102,12 @@ Hooks en `.claude/settings.json` (se ejecutan siempre):
 
 ## Pendientes (actualizado al 14/11/2026)
 
-1. Comprobar si la rama `fix/contraste` está publicada y si incluye el commit "nota y marca del cierre a crema/80".
+1. Foco tras un envío fallido: en el modal semilla y en `/masterclass`, el botón se desactiva al enviar y, si el envío falla, el foco se pierde (queda en `<body>`). El error sí se anuncia por `aria-live`. Llevar el foco al mensaje de error.
 2. Vista previa al compartir: Val diseña `og-emperatriz.png` y `og-masterclass.png` (1200×630, menos de 300 KB, sin fechas) para `public/og/`. Después: metadatos Open Graph y Twitter, `canonical` y `theme-color`.
 3. Actualizar las acciones del workflow de despliegue por el aviso de Node 20.
 4. Analítica: decide Daniela. Si se añade, hay que actualizar la política de privacidad (hoy dice que no hay analítica).
 5. Tareas de Daniela: quitar a Val el acceso a la hoja y a las carpetas de grabaciones, y activar en Stripe la aceptación de condiciones en los dos links de pago.
 6. Revisión legal de los tres textos y revisión del portugués por una persona nativa.
-7. Avisar a Juan Pablo de los cambios de color en el indicador de pasos de `/masterclass`.
-8. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
+7. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
 
 Actualiza esta lista cuando cierres o descubras tareas, en el mismo Pull Request del cambio.

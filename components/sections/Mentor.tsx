@@ -56,7 +56,8 @@ export function Mentor() {
             <h3 className="text-2xl font-extrabold text-morado-oscuro">
               {t.mentor.name}
             </h3>
-            <p className="mt-1 text-sm font-semibold tracking-wide text-coral uppercase">
+            {/* morado-oscuro, not coral: coral fell short of AA at this size. */}
+            <p className="mt-1 text-sm font-semibold tracking-wide text-morado-oscuro uppercase">
               {t.mentor.role}
             </p>
 

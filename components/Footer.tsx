@@ -8,6 +8,7 @@ import { useInView } from "@/hooks/useInView";
 import { BASE_PATH } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { LEGAL } from "@/lib/legal";
+import { FOCUS_RING } from "@/components/form/fields";
 
 // Muted secondary text throughout this footer uses /70 (not the /40-/60
 // the umanodesign.studio reference gets away with on plain white) — crema
@@ -88,7 +89,7 @@ export function Footer() {
                   href={t.footer.websiteHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
+                  className={`pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:underline hover:decoration-coral ${FOCUS_RING}`}
                 >
                   {t.footer.website}
                 </a>
@@ -102,7 +103,7 @@ export function Footer() {
                   href={t.footer.instagramHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:text-coral hover:underline"
+                  className={`pointer-events-auto mt-0.5 -mb-2.5 block py-2.5 font-bold break-words text-morado-oscuro underline-offset-4 hover:underline hover:decoration-coral ${FOCUS_RING}`}
                 >
                   {t.footer.instagram}
                 </a>
@@ -125,7 +126,7 @@ export function Footer() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`pointer-events-auto inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4 hover:text-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro ${MUTED}`}
+                      className={`pointer-events-auto inline-flex min-h-11 items-center text-xs font-semibold underline underline-offset-4 hover:decoration-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morado-oscuro ${MUTED}`}
                     >
                       {label}
                     </a>

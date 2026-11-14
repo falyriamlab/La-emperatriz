@@ -4,6 +4,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { DecorativeSvg } from "@/components/decorative/DecorativeSvg";
 import { ChevronDown } from "@/components/icons/ChevronDown";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { FOCUS_RING_ON_DARK } from "@/components/form/fields";
 
 export function Hero() {
   const { t } = useLanguage();
@@ -51,7 +52,7 @@ export function Hero() {
           </CTAButton>
           <a
             href="#como-funciona"
-            className="-my-3 inline-flex items-center gap-1.5 py-3 text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline"
+            className={`-my-3 inline-flex items-center gap-1.5 py-3 text-sm font-semibold text-crema/85 underline-offset-4 transition-colors hover:text-crema hover:underline ${FOCUS_RING_ON_DARK}`}
           >
             {t.hero.ctaSecondary}
             <ChevronDown className="h-[1em] w-[1em]" />

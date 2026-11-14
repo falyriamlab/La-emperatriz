@@ -502,7 +502,7 @@ export function ContactForm({
                       href={LEGAL.privacy}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
+                      className={`font-bold text-morado-oscuro underline underline-offset-2 hover:decoration-coral ${FOCUS_RING}`}
                     >
                       {c.consent.linkLabel}
                     </a>
@@ -540,7 +540,7 @@ export function ContactForm({
                       href={BOOKING_LINK}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`mt-1 inline-flex min-h-11 items-center text-sm font-bold text-morado-oscuro underline underline-offset-4 hover:text-coral ${FOCUS_RING}`}
+                      className={`mt-1 inline-flex min-h-11 items-center text-sm font-bold text-morado-oscuro underline underline-offset-4 hover:decoration-coral ${FOCUS_RING}`}
                     >
                       {c.semilla.errorFallback}
                     </a>

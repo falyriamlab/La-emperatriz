@@ -368,7 +368,7 @@ export function MasterclassForm() {
                     {done ? <MdCheck className="h-5 w-5" /> : index + 1}
                   </span>
                   <span
-                    className={`text-sm font-bold min-[375px]:whitespace-nowrap ${current ? "text-morado-oscuro" : done ? "text-morado-oscuro/70" : "text-negro/60"}`}
+                    className={`text-sm font-bold min-[375px]:whitespace-nowrap ${current ? "text-morado-oscuro" : done ? "text-morado-oscuro/80" : "text-negro/60"}`}
                   >
                     {label}
                     {done && <span className="sr-only"> ({m.steps.done})</span>}
@@ -462,7 +462,7 @@ export function MasterclassForm() {
                             href={LEGAL.privacy}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:text-coral ${FOCUS_RING}`}
+                            className={`font-bold text-morado-oscuro underline underline-offset-2 hover:decoration-coral ${FOCUS_RING}`}
                           >
                             {t.contactForm.consent.linkLabel}
                           </a>

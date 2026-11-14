@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { FOCUS_RING } from "@/components/form/fields";
 
 type CopyableEmailProps = {
   email: string;
@@ -112,7 +113,7 @@ export function CopyableEmail({
         onFocus={showCentered}
         onBlur={hide}
         onClick={handleClick}
-        className="block w-full font-sans text-3xl font-extrabold tracking-tight text-coral break-words sm:text-4xl md:text-5xl lg:text-6xl"
+        className={`block w-full font-sans text-3xl font-extrabold tracking-tight text-coral break-words sm:text-4xl md:text-5xl lg:text-6xl ${FOCUS_RING}`}
       >
         {email}
       </button>

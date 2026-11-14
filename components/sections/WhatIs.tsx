@@ -21,7 +21,7 @@ export function WhatIs() {
         </Reveal>
 
         <Reveal>
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-crema/70">
+          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-crema/80">
             {t.whatIs.paragraph2}
           </p>
 
@@ -34,7 +34,7 @@ export function WhatIs() {
                 <span className="text-2xl font-extrabold text-amarillo">
                   {pillar.title}
                 </span>
-                <p className="max-w-[14rem] text-sm text-crema/70">
+                <p className="max-w-[14rem] text-sm text-crema/80">
                   {pillar.desc}
                 </p>
               </div>
