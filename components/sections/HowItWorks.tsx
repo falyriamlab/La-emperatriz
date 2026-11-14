@@ -38,7 +38,7 @@ export function HowItWorks() {
   return (
     <section
       id="como-funciona"
-      className="relative overflow-hidden bg-crema px-6 py-20 sm:py-28"
+      className="relative overflow-hidden bg-lila/10 px-6 py-20 sm:py-28"
     >
       <DecorativeSvg
         src="/elements/protons-morado.svg"
