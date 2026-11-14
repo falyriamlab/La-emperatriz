@@ -102,7 +102,7 @@ Hooks en `.claude/settings.json` (se ejecutan siempre):
 
 ## Pendientes (actualizado al 14/11/2026)
 
-1. Comprobar si la rama `fix/contraste` está publicada y si incluye el commit "nota y marca del cierre a crema/80".
+1. Foco tras un envío fallido: en el modal semilla y en `/masterclass`, el botón se desactiva al enviar y, si el envío falla, el foco se pierde (queda en `<body>`). El error sí se anuncia por `aria-live`. Llevar el foco al mensaje de error.
 2. Vista previa al compartir: Val diseña `og-emperatriz.png` y `og-masterclass.png` (1200×630, menos de 300 KB, sin fechas) para `public/og/`. Después: metadatos Open Graph y Twitter, `canonical` y `theme-color`.
 3. Actualizar las acciones del workflow de despliegue por el aviso de Node 20.
 4. Analítica: decide Daniela. Si se añade, hay que actualizar la política de privacidad (hoy dice que no hay analítica).
