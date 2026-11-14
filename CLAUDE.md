@@ -72,6 +72,23 @@ Este repositorio puede ser público: no añadas aquí claves, contraseñas ni UR
 9. `.env.local` no se versiona. No pongas claves ni URLs privadas en el repositorio.
 10. No reescribas los textos de `content/legal/`: cualquier cambio necesita aprobación de Daniela, en español y portugués.
 
+## Agentes y hooks
+
+Agentes en `.claude/agents/`, todos de solo lectura: informan y la sesión principal aplica lo que Val apruebe. Úsalos cuando la tarea encaje (o cuando Val los pida por su nombre):
+
+| Agente | Cuándo |
+|---|---|
+| `qa-release` | Antes de dar por terminado cualquier cambio de la web |
+| `a11y-contraste` | Cambios de color, opacidad, fondos, texto sobre imágenes, foco o controles |
+| `i18n-textos` | Cualquier texto o clave nueva o modificada |
+| `guardian-negocio-legal` | Precios, promesas, urgencia, datos personales, analítica, textos legales |
+| `formularios-apps-script` | Formularios, `lib/leads.ts`, `lib/features.ts` o `integrations/apps-script/` |
+| `ux-ui` | Cambios visuales o de maquetación, y cuando Val pida opinión de diseño |
+
+Hooks en `.claude/settings.json` (se ejecutan siempre):
+- **Stop** → `.claude/hooks/check-i18n.mjs`: si `es.json` y `pt.json` no tienen las mismas claves, no deja terminar el turno hasta corregirlo.
+- **PreToolUse (Bash)** → `.claude/hooks/confirm-git.mjs`: pide confirmación a Val antes de `git push`, `git merge` o `gh pr merge` (el fast-forward de `main` desde `origin` no pregunta).
+
 ## Decisiones de negocio vigentes
 
 - **Precio**: inversión mensual 155 €/mes, sin permanencia (se deja escribiendo antes de la siguiente factura); inversión total 555 € (se muestra 620 € tachado y ahorro de 65 €). Mismo precio para todas; IVA incluido para residentes en la UE.
