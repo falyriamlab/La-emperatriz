@@ -12,7 +12,7 @@ export function Mentor() {
   return (
     <section
       id="mentora"
-      className="overflow-hidden bg-lila/10 px-6 py-20 sm:py-28"
+      className="overflow-hidden bg-crema px-6 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl">
         <Reveal>

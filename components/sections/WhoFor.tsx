@@ -10,9 +10,8 @@ export function WhoFor() {
   const { t } = useLanguage();
 
   return (
-    // Lighter cream (the cards' bg-white/70 over the body's crema) so it
-    // doesn't run into "Cómo funciona", which stays crema.
-    <section id="para-quien" className="bg-white/70 px-6 py-20 sm:py-28">
+    // Crema; "Cómo funciona" (next) is lila claro, so they don't run together.
+    <section id="para-quien" className="bg-crema px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <div className="flex flex-wrap items-center justify-center gap-3">

@@ -50,7 +50,7 @@ Este repositorio puede ser público: no añadas aquí claves, contraseñas ni UR
 - **Animaciones**: estados ocultos con la variante Tailwind `js:` (`.js:not(.no-hydrate)`). Red de seguridad `no-hydrate` a los 4 s en el script del `<head>` de `app/layout.tsx`. `prefers-reduced-motion` se lee con `useSyncExternalStore`, nunca durante el render.
 - **Imágenes**: foto de Daniela en WebP 1x/2x con `srcset`; SVG decorativos optimizados con SVGO (`svgo.config.mjs`); los logos se dejan sin optimizar. Logo del header con carga inmediata; el resto, `lazy`.
 - **Botones**: `CTAButton` (barrido de color y flechas, prop `surface` light/dark, puede ser enlace o `<button>`). No cambies su border-radius.
-- **Fondos**: nunca dos secciones seguidas con el mismo fondo (alternan morado, lila claro, crema y crema claro).
+- **Fondos**: nunca dos secciones seguidas con el mismo fondo. Las secciones alternan morado, lila claro (`bg-lila/10`) y crema; no uses el crema claro (`bg-white/70`, se ve blanco) como fondo de sección, solo en tarjetas.
 
 ## Marca
 

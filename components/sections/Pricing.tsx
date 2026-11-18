@@ -53,7 +53,7 @@ export function Pricing() {
   const bookingLink = useBookingLink();
 
   return (
-    <section id="inversion" className="bg-crema px-6 py-20 sm:py-28">
+    <section id="inversion" className="bg-lila/10 px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-4xl text-center">
         <Reveal>
           <h2 className={`${SECTION_TITLE_CLASS} text-morado-oscuro`}>

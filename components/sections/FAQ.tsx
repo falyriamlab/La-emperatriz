@@ -13,11 +13,10 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    // Lighter cream (the cards' bg-white/70 over the body's crema) so it
-    // doesn't run into Pricing, which stays crema.
+    // Crema; Pricing (before it) is lila claro, so they don't run together.
     <section
       id="preguntas"
-      className="relative overflow-hidden bg-white/70 px-6 py-20 sm:py-28"
+      className="relative overflow-hidden bg-crema px-6 py-20 sm:py-28"
     >
       <DecorativeSvg
         src="/elements/star-ellipse-morado.svg"
