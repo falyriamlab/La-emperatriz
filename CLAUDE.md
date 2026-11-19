@@ -100,14 +100,13 @@ Hooks en `.claude/settings.json` (se ejecutan siempre):
 - **Credenciales**: 9 años de experiencia; Puente forma parte de Madrid Emprende, donde Daniela es mentora. No se menciona "Colombia nos une".
 - **Testimonios**: 5, en carrusel. No afirmes que hay permiso escrito de sus autoras: no está confirmado.
 
-## Pendientes (actualizado al 14/11/2026)
+## Pendientes (actualizado al 18/11/2026)
 
-1. Foco tras un envío fallido: en el modal semilla y en `/masterclass`, el botón se desactiva al enviar y, si el envío falla, el foco se pierde (queda en `<body>`). El error sí se anuncia por `aria-live`. Llevar el foco al mensaje de error.
-2. Vista previa al compartir: Val diseña `og-emperatriz.png` y `og-masterclass.png` (1200×630, menos de 300 KB, sin fechas) para `public/og/`. Después: metadatos Open Graph y Twitter, `canonical` y `theme-color`.
-3. Actualizar las acciones del workflow de despliegue por el aviso de Node 20.
-4. Analítica: decide Daniela. Si se añade, hay que actualizar la política de privacidad (hoy dice que no hay analítica).
-5. Tareas de Daniela: quitar a Val el acceso a la hoja y a las carpetas de grabaciones, y activar en Stripe la aceptación de condiciones en los dos links de pago.
-6. Revisión legal de los tres textos y revisión del portugués por una persona nativa.
-7. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
+1. Vista previa al compartir: Val diseña `og-emperatriz.png` y `og-masterclass.png` (1200×630, menos de 300 KB, sin fechas) para `public/og/`. Después: metadatos Open Graph y Twitter, `canonical` y `theme-color`.
+2. Actualizar las acciones del workflow de despliegue por el aviso de Node 20.
+3. Analítica: decide Daniela. Si se añade, hay que actualizar la política de privacidad (hoy dice que no hay analítica).
+4. Tareas de Daniela: quitar a Val el acceso a la hoja y a las carpetas de grabaciones, y activar en Stripe la aceptación de condiciones en los dos links de pago.
+5. Revisión legal de los tres textos y revisión del portugués por una persona nativa.
+6. Opcional: en `/masterclass`, el país es texto libre; para contar por país convendría una lista como en el formulario de contacto.
 
 Actualiza esta lista cuando cierres o descubras tareas, en el mismo Pull Request del cambio.
