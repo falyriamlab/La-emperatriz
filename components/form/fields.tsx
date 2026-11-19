@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import { MdErrorOutline, MdExpandMore } from "react-icons/md";
 
 // Shared look and validation rules for the site's forms (ContactForm on the
@@ -35,9 +35,23 @@ export function describedBy(...ids: (string | false | undefined)[]) {
   return ids.filter(Boolean).join(" ") || undefined;
 }
 
-export function ErrorMessage({ id, children }: { id: string; children: ReactNode }) {
+export function ErrorMessage({
+  id,
+  children,
+  focusRef,
+}: {
+  id: string;
+  children: ReactNode;
+  /** Makes the message a programmatic focus target (not a control: no ring). */
+  focusRef?: Ref<HTMLParagraphElement>;
+}) {
   return (
-    <p id={id} className="mt-2 flex items-start gap-1.5 text-sm font-semibold text-error">
+    <p
+      id={id}
+      ref={focusRef}
+      tabIndex={focusRef ? -1 : undefined}
+      className={`mt-2 flex items-start gap-1.5 text-sm font-semibold text-error ${focusRef ? "focus:outline-none" : ""}`}
+    >
       <MdErrorOutline aria-hidden="true" className="mt-0.5 h-4 w-4 flex-none" />
       <span>{children}</span>
     </p>
