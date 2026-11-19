@@ -166,6 +166,7 @@ export function ContactForm({
   const submittingRef = useRef(false);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const successTitleRef = useRef<HTMLHeadingElement>(null);
+  const submitErrorRef = useRef<HTMLParagraphElement>(null);
   const fieldRefs = useRef<Partial<Record<ValidatedField, HTMLElement | null>>>({});
 
   useEffect(() => {
@@ -173,6 +174,12 @@ export function ContactForm({
     successTitleRef.current?.focus();
     onSuccess?.();
   }, [status, onSuccess]);
+
+  useEffect(() => {
+    // The button is disabled while sending, so focus falls back to <body>;
+    // if the send fails, bring it to the message.
+    if (status === "error") submitErrorRef.current?.focus();
+  }, [status]);
 
   const hasErrors = FIELD_ORDER.some((field) => errors[field]);
 
@@ -533,7 +540,7 @@ export function ContactForm({
                 <ErrorMessage id={id("summary")}>{c.errors.summary}</ErrorMessage>
               ) : status === "error" ? (
                 <>
-                  <ErrorMessage id={id("submit-error")}>{c.errors.submit}</ErrorMessage>
+                  <ErrorMessage id={id("submit-error")} focusRef={submitErrorRef}>{c.errors.submit}</ErrorMessage>
                   {/* Seed mode: the form failing must not block booking. */}
                   {seed && (
                     <a

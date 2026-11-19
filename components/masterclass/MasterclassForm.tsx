@@ -105,6 +105,7 @@ export function MasterclassForm() {
   const submittingRef = useRef(false);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const communityTitleRef = useRef<HTMLHeadingElement>(null);
+  const submitErrorRef = useRef<HTMLParagraphElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const fieldRefs = useRef<Partial<Record<Field, HTMLElement | null>>>({});
 
@@ -115,6 +116,12 @@ export function MasterclassForm() {
     cardRef.current?.scrollIntoView({ block: "start" });
     communityTitleRef.current?.focus({ preventScroll: true });
   }, [registered]);
+
+  useEffect(() => {
+    // The button is disabled while sending, so focus falls back to <body>;
+    // if the send fails, bring it to the message.
+    if (status === "error") submitErrorRef.current?.focus();
+  }, [status]);
 
   const hasErrors = FIELD_ORDER.some((field) => errors[field]);
 
@@ -491,7 +498,7 @@ export function MasterclassForm() {
                   {showSummary && hasErrors ? (
                     <ErrorMessage id={id("summary")}>{errorCopy.summary}</ErrorMessage>
                   ) : status === "error" ? (
-                    <ErrorMessage id={id("submit-error")}>{errorCopy.submit}</ErrorMessage>
+                    <ErrorMessage id={id("submit-error")} focusRef={submitErrorRef}>{errorCopy.submit}</ErrorMessage>
                   ) : null}
                 </div>
 
