@@ -52,6 +52,8 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
+          # v5 skips dotfiles by default; keep public/.nojekyll as before.
+          include-hidden-files: true
 
   deploy:
     environment:
